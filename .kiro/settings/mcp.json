@@ -33,7 +33,8 @@
         "playwright_screenshot",
         "playwright_close",
         "playwright_navigate",
-        "playwright_console_logs"
+        "playwright_console_logs",
+        "playwright_click"
       ]
     },
     "shadcn": {
@@ -45,7 +46,9 @@
       ],
       "env": {
         "REGISTRY_URL": "https://tweakcn.com/r/themes/registry.json"
-      }
+      },
+      "disabled": false,
+      "autoApprove": []
     }
   }
 }

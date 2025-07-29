@@ -20,14 +20,14 @@
   - Add utility functions for hierarchical project queries and actor filtering
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 4. Build core layout components
+- [x] 4. Build core layout components
   - Create AppLayout component with navbar, sidebar, and main content area
   - Implement Navbar component with app branding and user profile dropdown
   - Build collapsible Sidebar component with navigation links and active state highlighting
   - Add responsive design with mobile-friendly navigation
   - _Requirements: 7.1, 7.3, 7.5_
 
-- [ ] 5. Implement Dashboard page with summary widgets
+- [x] 5. Implement Dashboard page with summary widgets
   - Create Dashboard page component with route setup
   - Build summary widgets for actor count, open roles, project count, and recently added actors
   - Implement data aggregation functions in store for dashboard metrics

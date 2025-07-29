@@ -83,7 +83,7 @@ export type UpdateActorInput = Partial<Omit<Actor, 'id' | 'createdAt' | 'updated
 export type CreateProjectInput = Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateProjectInput = Partial<Omit<Project, 'id' | 'createdAt' | 'updatedAt'>>;
 
-export type CreateRoleInput = Omit<Role, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateRoleInput = Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'customBuckets'> & { customBuckets?: StatusBucket[] };
 export type UpdateRoleInput = Partial<Omit<Role, 'id' | 'createdAt' | 'updatedAt'>>;
 
 export type CreateAssignmentInput = Omit<ActorAssignment, 'id' | 'assignedAt' | 'updatedAt'>;
