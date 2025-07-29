@@ -83,12 +83,12 @@ export function createAssignment(input: Omit<ActorAssignment, 'id' | 'assignedAt
 }
 
 // Update entities with new timestamp
-export function updateEntity<T extends { updatedAt: Date }>(entity: T, updates: Partial<T>): T {
+export function updateEntity<T extends { updatedAt: Date }>(entity: T, updates: Partial<Omit<T, 'id' | 'createdAt' | 'updatedAt' | 'assignedAt'>>): T {
     return {
         ...entity,
         ...updates,
         updatedAt: new Date(),
-    };
+    } as T;
 }
 
 // Filter actors based on criteria
