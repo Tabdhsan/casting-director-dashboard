@@ -1,6 +1,7 @@
 // Actor grid component with responsive card layout
 
 
+import { useNavigate } from 'react-router-dom';
 import { User, MoreVertical, Edit, Trash2, Eye } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,19 +19,18 @@ import type { Actor, ActorFilters } from '@/types';
 interface ActorGridProps {
     actors: Actor[];
     filters: ActorFilters;
-    onView?: (actor: Actor) => void;
     onEdit?: (actor: Actor) => void;
     onDelete?: (actor: Actor) => void;
 }
 
 interface ActorCardProps {
     actor: Actor;
-    onView?: (actor: Actor) => void;
     onEdit?: (actor: Actor) => void;
     onDelete?: (actor: Actor) => void;
 }
 
-function ActorCard({ actor, onView, onEdit, onDelete }: ActorCardProps) {
+function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
+    const navigate = useNavigate();
     const initials = actor.name
         .split(' ')
         .map(n => n[0])
@@ -38,7 +38,10 @@ function ActorCard({ actor, onView, onEdit, onDelete }: ActorCardProps) {
         .toUpperCase();
 
     return (
-        <Card className="group cursor-pointer transition-all hover:shadow-md">
+        <Card 
+            className="group cursor-pointer transition-all hover:shadow-md"
+            onClick={() => navigate(`/actors/${actor.id}`)}
+        >
             <CardContent className="p-4">
                 <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -109,7 +112,7 @@ function ActorCard({ actor, onView, onEdit, onDelete }: ActorCardProps) {
                             <DropdownMenuItem
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    onView?.(actor);
+                                    navigate(`/actors/${actor.id}`);
                                 }}
                             >
                                 <Eye className="mr-2 h-4 w-4" />
@@ -153,7 +156,7 @@ function ActorCard({ actor, onView, onEdit, onDelete }: ActorCardProps) {
     );
 }
 
-export function ActorGrid({ actors, filters, onView, onEdit, onDelete }: ActorGridProps) {
+export function ActorGrid({ actors, filters, onEdit, onDelete }: ActorGridProps) {
     // Filter actors based on search and filters
     const filteredActors = actors.filter(actor => {
         // Search filter
@@ -186,9 +189,7 @@ export function ActorGrid({ actors, filters, onView, onEdit, onDelete }: ActorGr
         return true;
     });
 
-    const handleView = (actor: Actor) => {
-        onView?.(actor);
-    };
+
 
     const handleEdit = (actor: Actor) => {
         onEdit?.(actor);
@@ -225,7 +226,6 @@ export function ActorGrid({ actors, filters, onView, onEdit, onDelete }: ActorGr
                         <ActorCard
                             key={actor.id}
                             actor={actor}
-                            onView={handleView}
                             onEdit={handleEdit}
                             onDelete={handleDelete}
                         />

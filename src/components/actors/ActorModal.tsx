@@ -1,7 +1,8 @@
 // Actor modal component for detailed actor information display
 
 
-import { Edit, ExternalLink, Calendar, Tag, User, FileText } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Edit, ExternalLink, Calendar, Tag, User, FileText, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,6 +24,7 @@ interface ActorModalProps {
 }
 
 export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
+    const navigate = useNavigate();
     const { getActorRoleHistory } = useAssignments();
 
     if (!actor) return null;
@@ -45,10 +47,23 @@ export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
                 <DialogHeader>
                     <div className="flex items-center justify-between">
                         <DialogTitle className="text-2xl">{actor.name}</DialogTitle>
-                        <Button variant="outline" size="sm" onClick={handleEdit}>
-                            <Edit className="h-4 w-4 mr-2" />
-                            Edit
-                        </Button>
+                        <div className="flex items-center space-x-2">
+                            <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => {
+                                    onClose();
+                                    navigate(`/actors/${actor.id}`);
+                                }}
+                            >
+                                <UserCircle className="h-4 w-4 mr-2" />
+                                View Full Profile
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={handleEdit}>
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit
+                            </Button>
+                        </div>
                     </div>
                 </DialogHeader>
 

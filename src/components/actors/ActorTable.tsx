@@ -1,6 +1,7 @@
 // Actor table component with sortable columns and inline editing
 
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronUp, ChevronDown, MoreVertical, Edit, Trash2, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -25,7 +26,6 @@ import type { Actor, ActorFilters } from '@/types';
 interface ActorTableProps {
     actors: Actor[];
     filters: ActorFilters;
-    onView?: (actor: Actor) => void;
     onEdit?: (actor: Actor) => void;
     onDelete?: (actor: Actor) => void;
 }
@@ -33,7 +33,8 @@ interface ActorTableProps {
 type SortField = 'name' | 'age' | 'gender' | 'race' | 'height' | 'createdAt';
 type SortDirection = 'asc' | 'desc';
 
-export function ActorTable({ actors, filters, onView, onEdit, onDelete }: ActorTableProps) {
+export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProps) {
+    const navigate = useNavigate();
     const [sortField, setSortField] = useState<SortField>('name');
     const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -109,9 +110,7 @@ export function ActorTable({ actors, filters, onView, onEdit, onDelete }: ActorT
         }
     };
 
-    const handleView = (actor: Actor) => {
-        onView?.(actor);
-    };
+
 
     const handleEdit = (actor: Actor) => {
         onEdit?.(actor);
@@ -150,7 +149,7 @@ export function ActorTable({ actors, filters, onView, onEdit, onDelete }: ActorT
                             {actors.length === 0 ? 'No actors yet' : 'No actors found'}
                         </h3>
                         <p className="mt-2 text-sm text-muted-foreground">
-                            {actors.length === 0 
+                            {actors.length === 0
                                 ? 'Add your first actor to get started.'
                                 : 'Try adjusting your search or filters.'
                             }
@@ -183,7 +182,11 @@ export function ActorTable({ actors, filters, onView, onEdit, onDelete }: ActorT
                                     .toUpperCase();
 
                                 return (
-                                    <TableRow key={actor.id} className="cursor-pointer hover:bg-muted/50">
+                                    <TableRow
+                                        key={actor.id}
+                                        className="cursor-pointer hover:bg-muted/50"
+                                        onClick={() => navigate(`/actors/${actor.id}`)}
+                                    >
                                         <TableCell>
                                             <Avatar className="h-8 w-8">
                                                 <AvatarImage src={actor.headshotUrl} alt={actor.name} />
@@ -236,7 +239,7 @@ export function ActorTable({ actors, filters, onView, onEdit, onDelete }: ActorT
                                                     <DropdownMenuItem
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            handleView(actor);
+                                                            navigate(`/actors/${actor.id}`);
                                                         }}
                                                     >
                                                         <Eye className="mr-2 h-4 w-4" />
@@ -251,7 +254,7 @@ export function ActorTable({ actors, filters, onView, onEdit, onDelete }: ActorT
                                                         <Edit className="mr-2 h-4 w-4" />
                                                         Edit
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem 
+                                                    <DropdownMenuItem
                                                         className="text-destructive"
                                                         onClick={(e) => {
                                                             e.stopPropagation();

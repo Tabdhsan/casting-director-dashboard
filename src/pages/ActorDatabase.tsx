@@ -139,7 +139,6 @@ export function ActorDatabase() {
                         <ActorGrid 
                             actors={actors}
                             filters={ui.activeFilters}
-                            onView={setViewActor}
                             onEdit={setEditActor}
                             onDelete={setDeleteActor}
                         />
@@ -147,7 +146,6 @@ export function ActorDatabase() {
                         <ActorTable 
                             actors={actors}
                             filters={ui.activeFilters}
-                            onView={setViewActor}
                             onEdit={setEditActor}
                             onDelete={setDeleteActor}
                         />

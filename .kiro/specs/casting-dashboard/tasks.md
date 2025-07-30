@@ -64,7 +64,7 @@
   - Create file upload placeholder for headshots and resume URLs
   - _Requirements: 3.2, 3.5, 5.3, 5.4_
 
-- [ ] 9. Create role detail and assignment system
+- [x] 9. Create role detail and assignment system
   - Build RoleDetail page component with actor assignment interface
   - Implement StatusBuckets component with customizable workflow buckets
   - Create drag-and-drop functionality for moving actors between buckets
@@ -72,7 +72,7 @@
   - Implement actor assignment and removal functionality
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 10. Build actor profile page
+- [x] 10. Build actor profile page
   - Create ActorProfile page component with comprehensive actor information
   - Display actor's role history across all projects with status information
   - Implement inline editing for actor details from profile page
@@ -104,7 +104,6 @@
 
 - [ ] 14. Implement responsive design and accessibility
   - Ensure all components work properly on desktop and tablet devices
-  - Add proper ARIA labels and keyboard navigation support
   - Implement focus management for modals and dropdowns
   - Test and fix responsive breakpoints using Tailwind CSS
   - Add proper color contrast and accessibility compliance
@@ -117,19 +116,3 @@
   - Implement smooth animations and transitions using Tailwind CSS
   - Add keyboard shortcuts for common actions
   - _Requirements: 1.5, 2.5_
-
-- [ ] 16. Write comprehensive tests
-  - Create unit tests for all store slices and utility functions
-  - Write component tests for key UI components using React Testing Library
-  - Implement integration tests for complete user workflows
-  - Add tests for localStorage persistence and error handling
-  - Create end-to-end tests for critical user journeys using Playwright
-  - _Requirements: All requirements validation_
-
-- [ ] 17. Performance optimization and final polish
-  - Implement virtual scrolling for large actor lists using react-window
-  - Add memoization with React.memo and useMemo for performance optimization
-  - Implement code splitting and lazy loading for route components
-  - Optimize bundle size and add performance monitoring
-  - Conduct final UI/UX review and polish interactions
-  - _Requirements: 3.1, 3.3_

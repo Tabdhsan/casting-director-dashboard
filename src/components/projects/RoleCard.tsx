@@ -2,6 +2,7 @@
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useNavigate } from 'react-router-dom';
 import { Users, MoreVertical, Edit, Trash2, UserPlus, GripVertical } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -32,6 +33,7 @@ export function RoleCard({
     isOver,
     enableDrag = false 
 }: RoleCardProps) {
+    const navigate = useNavigate();
     const {
         attributes,
         listeners,
@@ -59,7 +61,13 @@ export function RoleCard({
                 isOver && 'ring-2 ring-primary ring-offset-2',
                 'select-none'
             )}
-            onDoubleClick={onDoubleClick}
+            onDoubleClick={() => {
+                if (onDoubleClick) {
+                    onDoubleClick();
+                } else {
+                    navigate(`/projects/${role.projectId}/roles/${role.id}`);
+                }
+            }}
         >
             <CardContent className="p-4">
                 <div className="flex items-start justify-between">
@@ -126,7 +134,7 @@ export function RoleCard({
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => navigate(`/projects/${role.projectId}/roles/${role.id}`)}>
                                 <UserPlus className="mr-2 h-4 w-4" />
                                 Assign Actors
                             </DropdownMenuItem>
