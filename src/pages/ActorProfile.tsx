@@ -14,7 +14,7 @@ import { EditActorModal } from '@/components/actors/EditActorModal';
 import type { Actor } from '@/types';
 
 export function ActorProfile() {
-    const { actorId } = useParams<{ actorId: string }>();
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { actors } = useActors();
     const { getActorRoleHistory } = useAssignments();
@@ -23,11 +23,21 @@ export function ActorProfile() {
     const [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
-        if (actorId) {
-            const foundActor = actors.find(a => a.id === actorId);
-            setActor(foundActor || null);
+        if (id) {
+            const foundActor = actors.find(a => a.id === id);
+            if (foundActor) {
+                // Ensure createdAt and updatedAt are proper Date objects
+                const actorWithProperDates = {
+                    ...foundActor,
+                    createdAt: new Date(foundActor.createdAt),
+                    updatedAt: new Date(foundActor.updatedAt),
+                };
+                setActor(actorWithProperDates);
+            } else {
+                setActor(null);
+            }
         }
-    }, [actorId, actors]);
+    }, [id, actors]);
 
     if (!actor) {
         return (
@@ -47,7 +57,14 @@ export function ActorProfile() {
         );
     }
 
-    const roleHistory = getActorRoleHistory(actor.id);
+    const roleHistory = getActorRoleHistory(actor.id).map(item => ({
+        ...item,
+        assignment: {
+            ...item.assignment,
+            assignedAt: new Date(item.assignment.assignedAt),
+            updatedAt: new Date(item.assignment.updatedAt),
+        }
+    }));
 
     return (
         <div className="space-y-6">
