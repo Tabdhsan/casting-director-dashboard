@@ -1,6 +1,6 @@
 // Loading component for better UX
 
-import { Loader2 } from 'lucide-react';
+import { Loader2, Film, Users, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface LoadingSpinnerProps {
@@ -87,5 +87,64 @@ export function LoadingGrid({ items = 6, className = '' }: LoadingGridProps) {
         </Card>
       ))}
     </div>
+  );
+}
+
+// Fun casting-themed loading animation
+interface CastingLoadingProps {
+  title?: string;
+  description?: string;
+  className?: string;
+}
+
+export function CastingLoading({ title = 'Finding the perfect cast...', description, className = '' }: CastingLoadingProps) {
+  return (
+    <Card className={className}>
+      <CardContent className="flex items-center justify-center p-8">
+        <div className="text-center">
+          <div className="relative mx-auto w-16 h-16 mb-4">
+            {/* Film reel animation */}
+            <div className="absolute inset-0 animate-spin">
+              <Film className="w-16 h-16 text-primary/60" />
+            </div>
+            {/* Star overlay */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Star className="w-6 h-6 text-primary animate-pulse" />
+            </div>
+          </div>
+          <h3 className="text-lg font-medium">{title}</h3>
+          {description && (
+            <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+          )}
+          <div className="mt-4 flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Actor-specific loading
+export function ActorLoading({ className = '' }: { className?: string }) {
+  return (
+    <CastingLoading 
+      title="Discovering new talent..."
+      description="Loading actor profiles and details"
+      className={className}
+    />
+  );
+}
+
+// Project-specific loading
+export function ProjectLoading({ className = '' }: { className?: string }) {
+  return (
+    <CastingLoading 
+      title="Setting the stage..."
+      description="Loading project hierarchy and roles"
+      className={className}
+    />
   );
 } 

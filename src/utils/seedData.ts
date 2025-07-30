@@ -5,6 +5,8 @@ import { loadMockActors } from '@/mockData/actors';
 import { loadMockProjects } from '@/mockData/projects';
 import { loadMockRolesWithProjects } from '@/mockData/roles';
 
+
+
 export const sampleActors: CreateActorInput[] = [
     {
         name: 'Emma Thompson',
@@ -238,7 +240,7 @@ export function seedSampleData(store: any) {
     console.log(`Added ${addedActors.length} actors`);
     
     // Add projects with proper hierarchy
-    const addedProjects = [];
+    const addedProjects: any[] = [];
     
     // Define the hierarchical structure
     const projectHierarchy = [

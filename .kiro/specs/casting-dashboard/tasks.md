@@ -106,25 +106,31 @@
   - Create realistic assignments with proper bucket assignments ✅
   - _Requirements: 6.4_
 
-- [ ] 14. Implement responsive design and accessibility
-  - Ensure all components work properly on desktop and tablet devices and mobile devices
-  - Implement focus management for modals and dropdowns
-  - Test and fix responsive breakpoints using Tailwind CSS
-  - Add proper color contrast and accessibility compliance
-  - _Requirements: 7.5_
 
-- [ ] 15. Add user feedback and interaction polish
+
+- [x] 14. Add user feedback and interaction polish
   - Implement toast notifications for user actions (add, edit, delete operations)
   - Add loading spinners and skeleton states for better UX
   - Create confirmation dialogs for destructive actions
   - Implement smooth animations and transitions using Tailwind CSS
-  - Add keyboard shortcuts for common actions
   - _Requirements: 1.5, 2.5_
 
-- [ ] 16. Add "Fun" features 
+- [ ] 15. Add "Fun" features 
   - A confetti effect when a new actor is added
   - Use the tweakCN to create a better more inviting theme (hollywood. arts related theme)
   - Add a fun SVG loading animation related to Casting
   - Make the UI more lively and engaging with more animations and transitions
   - Make Toaster UI more engaging and fun
+
+
+- [ ] 16. Manually Test Each Page + Fix Reponsiveness for each page
+  - Dashboard
+  - Projects
+  - Actors
+  - Settings
+  - Ensure all components work properly on desktop and tablet devices and mobile devices
+  - Implement focus management for modals and dropdowns
+  - Test and fix responsive breakpoints using Tailwind CSS
+  - Add proper color contrast and accessibility compliance
+  - _Requirements: 7.5_
  

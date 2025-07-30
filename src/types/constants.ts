@@ -140,24 +140,26 @@ export const ERROR_MESSAGES = {
   ASSIGNMENT_NOT_FOUND: 'Assignment not found.',
   DUPLICATE_NAME: 'An item with this name already exists.',
   MAX_DEPTH_EXCEEDED: 'Maximum folder depth exceeded.',
+  DATA_EXPORT_FAILED: 'Failed to export data. Please try again.',
+  DATA_IMPORT_FAILED: 'Failed to import data. Please check the format.',
 } as const;
 
 // Success messages
 export const SUCCESS_MESSAGES = {
-  ACTOR_CREATED: 'Actor created successfully.',
-  ACTOR_UPDATED: 'Actor updated successfully.',
-  ACTOR_DELETED: 'Actor deleted successfully.',
-  PROJECT_CREATED: 'Project created successfully.',
-  PROJECT_UPDATED: 'Project updated successfully.',
-  PROJECT_DELETED: 'Project deleted successfully.',
-  ROLE_CREATED: 'Role created successfully.',
-  ROLE_UPDATED: 'Role updated successfully.',
-  ROLE_DELETED: 'Role deleted successfully.',
-  ASSIGNMENT_CREATED: 'Actor assigned successfully.',
-  ASSIGNMENT_UPDATED: 'Assignment updated successfully.',
-  ASSIGNMENT_REMOVED: 'Actor removed from role.',
-  DATA_IMPORTED: 'Data imported successfully.',
-  DATA_EXPORTED: 'Data exported successfully.',
+  ACTOR_CREATED: '🎭 New star discovered! Actor added to your talent pool.',
+  ACTOR_UPDATED: '✨ Actor profile updated with the latest details.',
+  ACTOR_DELETED: 'Actor removed from the database.',
+  PROJECT_CREATED: '🎬 New project created! Ready to cast your vision.',
+  PROJECT_UPDATED: '✨ Project details updated successfully.',
+  PROJECT_DELETED: 'Project removed from the database.',
+  ROLE_CREATED: '🎭 New role created! Time to find the perfect actor.',
+  ROLE_UPDATED: '✨ Role requirements updated successfully.',
+  ROLE_DELETED: 'Role removed from the project.',
+  ASSIGNMENT_CREATED: '🎯 Perfect match! Actor assigned to the role.',
+  ASSIGNMENT_UPDATED: '✨ Assignment details updated successfully.',
+  ASSIGNMENT_REMOVED: 'Actor removed from the role.',
+  DATA_IMPORTED: '📥 Data imported successfully.',
+  DATA_EXPORTED: '📤 Data exported successfully.',
 } as const;
 
 // View modes
