@@ -1,12 +1,12 @@
 // Dashboard page component
 
-import { Users, FolderOpen, Briefcase, TrendingUp, Database } from 'lucide-react';
+import { Users, FolderOpen, Briefcase, TrendingUp, Database, Zap, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SummaryWidget, RecentActorsWidget, QuickStatsWidget } from '@/components/dashboard';
 import { useDashboard, useProjects, useAssignments } from '@/hooks/useStore';
 import { useAppStore } from '@/store';
 import { useToast } from '@/hooks/useToast';
-import { seedSampleData } from '@/utils/seedData';
+import { seedSampleData, seedFullDemoData, resetAllData } from '@/utils/seedData';
 
 export function Dashboard() {
     const { getDashboardMetrics } = useDashboard();
@@ -44,6 +44,40 @@ export function Dashboard() {
                 </Button>
                 <Button onClick={() => toast.showWarning('Test warning toast')} variant="outline">
                     Test Warning Toast
+                </Button>
+            </div>
+
+            {/* Demo Data Buttons */}
+            <div className="flex gap-2">
+                <Button
+                    onClick={() => {
+                        seedSampleData(useAppStore.getState());
+                        toast.showSuccess('Sample data loaded!');
+                    }}
+                    variant="outline"
+                >
+                    <Database className="mr-2 h-4 w-4" />
+                    Load Sample Data
+                </Button>
+                <Button
+                    onClick={() => {
+                        seedFullDemoData(useAppStore.getState());
+                        toast.showSuccess('Full demo data loaded!');
+                    }}
+                    variant="default"
+                >
+                    <Zap className="mr-2 h-4 w-4" />
+                    Load Full Demo
+                </Button>
+                <Button
+                    onClick={() => {
+                        resetAllData(useAppStore.getState());
+                        toast.showSuccess('All data reset!');
+                    }}
+                    variant="destructive"
+                >
+                    <RotateCcw className="mr-2 h-4 w-4" />
+                    Reset All Data
                 </Button>
             </div>
             

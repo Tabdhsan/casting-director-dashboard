@@ -96,15 +96,18 @@
   - Add NotFound page for 404 errors ✅
   - _Requirements: 7.3, 7.4_
 
-- [ ] 13. Create mock data and seed functionality
-  - Generate realistic mock data for actors, projects, roles, and assignments
-  - Implement data seeding functionality for demo purposes
-  - Create utility functions for generating sample hierarchical project structures
-  - Add data reset functionality for demo resets
+- [x] 13. Create mock data and seed functionality
+  - Generate realistic mock data for actors, projects, roles, and assignments ✅
+  - Implement data seeding functionality for demo purposes ✅
+  - Create utility functions for generating sample hierarchical project structures ✅
+  - Add data reset functionality for demo resets ✅
+  - Add comprehensive mock data files (actors.ts, projects.ts, roles.ts) ✅
+  - Add "Load Sample Data", "Load Full Demo", and "Reset All Data" buttons ✅
+  - Create realistic assignments with proper bucket assignments ✅
   - _Requirements: 6.4_
 
 - [ ] 14. Implement responsive design and accessibility
-  - Ensure all components work properly on desktop and tablet devices
+  - Ensure all components work properly on desktop and tablet devices and mobile devices
   - Implement focus management for modals and dropdowns
   - Test and fix responsive breakpoints using Tailwind CSS
   - Add proper color contrast and accessibility compliance
