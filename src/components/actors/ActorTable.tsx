@@ -19,18 +19,21 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+
 import type { Actor, ActorFilters } from '@/types';
 
 interface ActorTableProps {
     actors: Actor[];
     filters: ActorFilters;
+    onView?: (actor: Actor) => void;
+    onEdit?: (actor: Actor) => void;
+    onDelete?: (actor: Actor) => void;
 }
 
 type SortField = 'name' | 'age' | 'gender' | 'race' | 'height' | 'createdAt';
 type SortDirection = 'asc' | 'desc';
 
-export function ActorTable({ actors, filters }: ActorTableProps) {
+export function ActorTable({ actors, filters, onView, onEdit, onDelete }: ActorTableProps) {
     const [sortField, setSortField] = useState<SortField>('name');
     const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -107,18 +110,15 @@ export function ActorTable({ actors, filters }: ActorTableProps) {
     };
 
     const handleView = (actor: Actor) => {
-        console.log('View actor:', actor.id);
-        // Navigate to actor profile
+        onView?.(actor);
     };
 
     const handleEdit = (actor: Actor) => {
-        console.log('Edit actor:', actor.id);
-        // Open edit modal
+        onEdit?.(actor);
     };
 
     const handleDelete = (actor: Actor) => {
-        console.log('Delete actor:', actor.id);
-        // Open delete confirmation
+        onDelete?.(actor);
     };
 
     const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (

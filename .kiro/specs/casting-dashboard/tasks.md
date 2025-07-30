@@ -48,7 +48,7 @@
   - Implement drag-and-drop functionality for folder reorganization
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 2.1, 2.4_
 
-- [ ] 7. Build actor database interface
+- [x] 7. Build actor database interface
   - Create ActorDatabase page with grid/table view toggle
   - Implement ActorGrid component with responsive card layout
   - Build ActorTable component with sortable columns and inline editing
@@ -56,7 +56,7 @@
   - Add search functionality with debounced input
   - _Requirements: 3.1, 3.3, 3.4_
 
-- [ ] 8. Implement actor management functionality
+- [x] 8. Implement actor management functionality
   - Create AddActor modal component with comprehensive form fields
   - Build ActorModal component for detailed actor information display
   - Implement inline editing capabilities for actor details

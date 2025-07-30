@@ -6,12 +6,12 @@ import type { DragStartEvent, DragEndEvent, DragOverEvent } from '@dnd-kit/core'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { Folder, FileText } from 'lucide-react';
 import { useProjects, useRoles, useAssignments } from '@/hooks/useStore';
-import { ProjectCard } from './ProjectCard';
-import { RoleCard } from './RoleCard';
 import { RenameModal } from './RenameModal';
 import { DeleteConfirmModal } from './DeleteConfirmModal';
 import type { Project } from '@/types';
 import { cn } from '@/lib/utils';
+import { ProjectCard } from './ProjectCard';
+import { RoleCard } from './RoleCard';
 
 interface GridViewProps {
     currentFolderId: string | null;
@@ -143,9 +143,9 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
             const currentFolder = projects.find(p => p.id === currentFolderId);
             const parentId = currentFolder?.parentId || undefined;
             updateProject(draggedProject.id, { parentId });
-        } else if (over.id.startsWith('breadcrumb-')) {
+        } else if (String(over.id).startsWith('breadcrumb-')) {
             // Drop on specific breadcrumb item - move INTO that folder
-            const breadcrumbId = over.id.replace('breadcrumb-', '');
+            const breadcrumbId = String(over.id).replace('breadcrumb-', '');
             updateProject(draggedProject.id, { parentId: breadcrumbId });
         } else {
             // Drop on another project/folder in the current view

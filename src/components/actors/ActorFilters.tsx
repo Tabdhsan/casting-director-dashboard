@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import { X, ChevronDown, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useActors } from '@/hooks/useStore';
-import { cn } from '@/lib/utils';
+
 import type { ActorFilters as ActorFiltersType } from '@/types';
 
 interface ActorFiltersProps {
@@ -114,7 +114,8 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-2 mt-2">
                 {options.map((option) => {
-                    const isChecked = localFilters[field as keyof ActorFiltersType]?.includes?.(option) || false;
+                    const fieldValue = localFilters[field as keyof ActorFiltersType];
+                    const isChecked = Array.isArray(fieldValue) ? fieldValue.includes(option) : false;
                     return (
                         <div key={option} className="flex items-center space-x-2">
                             <Checkbox

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
-import { Folder, FileText } from 'lucide-react';
+import { Folder } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useProjects, useRoles, useAssignments } from '@/hooks/useStore';
 import { ProjectCard } from './ProjectCard';
@@ -40,7 +40,7 @@ function DroppableContentArea({ children, isEmpty }: { children: React.ReactNode
 }
 
 export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }: FolderContentPanelProps) {
-    const { projects, updateProject } = useProjects();
+    const { projects } = useProjects();
     const { getRolesByProject } = useRoles();
     const { assignments } = useAssignments();
 

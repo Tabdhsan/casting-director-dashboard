@@ -8,14 +8,25 @@ import { useActors, useUI } from '@/hooks/useStore';
 import { ActorGrid } from '@/components/actors/ActorGrid';
 import { ActorTable } from '@/components/actors/ActorTable';
 import { ActorFilters } from '@/components/actors/ActorFilters';
+import { AddActorModal } from '@/components/actors/AddActorModal';
+import { ActorModal } from '@/components/actors/ActorModal';
+import { EditActorModal } from '@/components/actors/EditActorModal';
+import { DeleteActorModal } from '@/components/actors/DeleteActorModal';
 import { loadMockActors } from '@/mockData/actors';
 import { cn } from '@/lib/utils';
+import type { Actor } from '@/types';
 
 export function ActorDatabase() {
-    const { actors, searchActors, addActor } = useActors();
+    const { actors, addActor } = useActors();
     const { ui, setCurrentView, setActiveFilters } = useUI();
     const [searchQuery, setSearchQuery] = useState('');
     const [showFilters, setShowFilters] = useState(false);
+    
+    // Modal states
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [viewActor, setViewActor] = useState<Actor | null>(null);
+    const [editActor, setEditActor] = useState<Actor | null>(null);
+    const [deleteActor, setDeleteActor] = useState<Actor | null>(null);
 
     // Load mock data if no actors exist (for demo purposes)
     useEffect(() => {
@@ -75,7 +86,7 @@ export function ActorDatabase() {
                         
                         <div className="flex items-center space-x-4">
                             {/* Add Actor Button */}
-                            <Button>
+                            <Button onClick={() => setShowAddModal(true)}>
                                 <Plus className="h-4 w-4 mr-2" />
                                 Add Actor
                             </Button>
@@ -128,15 +139,50 @@ export function ActorDatabase() {
                         <ActorGrid 
                             actors={actors}
                             filters={ui.activeFilters}
+                            onView={setViewActor}
+                            onEdit={setEditActor}
+                            onDelete={setDeleteActor}
                         />
                     ) : (
                         <ActorTable 
                             actors={actors}
                             filters={ui.activeFilters}
+                            onView={setViewActor}
+                            onEdit={setEditActor}
+                            onDelete={setDeleteActor}
                         />
                     )}
                 </div>
             </div>
+
+            {/* Modals */}
+            <AddActorModal
+                open={showAddModal}
+                onClose={() => setShowAddModal(false)}
+            />
+            
+            <ActorModal
+                actor={viewActor}
+                open={!!viewActor}
+                onClose={() => setViewActor(null)}
+                onEdit={(actor) => {
+                    setViewActor(null);
+                    setEditActor(actor);
+                }}
+            />
+            
+            <EditActorModal
+                actor={editActor}
+                open={!!editActor}
+                onClose={() => setEditActor(null)}
+            />
+            
+            <DeleteActorModal
+                actor={deleteActor}
+                open={!!deleteActor}
+                onClose={() => setDeleteActor(null)}
+                onDeleted={() => setDeleteActor(null)}
+            />
         </div>
     );
 }

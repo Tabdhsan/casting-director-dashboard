@@ -1,6 +1,6 @@
 // Actor grid component with responsive card layout
 
-import { useState } from 'react';
+
 import { User, MoreVertical, Edit, Trash2, Eye } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,12 +12,15 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+
 import type { Actor, ActorFilters } from '@/types';
 
 interface ActorGridProps {
     actors: Actor[];
     filters: ActorFilters;
+    onView?: (actor: Actor) => void;
+    onEdit?: (actor: Actor) => void;
+    onDelete?: (actor: Actor) => void;
 }
 
 interface ActorCardProps {
@@ -150,7 +153,7 @@ function ActorCard({ actor, onView, onEdit, onDelete }: ActorCardProps) {
     );
 }
 
-export function ActorGrid({ actors, filters }: ActorGridProps) {
+export function ActorGrid({ actors, filters, onView, onEdit, onDelete }: ActorGridProps) {
     // Filter actors based on search and filters
     const filteredActors = actors.filter(actor => {
         // Search filter
@@ -184,18 +187,15 @@ export function ActorGrid({ actors, filters }: ActorGridProps) {
     });
 
     const handleView = (actor: Actor) => {
-        console.log('View actor:', actor.id);
-        // Navigate to actor profile
+        onView?.(actor);
     };
 
     const handleEdit = (actor: Actor) => {
-        console.log('Edit actor:', actor.id);
-        // Open edit modal
+        onEdit?.(actor);
     };
 
     const handleDelete = (actor: Actor) => {
-        console.log('Delete actor:', actor.id);
-        // Open delete confirmation
+        onDelete?.(actor);
     };
 
     return (
