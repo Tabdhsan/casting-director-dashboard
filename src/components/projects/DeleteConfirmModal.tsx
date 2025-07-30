@@ -1,7 +1,6 @@
 // Confirmation modal for deleting folders and projects
 
-import { useState } from 'react';
-import { Folder, FileText, AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Folder, FileText } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -12,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useProjects, useRoles, useAssignments } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { Project } from '@/types';
 
 interface DeleteConfirmModalProps {
@@ -25,32 +25,24 @@ export function DeleteConfirmModal({ open, onClose, project, onDeleted }: Delete
     const { projects, deleteProject } = useProjects();
     const { getRolesByProject } = useRoles();
     const { assignments } = useAssignments();
-    
-    const [isDeleting, setIsDeleting] = useState(false);
+    const toast = useToast();
 
-    const handleDelete = async () => {
-        if (!project) return;
+    if (!project) return null;
 
-        setIsDeleting(true);
-
+    const handleDelete = () => {
         try {
             deleteProject(project.id);
+            toast.showProjectDeleted();
             onDeleted?.();
             onClose();
         } catch (error) {
-            console.error('Failed to delete project:', error);
-        } finally {
-            setIsDeleting(false);
+            toast.showError('Failed to delete project');
         }
     };
 
     const handleClose = () => {
-        if (!isDeleting) {
-            onClose();
-        }
+        onClose();
     };
-
-    if (!project) return null;
 
     const isFolder = project.type === 'folder';
     const Icon = isFolder ? Folder : FileText;
@@ -118,7 +110,6 @@ export function DeleteConfirmModal({ open, onClose, project, onDeleted }: Delete
                         type="button"
                         variant="outline"
                         onClick={handleClose}
-                        disabled={isDeleting}
                     >
                         Cancel
                     </Button>
@@ -126,9 +117,8 @@ export function DeleteConfirmModal({ open, onClose, project, onDeleted }: Delete
                         type="button"
                         variant="destructive"
                         onClick={handleDelete}
-                        disabled={isDeleting}
                     >
-                        {isDeleting ? 'Deleting...' : 'Delete'}
+                        Delete
                     </Button>
                 </DialogFooter>
             </DialogContent>

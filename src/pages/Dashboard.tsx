@@ -5,18 +5,24 @@ import { Button } from '@/components/ui/button';
 import { SummaryWidget, RecentActorsWidget, QuickStatsWidget } from '@/components/dashboard';
 import { useDashboard, useProjects, useAssignments } from '@/hooks/useStore';
 import { useAppStore } from '@/store';
+import { useToast } from '@/hooks/useToast';
 import { seedSampleData } from '@/utils/seedData';
 
 export function Dashboard() {
     const { getDashboardMetrics } = useDashboard();
     const { projects } = useProjects();
     const { assignments } = useAssignments();
+    const toast = useToast();
 
     const metrics = getDashboardMetrics();
     
     // Calculate additional metrics
     const activeProjects = projects.filter(p => p.type === 'project').length;
     const filledRoles = new Set(assignments.map(a => a.roleId)).size;
+
+    const testToast = () => {
+        toast.showSuccess('Test toast working!');
+    };
 
     return (
         <div className="space-y-6">
@@ -26,6 +32,19 @@ export function Dashboard() {
                 <p className="text-muted-foreground">
                     Welcome to your casting dashboard
                 </p>
+            </div>
+            
+            {/* Test Toast Button */}
+            <div className="flex gap-2">
+                <Button onClick={testToast} variant="outline">
+                    Test Toast
+                </Button>
+                <Button onClick={() => toast.showError('Test error toast')} variant="outline">
+                    Test Error Toast
+                </Button>
+                <Button onClick={() => toast.showWarning('Test warning toast')} variant="outline">
+                    Test Warning Toast
+                </Button>
             </div>
             
             {/* Summary widgets */}

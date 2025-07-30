@@ -28,6 +28,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { useActors } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import { GENDER_OPTIONS, RACE_OPTIONS, COMMON_TAGS } from '@/types/constants';
 import type { Actor, UpdateActorInput } from '@/types';
 
@@ -55,23 +56,24 @@ interface EditActorModalProps {
 
 export function EditActorModal({ actor, open, onClose }: EditActorModalProps) {
     const { updateActor } = useActors();
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const toast = useToast();
+    
+    const [selectedTags, setSelectedTags] = useState<string[]>(actor?.tags || []);
     const [customTag, setCustomTag] = useState('');
 
     const form = useForm<EditActorFormData>({
         resolver: zodResolver(editActorSchema) as any,
-        mode: 'onChange',
         defaultValues: {
-            name: '',
-            age: 25,
-            gender: '',
-            race: '',
-            height: '',
-            representation: '',
-            tags: [],
-            notes: '',
-            headshotUrl: '',
-            resumeUrl: '',
+            name: actor?.name || '',
+            age: actor?.age || 25,
+            gender: actor?.gender || '',
+            race: actor?.race || '',
+            height: actor?.height || '',
+            representation: actor?.representation || '',
+            tags: actor?.tags || [],
+            notes: actor?.notes || '',
+            headshotUrl: actor?.headshotUrl || '',
+            resumeUrl: actor?.resumeUrl || '',
         },
     });
 
@@ -97,15 +99,20 @@ export function EditActorModal({ actor, open, onClose }: EditActorModalProps) {
     const onSubmit = (data: EditActorFormData) => {
         if (!actor) return;
 
-        const updateData: UpdateActorInput = {
+        const actorUpdates: UpdateActorInput = {
             ...data,
             tags: selectedTags,
             headshotUrl: data.headshotUrl || undefined,
             resumeUrl: data.resumeUrl || undefined,
         };
 
-        updateActor(actor.id, updateData);
-        handleClose();
+        try {
+            updateActor(actor.id, actorUpdates);
+            toast.showActorUpdated();
+            onClose();
+        } catch (error) {
+            toast.showError('Failed to update actor');
+        }
     };
 
     const handleClose = () => {

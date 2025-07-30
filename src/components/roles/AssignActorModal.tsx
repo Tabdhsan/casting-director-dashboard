@@ -24,6 +24,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useAssignments } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { Role, Actor } from '@/types';
 
 interface AssignActorModalProps {
@@ -35,6 +36,8 @@ interface AssignActorModalProps {
 
 export function AssignActorModal({ open, onClose, role, availableActors }: AssignActorModalProps) {
     const { assignActorToRole } = useAssignments();
+    const toast = useToast();
+    
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedActors, setSelectedActors] = useState<string[]>([]);
     const [selectedBucket, setSelectedBucket] = useState<string>('');
@@ -66,28 +69,29 @@ export function AssignActorModal({ open, onClose, role, availableActors }: Assig
         if (selectedActors.length === 0 || !selectedBucket) return;
 
         selectedActors.forEach(actorId => {
-            assignActorToRole({
-                actorId,
-                roleId: role.id,
-                bucketId: selectedBucket,
-                notes: notes.trim() || undefined,
-            });
+            try {
+                assignActorToRole({
+                    actorId,
+                    roleId: role.id,
+                    bucketId: selectedBucket,
+                    notes: notes.trim() || undefined,
+                });
+            } catch (error) {
+                toast.showError('Failed to assign actor to role');
+                return;
+            }
         });
 
+        toast.showAssignmentCreated();
         handleClose();
     };
 
     const handleClose = () => {
-        setSearchTerm('');
         setSelectedActors([]);
         setSelectedBucket('');
         setNotes('');
         onClose();
     };
-
-    // Set default bucket to first one if not selected
-    const defaultBucket = role.customBuckets.length > 0 ? role.customBuckets.sort((a, b) => a.order - b.order)[0].id : '';
-    const currentBucket = selectedBucket || defaultBucket;
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
@@ -114,7 +118,7 @@ export function AssignActorModal({ open, onClose, role, availableActors }: Assig
                     {/* Bucket Selection */}
                     <div className="space-y-2">
                         <Label>Initial Status</Label>
-                        <Select value={currentBucket} onValueChange={setSelectedBucket}>
+                        <Select value={selectedBucket} onValueChange={setSelectedBucket}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select initial status bucket" />
                             </SelectTrigger>
@@ -214,7 +218,7 @@ export function AssignActorModal({ open, onClose, role, availableActors }: Assig
                     </Button>
                     <Button 
                         onClick={handleAssign}
-                        disabled={selectedActors.length === 0 || !currentBucket}
+                        disabled={selectedActors.length === 0 || !selectedBucket}
                     >
                         <Plus className="h-4 w-4 mr-2" />
                         Assign {selectedActors.length > 0 ? `${selectedActors.length} ` : ''}Actor{selectedActors.length !== 1 ? 's' : ''}

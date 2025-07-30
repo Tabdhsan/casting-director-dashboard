@@ -16,6 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Toggle } from '@/components/ui/toggle';
 import { useProjects } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { CreateProjectInput } from '@/types';
 
 interface AddFolderModalProps {
@@ -26,6 +27,7 @@ interface AddFolderModalProps {
 
 export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps) {
     const { addProject } = useProjects();
+    const toast = useToast();
     
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -48,14 +50,14 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
             };
 
             addProject(projectData);
-            
-            // Reset form and close
+            toast.showProjectCreated();
             setName('');
             setDescription('');
             setType('folder');
             onClose();
         } catch (error) {
             console.error('Failed to create project:', error);
+            toast.showError('Failed to create project');
         } finally {
             setIsSubmitting(false);
         }

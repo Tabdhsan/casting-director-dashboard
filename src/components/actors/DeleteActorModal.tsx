@@ -11,6 +11,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { useActors, useAssignments } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { Actor } from '@/types';
 
 interface DeleteActorModalProps {
@@ -23,6 +24,7 @@ interface DeleteActorModalProps {
 export function DeleteActorModal({ actor, open, onClose, onDeleted }: DeleteActorModalProps) {
     const { deleteActor } = useActors();
     const { getActorRoleHistory } = useAssignments();
+    const toast = useToast();
 
     if (!actor) return null;
 
@@ -31,6 +33,7 @@ export function DeleteActorModal({ actor, open, onClose, onDeleted }: DeleteActo
 
     const handleDelete = () => {
         deleteActor(actor.id);
+        toast.showActorDeleted();
         onDeleted?.();
         onClose();
     };

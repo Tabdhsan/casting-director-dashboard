@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useRoles, useProjects } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { CreateRoleInput } from '@/types';
 
 interface AddRoleModalProps {
@@ -26,6 +27,7 @@ interface AddRoleModalProps {
 export function AddRoleModal({ open, onClose, projectId }: AddRoleModalProps) {
     const { addRole } = useRoles();
     const { projects } = useProjects();
+    const toast = useToast();
     
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -51,14 +53,14 @@ export function AddRoleModal({ open, onClose, projectId }: AddRoleModalProps) {
             };
 
             addRole(roleData);
-            
-            // Reset form and close
+            toast.showRoleCreated();
             setName('');
             setDescription('');
             setRequirements('');
             onClose();
         } catch (error) {
             console.error('Failed to create role:', error);
+            toast.showError('Failed to create role');
         } finally {
             setIsSubmitting(false);
         }

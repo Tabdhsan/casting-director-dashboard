@@ -28,6 +28,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { useActors } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import { GENDER_OPTIONS, RACE_OPTIONS, COMMON_TAGS } from '@/types/constants';
 import type { CreateActorInput } from '@/types';
 
@@ -54,6 +55,7 @@ interface AddActorModalProps {
 
 export function AddActorModal({ open, onClose }: AddActorModalProps) {
     const { addActor } = useActors();
+    const toast = useToast();
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [customTag, setCustomTag] = useState('');
 
@@ -81,8 +83,13 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
             resumeUrl: data.resumeUrl || undefined,
         };
 
-        addActor(actorData);
-        handleClose();
+        try {
+            addActor(actorData);
+            toast.showActorCreated();
+            handleClose();
+        } catch (error) {
+            toast.showError('Failed to add actor');
+        }
     };
 
     const handleClose = () => {

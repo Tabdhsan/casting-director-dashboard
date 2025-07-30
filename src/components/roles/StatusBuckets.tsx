@@ -16,6 +16,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useActors, useAssignments } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { Role, StatusBucket, ActorAssignment, Actor } from '@/types';
 
 interface StatusBucketsProps {
@@ -162,6 +163,8 @@ function Bucket({ bucket, actors, onRemoveActor }: BucketProps) {
 export function StatusBuckets({ role }: StatusBucketsProps) {
     const { actors } = useActors();
     const { assignments, updateAssignment, removeAssignment } = useAssignments();
+    const toast = useToast();
+    
     const [draggedItem, setDraggedItem] = useState<{ actor: Actor; assignment: ActorAssignment } | null>(null);
 
     // Get assignments for this role
@@ -203,15 +206,25 @@ export function StatusBuckets({ role }: StatusBucketsProps) {
             const targetBucket = over.data.current.bucket;
             
             if (assignment.bucketId !== targetBucket.id) {
-                updateAssignment(assignment.id, {
-                    bucketId: targetBucket.id,
-                });
+                try {
+                    updateAssignment(assignment.id, {
+                        bucketId: targetBucket.id,
+                    });
+                    toast.showAssignmentUpdated();
+                } catch (error) {
+                    toast.showError('Failed to update assignment');
+                }
             }
         }
     };
 
     const handleRemoveActor = (assignmentId: string) => {
-        removeAssignment(assignmentId);
+        try {
+            removeAssignment(assignmentId);
+            toast.showAssignmentRemoved();
+        } catch (error) {
+            toast.showError('Failed to remove assignment');
+        }
     };
 
     // Sort buckets by order

@@ -22,6 +22,7 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { useRoles } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { Role, StatusBucket } from '@/types';
 
 interface BucketSettingsModalProps {
@@ -137,12 +138,14 @@ function SortableBucketItem({ bucket, onEdit, onDelete }: SortableBucketItemProp
     );
 }
 
-export function BucketSettingsModal({ open, onClose, role }: BucketSettingsModalProps) {
+export function BucketSettingsModal({ role, open, onClose }: BucketSettingsModalProps) {
     const { updateRole } = useRoles();
-    const [buckets, setBuckets] = useState<StatusBucket[]>([]);
+    const toast = useToast();
+    
+    const [buckets, setBuckets] = useState<StatusBucket[]>(role.customBuckets);
     const [editingBucket, setEditingBucket] = useState<StatusBucket | null>(null);
     const [newBucketName, setNewBucketName] = useState('');
-    const [newBucketColor, setNewBucketColor] = useState(PRESET_COLORS[0]);
+    const [newBucketColor, setNewBucketColor] = useState<string>('gray');
     const [activeId, setActiveId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -221,10 +224,13 @@ export function BucketSettingsModal({ open, onClose, role }: BucketSettingsModal
     };
 
     const handleSave = () => {
-        updateRole(role.id, {
-            customBuckets: buckets,
-        });
-        onClose();
+        try {
+            updateRole(role.id, { customBuckets: buckets });
+            toast.showRoleUpdated();
+            onClose();
+        } catch (error) {
+            toast.showError('Failed to update bucket settings');
+        }
     };
 
     const handleClose = () => {

@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useProjects } from '@/hooks/useStore';
+import { useToast } from '@/hooks/useToast';
 import type { Project } from '@/types';
 
 interface RenameModalProps {
@@ -25,6 +26,7 @@ interface RenameModalProps {
 
 export function RenameModal({ open, onClose, project }: RenameModalProps) {
     const { updateProject } = useProjects();
+    const toast = useToast();
     
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -46,14 +48,13 @@ export function RenameModal({ open, onClose, project }: RenameModalProps) {
         setIsSubmitting(true);
 
         try {
-            updateProject(project.id, {
-                name: name.trim(),
-                description: description.trim() || undefined,
-            });
-            
+            updateProject(project.id, { name: name.trim() });
+            toast.showProjectUpdated();
+            setName('');
             onClose();
         } catch (error) {
             console.error('Failed to rename project:', error);
+            toast.showError('Failed to rename project');
         } finally {
             setIsSubmitting(false);
         }

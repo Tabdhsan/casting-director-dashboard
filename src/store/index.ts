@@ -36,6 +36,33 @@ import {
     extractUniqueValues,
 } from '../utils/typeHelpers';
 import { STORAGE_KEYS } from '../types/constants';
+import { StorageManager } from '../utils/storage';
+
+// Custom storage implementation with error handling
+const customStorage = {
+    getItem: (name: string) => {
+        const result = StorageManager.getItem(name);
+        if (result.error) {
+            console.error('Storage read error:', result.error);
+            // In a real app, you might want to show a toast here
+            return null;
+        }
+        return result.value;
+    },
+    setItem: (name: string, value: string) => {
+        const error = StorageManager.setItem(name, value);
+        if (error) {
+            console.error('Storage write error:', error);
+            // In a real app, you might want to show a toast here
+        }
+    },
+    removeItem: (name: string) => {
+        const error = StorageManager.removeItem(name);
+        if (error) {
+            console.error('Storage remove error:', error);
+        }
+    },
+};
 
 // Main store interface
 export interface AppStore {
@@ -405,7 +432,7 @@ export const useAppStore = create<AppStore>()(
         }),
         {
             name: STORAGE_KEYS.APP_VERSION, // Use a single key for the entire store
-            storage: createJSONStorage(() => localStorage),
+            storage: createJSONStorage(() => customStorage),
             partialize: (state) => ({
                 actors: state.actors,
                 projects: state.projects,

@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
 import { MobileSidebar } from './MobileSidebar';
+import { Toaster } from '@/components/ui/sonner';
 
 export function AppLayout() {
     const [isMobile, setIsMobile] = useState(false);
@@ -48,14 +49,15 @@ export function AppLayout() {
                 <Navbar 
                     onMenuClick={isMobile ? handleMobileMenuToggle : undefined}
                 />
-
-                {/* Page content */}
-                <main className="flex-1 overflow-auto">
-                    <div className="container mx-auto p-4 md:p-6">
-                        <Outlet />
-                    </div>
+                
+                {/* Main content */}
+                <main className="flex-1 overflow-y-auto p-6">
+                    <Outlet />
                 </main>
             </div>
+            
+            {/* Toast notifications */}
+            <Toaster />
         </div>
     );
 }

@@ -6,3 +6,4 @@ export { ActorDatabase } from './ActorDatabase';
 export { ActorProfile } from './ActorProfile';
 export { RoleDetail } from './RoleDetail';
 export { Settings } from './Settings';
+export { NotFound } from './NotFound';
