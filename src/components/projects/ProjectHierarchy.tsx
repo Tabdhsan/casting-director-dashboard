@@ -1,7 +1,7 @@
 // Main project hierarchy management component with dual-view interface
 
 import { useState } from 'react';
-import { LayoutGrid, TreePine, Plus, FolderPlus } from 'lucide-react';
+import { LayoutGrid, TreePine, Plus, FolderPlus, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
 import { useProjects } from '@/hooks/useStore';
@@ -43,7 +43,7 @@ export function ProjectHierarchy() {
                             aria-label="Tree view"
                             size="sm"
                         >
-                            <TreePine className="h-4 w-4" />
+                            <List className="h-4 w-4" />
                         </Toggle>
                         <Toggle
                             pressed={viewMode === 'grid'}
