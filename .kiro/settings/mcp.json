@@ -34,7 +34,12 @@
         "playwright_close",
         "playwright_navigate",
         "playwright_console_logs",
-        "playwright_click"
+        "playwright_click",
+        "playwright_evaluate",
+        "playwright_evaluate",
+        "playwright_fill",
+        "playwright_drag",
+        "playwright_hover"
       ]
     },
     "shadcn": {
