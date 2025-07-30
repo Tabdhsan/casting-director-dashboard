@@ -109,6 +109,7 @@ export interface AppStore {
     // UI actions
     toggleSidebar: () => void;
     setSidebarCollapsed: (collapsed: boolean) => void;
+    setSidebarUserPreference: (collapsed: boolean) => void;
     setCurrentView: (view: 'grid' | 'table') => void;
     setSelectedActors: (actorIds: string[]) => void;
     setActiveFilters: (filters: ActorFilters) => void;
@@ -140,6 +141,7 @@ export const useAppStore = create<AppStore>()(
             assignments: [],
             ui: {
                 sidebarCollapsed: false,
+                sidebarUserPreference: null,
                 currentView: 'grid',
                 selectedActors: [],
                 activeFilters: {},
@@ -298,7 +300,8 @@ export const useAppStore = create<AppStore>()(
                 set(state => ({
                     ui: {
                         ...state.ui,
-                        sidebarCollapsed: !state.ui.sidebarCollapsed
+                        sidebarCollapsed: !state.ui.sidebarCollapsed,
+                        sidebarUserPreference: !state.ui.sidebarCollapsed
                     }
                 }));
             },
@@ -308,6 +311,16 @@ export const useAppStore = create<AppStore>()(
                     ui: {
                         ...state.ui,
                         sidebarCollapsed: collapsed
+                    }
+                }));
+            },
+
+            setSidebarUserPreference: (collapsed: boolean) => {
+                set(state => ({
+                    ui: {
+                        ...state.ui,
+                        sidebarCollapsed: collapsed,
+                        sidebarUserPreference: collapsed
                     }
                 }));
             },
@@ -365,6 +378,7 @@ export const useAppStore = create<AppStore>()(
                     assignments: [],
                     ui: {
                         sidebarCollapsed: false,
+                        sidebarUserPreference: null,
                         currentView: 'grid',
                         selectedActors: [],
                         activeFilters: {},

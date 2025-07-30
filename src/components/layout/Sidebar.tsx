@@ -34,9 +34,14 @@ interface SidebarProps {
 
 export function Sidebar({ className }: SidebarProps) {
     const location = useLocation();
-    const { ui, setSidebarCollapsed } = useUI();
+    const { ui, setSidebarUserPreference } = useUI();
 
     const isCollapsed = ui.sidebarCollapsed;
+
+    // Handle manual toggle - store user preference
+    const handleToggle = () => {
+        setSidebarUserPreference(!isCollapsed);
+    };
 
     return (
         <div
@@ -57,7 +62,7 @@ export function Sidebar({ className }: SidebarProps) {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
-                    onClick={() => setSidebarCollapsed(!isCollapsed)}
+                    onClick={handleToggle}
                 >
                     {isCollapsed ? (
                         <ChevronRight className="h-4 w-4" />

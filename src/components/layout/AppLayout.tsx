@@ -5,8 +5,12 @@ import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
 import { BottomNav } from './BottomNav';
 import { Toaster } from '@/components/ui/sonner';
+import { useResponsive } from '@/hooks/useResponsive';
 
 export function AppLayout() {
+    // Initialize responsive behavior
+    useResponsive();
+    
     return (
         <div className="flex h-screen bg-background">
             {/* Desktop Sidebar - hidden on mobile */}

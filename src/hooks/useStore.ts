@@ -83,6 +83,7 @@ export const useUI = () => {
     const ui = useAppStore(state => state.ui);
     const toggleSidebar = useAppStore(state => state.toggleSidebar);
     const setSidebarCollapsed = useAppStore(state => state.setSidebarCollapsed);
+    const setSidebarUserPreference = useAppStore(state => state.setSidebarUserPreference);
     const setCurrentView = useAppStore(state => state.setCurrentView);
     const setSelectedActors = useAppStore(state => state.setSelectedActors);
     const setActiveFilters = useAppStore(state => state.setActiveFilters);
@@ -91,6 +92,7 @@ export const useUI = () => {
         ui,
         toggleSidebar,
         setSidebarCollapsed,
+        setSidebarUserPreference,
         setCurrentView,
         setSelectedActors,
         setActiveFilters,

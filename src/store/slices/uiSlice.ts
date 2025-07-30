@@ -14,6 +14,7 @@ export interface UISlice {
     setActiveFilters: (filters: ActorFilters) => void;
     clearSelectedActors: () => void;
     clearActiveFilters: () => void;
+    setSidebarUserPreference: (collapsed: boolean) => void;
 }
 
 export const createUISlice: StateCreator<
@@ -24,6 +25,7 @@ export const createUISlice: StateCreator<
 > = (set) => ({
     ui: {
         sidebarCollapsed: false,
+        sidebarUserPreference: null, // Track user's manual preference
         currentView: 'grid',
         selectedActors: [],
         activeFilters: {},
@@ -33,7 +35,8 @@ export const createUISlice: StateCreator<
         set(state => ({
             ui: {
                 ...state.ui,
-                sidebarCollapsed: !state.ui.sidebarCollapsed
+                sidebarCollapsed: !state.ui.sidebarCollapsed,
+                sidebarUserPreference: !state.ui.sidebarCollapsed // Store user preference
             }
         }));
     },
@@ -43,6 +46,16 @@ export const createUISlice: StateCreator<
             ui: {
                 ...state.ui,
                 sidebarCollapsed: collapsed
+            }
+        }));
+    },
+
+    setSidebarUserPreference: (collapsed: boolean) => {
+        set(state => ({
+            ui: {
+                ...state.ui,
+                sidebarCollapsed: collapsed,
+                sidebarUserPreference: collapsed
             }
         }));
     },

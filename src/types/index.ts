@@ -71,6 +71,7 @@ export interface ActorFilters {
 // UI state types
 export interface UIState {
   sidebarCollapsed: boolean;
+  sidebarUserPreference: boolean | null; // Track user's manual preference
   currentView: 'grid' | 'table';
   selectedActors: string[];
   activeFilters: ActorFilters;
