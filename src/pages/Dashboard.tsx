@@ -25,36 +25,26 @@ export function Dashboard() {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6 max-w-full">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
                 <p className="text-muted-foreground">
                     Welcome to your casting dashboard
                 </p>
             </div>
             
-            {/* Test Toast Button */}
-            <div className="flex gap-2">
-                <Button onClick={testToast} variant="outline">
-                    Test Toast
-                </Button>
-                <Button onClick={() => toast.showError('Test error toast')} variant="outline">
-                    Test Error Toast
-                </Button>
-                <Button onClick={() => toast.showWarning('Test warning toast')} variant="outline">
-                    Test Warning Toast
-                </Button>
-            </div>
 
             {/* Demo Data Buttons */}
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
                 <Button
                     onClick={() => {
                         seedSampleData(useAppStore.getState());
                         toast.showSuccess('Sample data loaded!');
                     }}
                     variant="outline"
+                    size="sm"
+                    className="flex-shrink-0"
                 >
                     <Database className="mr-2 h-4 w-4" />
                     Load Sample Data
@@ -65,6 +55,8 @@ export function Dashboard() {
                         toast.showSuccess('Full demo data loaded!');
                     }}
                     variant="default"
+                    size="sm"
+                    className="flex-shrink-0"
                 >
                     <Zap className="mr-2 h-4 w-4" />
                     Load Full Demo
@@ -75,6 +67,8 @@ export function Dashboard() {
                         toast.showSuccess('All data reset!');
                     }}
                     variant="destructive"
+                    size="sm"
+                    className="flex-shrink-0"
                 >
                     <RotateCcw className="mr-2 h-4 w-4" />
                     Reset All Data
@@ -82,7 +76,7 @@ export function Dashboard() {
             </div>
             
             {/* Summary widgets */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <SummaryWidget
                     title="Total Actors"
                     value={metrics.totalActors}
@@ -110,7 +104,7 @@ export function Dashboard() {
             </div>
 
             {/* Secondary widgets */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                     <RecentActorsWidget actors={metrics.recentlyAddedActors} />
                 </div>
@@ -126,8 +120,8 @@ export function Dashboard() {
 
             {/* Empty state message */}
             {metrics.totalActors === 0 && metrics.totalProjects === 0 && (
-                <div className="text-center py-12">
-                    <div className="mx-auto max-w-md">
+                <div className="text-center py-8 sm:py-12">
+                    <div className="mx-auto max-w-md px-4">
                         <div className="mx-auto h-12 w-12 text-muted-foreground">
                             <TrendingUp className="h-12 w-12" />
                         </div>
@@ -135,10 +129,11 @@ export function Dashboard() {
                         <p className="mt-2 text-sm text-muted-foreground">
                             Add your first actors and projects to see your dashboard come to life.
                         </p>
-                        <div className="mt-6 flex justify-center space-x-4">
+                        <div className="mt-6 flex justify-center">
                             <Button
                                 onClick={() => seedSampleData(useAppStore.getState())}
                                 className="inline-flex items-center"
+                                size="sm"
                             >
                                 <Database className="mr-2 h-4 w-4" />
                                 Load Sample Data

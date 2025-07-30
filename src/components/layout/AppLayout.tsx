@@ -1,59 +1,33 @@
 // Main application layout with navbar, sidebar, and content area
 
-import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
-import { MobileSidebar } from './MobileSidebar';
+import { BottomNav } from './BottomNav';
 import { Toaster } from '@/components/ui/sonner';
 
 export function AppLayout() {
-    const [isMobile, setIsMobile] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    // Check if we're on mobile
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768); // md breakpoint
-        };
-
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-    const handleMobileMenuToggle = () => {
-        setMobileMenuOpen(!mobileMenuOpen);
-    };
-
     return (
         <div className="flex h-screen bg-background">
-            {/* Desktop Sidebar */}
-            {!isMobile && (
-                <aside className="hidden md:flex">
-                    <Sidebar />
-                </aside>
-            )}
-
-            {/* Mobile Sidebar */}
-            {isMobile && (
-                <MobileSidebar 
-                    open={mobileMenuOpen} 
-                    onClose={() => setMobileMenuOpen(false)} 
-                />
-            )}
+            {/* Desktop Sidebar - hidden on mobile */}
+            <div className="hidden md:block">
+                <Sidebar />
+            </div>
 
             {/* Main content area */}
-            <div className="flex flex-1 flex-col overflow-hidden">
+            <div className="flex flex-1 flex-col overflow-hidden min-w-0">
                 {/* Navbar */}
-                <Navbar 
-                    onMenuClick={isMobile ? handleMobileMenuToggle : undefined}
-                />
+                <Navbar />
                 
                 {/* Main content */}
-                <main className="flex-1 overflow-y-auto p-6">
+                <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 pb-20 md:pb-6">
                     <Outlet />
                 </main>
+
+                {/* Mobile Bottom Navigation - hidden on desktop */}
+                <div className="md:hidden">
+                    <BottomNav />
+                </div>
             </div>
             
             {/* Toast notifications */}

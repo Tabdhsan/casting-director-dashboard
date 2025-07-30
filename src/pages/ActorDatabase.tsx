@@ -73,32 +73,32 @@ export function ActorDatabase() {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col min-w-0">
                 {/* Header */}
-                <div className="border-b bg-background p-6">
-                    <div className="flex items-center justify-between">
+                <div className="border-b bg-background p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold tracking-tight">Actor Database</h1>
+                            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Actor Database</h1>
                             <p className="text-muted-foreground">
                                 Browse and manage your actor database ({actors.length} actors)
                             </p>
                         </div>
                         
-                        <div className="flex items-center space-x-4">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                             {/* Add Actor Button */}
-                            <Button onClick={() => setShowAddModal(true)}>
+                            <Button onClick={() => setShowAddModal(true)} size="sm" className="flex-shrink-0">
                                 <Plus className="h-4 w-4 mr-2" />
                                 Add Actor
                             </Button>
 
                             {/* Search */}
-                            <div className="relative">
+                            <div className="relative flex-1 sm:flex-none">
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     placeholder="Search actors..."
                                     value={searchQuery}
                                     onChange={(e) => handleSearch(e.target.value)}
-                                    className="pl-10 w-64"
+                                    className="pl-10 w-full sm:w-64"
                                 />
                             </div>
 
@@ -107,6 +107,7 @@ export function ActorDatabase() {
                                 variant={showFilters ? "default" : "outline"}
                                 size="sm"
                                 onClick={() => setShowFilters(!showFilters)}
+                                className="flex-shrink-0"
                             >
                                 <Filter className="h-4 w-4 mr-2" />
                                 Filters

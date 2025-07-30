@@ -1,6 +1,5 @@
 // Collapsible sidebar component with navigation links
 
-import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
     LayoutDashboard, 
@@ -36,10 +35,8 @@ interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
     const location = useLocation();
     const { ui, setSidebarCollapsed } = useUI();
-    const [isHovered, setIsHovered] = useState(false);
 
     const isCollapsed = ui.sidebarCollapsed;
-    const showLabels = !isCollapsed || isHovered;
 
     return (
         <div
@@ -48,12 +45,10 @@ export function Sidebar({ className }: SidebarProps) {
                 isCollapsed ? 'w-16' : 'w-64',
                 className
             )}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
             {/* Sidebar header */}
             <div className="flex h-14 items-center justify-between px-3">
-                {showLabels && (
+                {!isCollapsed && (
                     <span className="text-sm font-medium text-muted-foreground">
                         Navigation
                     </span>
@@ -97,7 +92,7 @@ export function Sidebar({ className }: SidebarProps) {
                             }
                         >
                             <Icon className="h-4 w-4 flex-shrink-0" />
-                            {showLabels && (
+                            {!isCollapsed && (
                                 <>
                                     <span className="ml-3 truncate">{item.name}</span>
                                     {item.badge && (
@@ -116,9 +111,9 @@ export function Sidebar({ className }: SidebarProps) {
             <div className="border-t p-2">
                 <div className={cn(
                     'rounded-lg bg-muted p-3 text-center',
-                    !showLabels && 'px-2'
+                    isCollapsed && 'px-2'
                 )}>
-                    {showLabels ? (
+                    {!isCollapsed ? (
                         <>
                             <p className="text-xs font-medium">Demo Mode</p>
                             <p className="text-xs text-muted-foreground">

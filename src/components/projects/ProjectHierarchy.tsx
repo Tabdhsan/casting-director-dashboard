@@ -29,11 +29,11 @@ export function ProjectHierarchy() {
         : null;
 
     return (
-        <div className="flex h-full flex-col space-y-6">
+        <div className="flex h-full flex-col space-y-4 sm:space-y-6">
             {/* Header with view toggle and actions */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center space-x-4">
-                    <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Projects</h1>
                     
                     {/* View Mode Toggle */}
                     <div className="flex items-center space-x-1 rounded-lg border p-1">
@@ -57,11 +57,12 @@ export function ProjectHierarchy() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                     <Button
                         variant="outline"
                         size="sm"
                         onClick={() => setShowAddFolderModal(true)}
+                        className="flex-shrink-0"
                     >
                         <FolderPlus className="mr-2 h-4 w-4" />
                         New Folder
@@ -70,6 +71,7 @@ export function ProjectHierarchy() {
                         size="sm"
                         onClick={() => setShowAddRoleModal(true)}
                         disabled={!currentFolder || currentFolder.type !== 'project'}
+                        className="flex-shrink-0"
                     >
                         <Plus className="mr-2 h-4 w-4" />
                         New Role
