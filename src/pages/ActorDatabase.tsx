@@ -60,7 +60,7 @@ export function ActorDatabase() {
         <div className="flex h-full">
             {/* Filters Sidebar */}
             <div className={cn(
-                "transition-all duration-300 border-r bg-background",
+                "transition-all duration-300 bg-background",
                 showFilters ? "w-80" : "w-0 overflow-hidden"
             )}>
                 {showFilters && (
@@ -75,7 +75,7 @@ export function ActorDatabase() {
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0">
                 {/* Header */}
-                <div className="border-b bg-background p-4 sm:p-6">
+                <div className="p-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Actor Database</h1>
@@ -135,7 +135,7 @@ export function ActorDatabase() {
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1 overflow-auto">
+                <div className="flex-1 overflow-auto px-4 sm:px-6 pb-4 sm:pb-6">
                     {ui.currentView === 'grid' ? (
                         <ActorGrid 
                             actors={actors}

@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Folder, FileText, MoreVertical, Edit, Trash2, GripVertical } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -61,19 +62,20 @@ export function ProjectCard({
             ref={setNodeRef}
             style={style}
             className={cn(
-                'group cursor-pointer transition-all hover:shadow-md',
-                (isDragging || isSortableDragging) && 'opacity-50',
+                'group cursor-pointer transition-all duration-200 hover:shadow-md border',
+                'hover:border-primary/20 bg-background',
+                (isDragging || isSortableDragging) && 'opacity-50 scale-95',
                 isOver && isFolder && 'ring-2 ring-primary ring-offset-2',
-                'select-none'
+                'select-none h-full flex flex-col min-h-[240px]'
             )}
             onDoubleClick={onDoubleClick}
         >
-            <CardContent className="p-4">
-                <div className="flex items-start justify-between">
+            <CardContent className="p-4 sm:p-5 flex-1 flex flex-col">
+                <div className="flex items-start justify-between flex-1">
                     {/* Drag Handle - only visible on hover and when drag is enabled */}
                     {enableDrag && (
                         <div
-                            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing mr-2 mt-1"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing mr-2 mt-1 flex-shrink-0"
                             {...attributes}
                             {...listeners}
                         >
@@ -81,21 +83,30 @@ export function ProjectCard({
                         </div>
                     )}
                     
-                    <div className="flex-1">
-                        {/* Icon and Name */}
-                        <div className="flex items-center space-x-3">
-                            <Icon className={cn('h-8 w-8', iconColor)} />
+                    <div className="flex-1 min-w-0">
+                        {/* Project/Folder Name - Full Width */}
+                        <div className="flex items-start space-x-2">
+                            <Icon className={cn('h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 mt-0.5', iconColor)} />
                             <div className="flex-1 min-w-0">
-                                <h3 className="font-medium truncate">{project.name}</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    {isFolder ? 'Folder' : `${roleCount} role${roleCount !== 1 ? 's' : ''}`}
-                                </p>
+                                <h3 className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
+                                    {project.name}
+                                </h3>
                             </div>
+                        </div>
+                        
+                        {/* Type/Role Count Badge - Separate Row */}
+                        <div className="mt-2">
+                            <Badge 
+                                variant={isFolder ? "default" : "secondary"}
+                                className="text-xs"
+                            >
+                                {isFolder ? 'Folder' : `${roleCount} role${roleCount !== 1 ? 's' : ''}`}
+                            </Badge>
                         </div>
 
                         {/* Description */}
                         {project.description && (
-                            <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                            <p className="mt-3 sm:mt-4 text-sm text-muted-foreground line-clamp-2 leading-relaxed flex-1">
                                 {project.description}
                             </p>
                         )}
@@ -107,7 +118,7 @@ export function ProjectCard({
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="h-6 w-6 sm:h-7 sm:w-7 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/10 flex-shrink-0"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <MoreVertical className="h-4 w-4" />
@@ -138,18 +149,7 @@ export function ProjectCard({
                     </DropdownMenu>
                 </div>
 
-                {/* Footer with metadata */}
-                <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                    <span>
-                        {new Date(project.updatedAt).toLocaleDateString()}
-                    </span>
-                    {!isFolder && (
-                        <span className="flex items-center">
-                            <FileText className="mr-1 h-3 w-3" />
-                            Project
-                        </span>
-                    )}
-                </div>
+
             </CardContent>
         </Card>
     );

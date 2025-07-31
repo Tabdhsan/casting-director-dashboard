@@ -47,7 +47,7 @@ export function Sidebar({ className }: SidebarProps) {
         <div
             className={cn(
                 'flex h-full flex-col border-r bg-background transition-all duration-300',
-                isCollapsed ? 'w-16' : 'w-64',
+                isCollapsed ? 'w-16' : 'w-40',
                 className
             )}
         >

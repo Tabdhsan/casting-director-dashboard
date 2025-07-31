@@ -18,11 +18,7 @@ export function Dashboard() {
     
     // Calculate additional metrics
     const activeProjects = projects.filter(p => p.type === 'project').length;
-    const filledRoles = new Set(assignments.map(a => a.roleId)).size;
-
-    const testToast = () => {
-        toast.showSuccess('Test toast working!');
-    };
+    const filledRoles = new Set(assignments.map(a => a.roleId)).size; 
 
     return (
         <div className="space-y-4 sm:space-y-6 max-w-full">

@@ -56,10 +56,11 @@ export function RoleCard({
             ref={setNodeRef}
             style={style}
             className={cn(
-                'group cursor-pointer transition-all hover:shadow-md',
-                (isDragging || isSortableDragging) && 'opacity-50',
+                'group cursor-pointer transition-all duration-200 hover:shadow-md border',
+                'hover:border-primary/20 bg-background',
+                (isDragging || isSortableDragging) && 'opacity-50 scale-95',
                 isOver && 'ring-2 ring-primary ring-offset-2',
-                'select-none'
+                'select-none h-full flex flex-col min-h-[240px]'
             )}
             onDoubleClick={() => {
                 if (onDoubleClick) {
@@ -69,12 +70,12 @@ export function RoleCard({
                 }
             }}
         >
-            <CardContent className="p-4">
-                <div className="flex items-start justify-between">
+            <CardContent className="p-4 sm:p-5 flex-1 flex flex-col">
+                <div className="flex items-start justify-between flex-1">
                     {/* Drag Handle - only visible on hover and when drag is enabled */}
                     {enableDrag && (
                         <div
-                            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing mr-2 mt-1"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing mr-2 mt-1 flex-shrink-0"
                             {...attributes}
                             {...listeners}
                         >
@@ -82,39 +83,50 @@ export function RoleCard({
                         </div>
                     )}
                     
-                    <div className="flex-1">
-                        {/* Icon and Name */}
-                        <div className="flex items-center space-x-3">
-                            <Users className="h-8 w-8 text-purple-500" />
+                    <div className="flex-1 min-w-0">
+                        {/* Role Name - Full Width */}
+                        <div className="flex items-start space-x-2">
+                            <Users className="h-4 w-4 sm:h-5 sm:w-5 text-purple-500 flex-shrink-0 mt-0.5" />
                             <div className="flex-1 min-w-0">
-                                <h3 className="font-medium truncate">{role.name}</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    {assignmentCount} actor{assignmentCount !== 1 ? 's' : ''} assigned
-                                </p>
+                                <h3 className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
+                                    {role.name}
+                                </h3>
                             </div>
+                        </div>
+                        
+                        {/* Assignment Badge - Separate Row */}
+                        <div className="mt-2">
+                            <Badge variant="secondary" className="text-xs">
+                                <span className="hidden sm:inline">
+                                    {assignmentCount} actor{assignmentCount !== 1 ? 's' : ''} assigned
+                                </span>
+                                <span className="sm:hidden">
+                                    {assignmentCount} assigned
+                                </span>
+                            </Badge>
                         </div>
 
                         {/* Description */}
                         {role.description && (
-                            <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                            <p className="mt-3 sm:mt-4 text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                                 {role.description}
                             </p>
                         )}
 
                         {/* Status Buckets */}
-                        <div className="mt-3 flex flex-wrap gap-1">
-                            {role.customBuckets.slice(0, 3).map((bucket) => (
+                        <div className="mt-3 sm:mt-4 flex flex-wrap gap-1.5">
+                            {role.customBuckets.slice(0, 2).map((bucket) => (
                                 <Badge
                                     key={bucket.id}
-                                    variant="secondary"
+                                    variant="outline"
                                     className="text-xs"
                                 >
                                     {bucket.name}
                                 </Badge>
                             ))}
-                            {role.customBuckets.length > 3 && (
+                            {role.customBuckets.length > 2 && (
                                 <Badge variant="outline" className="text-xs">
-                                    +{role.customBuckets.length - 3}
+                                    +{role.customBuckets.length - 2}
                                 </Badge>
                             )}
                         </div>
@@ -126,7 +138,7 @@ export function RoleCard({
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="h-6 w-6 sm:h-7 sm:w-7 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/10 flex-shrink-0"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <MoreVertical className="h-4 w-4" />
@@ -148,17 +160,6 @@ export function RoleCard({
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                </div>
-
-                {/* Footer with metadata */}
-                <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                    <span>
-                        {new Date(role.updatedAt).toLocaleDateString()}
-                    </span>
-                    <span className="flex items-center">
-                        <Users className="mr-1 h-3 w-3" />
-                        Role
-                    </span>
                 </div>
             </CardContent>
         </Card>

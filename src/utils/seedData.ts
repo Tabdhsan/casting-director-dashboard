@@ -131,105 +131,110 @@ export const sampleProjects: CreateProjectInput[] = [
     },
 ];
 
-export const sampleRoles = (projectIds: string[]): CreateRoleInput[] => [
-    // Inception roles (2 roles)
-    {
-        name: 'Cobb',
-        description: 'Extractor who steals secrets from dreams',
-        requirements: 'Leading man, age 35-45, intense, conflicted',
-        projectId: projectIds.find(id => id.includes('Inception')) || projectIds[0],
-    },
-    {
-        name: 'Ariadne',
-        description: 'Architect who designs dream worlds',
-        requirements: 'Leading woman, age 25-35, intelligent, creative',
-        projectId: projectIds.find(id => id.includes('Inception')) || projectIds[0],
-    },
+export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
+    // Helper function to find project by name
+    const findProject = (name: string) => projects.find(p => p.name === name);
     
-    // Stranger Things - Episode 1 roles (2 roles)
-    {
-        name: 'Eleven',
-        description: 'Mysterious girl with psychokinetic powers',
-        requirements: 'Young actress, age 12-15, intense, mysterious',
-        projectId: projectIds.find(id => id.includes('Episode 1 - The Vanishing')) || projectIds[0],
-    },
-    {
-        name: 'Mike Wheeler',
-        description: 'Leader of the friend group',
-        requirements: 'Young actor, age 12-15, natural leader, protective',
-        projectId: projectIds.find(id => id.includes('Episode 1 - The Vanishing')) || projectIds[0],
-    },
-    
-    // Stranger Things - Episode 2 roles (2 roles)
-    {
-        name: 'Dustin Henderson',
-        description: 'Smart friend with scientific knowledge',
-        requirements: 'Young actor, age 12-15, intelligent, quirky',
-        projectId: projectIds.find(id => id.includes('Episode 2 - The Weirdo')) || projectIds[0],
-    },
-    {
-        name: 'Lucas Sinclair',
-        description: 'Skeptical friend who questions Eleven',
-        requirements: 'Young actor, age 12-15, cautious, protective',
-        projectId: projectIds.find(id => id.includes('Episode 2 - The Weirdo')) || projectIds[0],
-    },
-    
-    // Stranger Things - Season 2 Episode 1 roles (2 roles)
-    {
-        name: 'Max Mayfield',
-        description: 'New girl with skateboarding skills',
-        requirements: 'Young actress, age 12-15, tomboy, confident',
-        projectId: projectIds.find(id => id.includes('Episode 1 - MADMAX')) || projectIds[0],
-    },
-    {
-        name: 'Billy Hargrove',
-        description: 'Max\'s aggressive stepbrother',
-        requirements: 'Young actor, age 16-18, intimidating, troubled',
-        projectId: projectIds.find(id => id.includes('Episode 1 - MADMAX')) || projectIds[0],
-    },
-    
-    // Stranger Things - Season 2 Episode 2 roles (2 roles)
-    {
-        name: 'Will Byers',
-        description: 'Boy connected to the Upside Down',
-        requirements: 'Young actor, age 12-15, vulnerable, haunted',
-        projectId: projectIds.find(id => id.includes('Episode 2 - Trick or Treat')) || projectIds[0],
-    },
-    {
-        name: 'Joyce Byers',
-        description: 'Will\'s determined mother',
-        requirements: 'Actress, age 35-45, protective, determined',
-        projectId: projectIds.find(id => id.includes('Episode 2 - Trick or Treat')) || projectIds[0],
-    },
-    
-    // Hamilton - New York Performance roles (2 roles)
-    {
-        name: 'Alexander Hamilton',
-        description: 'Founding father and protagonist',
-        requirements: 'Strong singer, age 25-35, high energy, rap skills',
-        projectId: projectIds.find(id => id.includes('New York Performance')) || projectIds[0],
-    },
-    {
-        name: 'Aaron Burr',
-        description: 'Hamilton\'s rival and narrator',
-        requirements: 'Strong singer, age 30-40, conflicted, baritone',
-        projectId: projectIds.find(id => id.includes('New York Performance')) || projectIds[0],
-    },
-    
-    // Hamilton - London Performance roles (2 roles)
-    {
-        name: 'Eliza Hamilton',
-        description: 'Hamilton\'s wife and emotional center',
-        requirements: 'Strong singer, age 25-35, emotional depth, soprano',
-        projectId: projectIds.find(id => id.includes('London Performance')) || projectIds[0],
-    },
-    {
-        name: 'George Washington',
-        description: 'Commander-in-chief and father figure',
-        requirements: 'Strong singer, age 40-50, commanding presence, bass',
-        projectId: projectIds.find(id => id.includes('London Performance')) || projectIds[0],
-    },
-];
+    return [
+        // Inception roles (2 roles)
+        {
+            name: 'Cobb',
+            description: 'Extractor who steals secrets from dreams',
+            requirements: 'Leading man, age 35-45, intense, conflicted',
+            projectId: findProject('Inception')?.id || projects[0]?.id,
+        },
+        {
+            name: 'Ariadne',
+            description: 'Architect who designs dream worlds',
+            requirements: 'Leading woman, age 25-35, intelligent, creative',
+            projectId: findProject('Inception')?.id || projects[0]?.id,
+        },
+        
+        // Stranger Things - Episode 1 roles (2 roles)
+        {
+            name: 'Eleven',
+            description: 'Mysterious girl with psychokinetic powers',
+            requirements: 'Young actress, age 12-15, intense, mysterious',
+            projectId: findProject('Episode 1 - The Vanishing of Will Byers')?.id || projects[0]?.id,
+        },
+        {
+            name: 'Mike Wheeler',
+            description: 'Leader of the friend group',
+            requirements: 'Young actor, age 12-15, natural leader, protective',
+            projectId: findProject('Episode 1 - The Vanishing of Will Byers')?.id || projects[0]?.id,
+        },
+        
+        // Stranger Things - Episode 2 roles (2 roles)
+        {
+            name: 'Dustin Henderson',
+            description: 'Smart friend with scientific knowledge',
+            requirements: 'Young actor, age 12-15, intelligent, quirky',
+            projectId: findProject('Episode 2 - The Weirdo on Maple Street')?.id || projects[0]?.id,
+        },
+        {
+            name: 'Lucas Sinclair',
+            description: 'Skeptical friend who questions Eleven',
+            requirements: 'Young actor, age 12-15, cautious, protective',
+            projectId: findProject('Episode 2 - The Weirdo on Maple Street')?.id || projects[0]?.id,
+        },
+        
+        // Stranger Things - Season 2 Episode 1 roles (2 roles)
+        {
+            name: 'Max Mayfield',
+            description: 'New girl with skateboarding skills',
+            requirements: 'Young actress, age 12-15, tomboy, confident',
+            projectId: findProject('Episode 1 - MADMAX')?.id || projects[0]?.id,
+        },
+        {
+            name: 'Billy Hargrove',
+            description: 'Max\'s aggressive stepbrother',
+            requirements: 'Young actor, age 16-18, intimidating, troubled',
+            projectId: findProject('Episode 1 - MADMAX')?.id || projects[0]?.id,
+        },
+        
+        // Stranger Things - Season 2 Episode 2 roles (2 roles)
+        {
+            name: 'Will Byers',
+            description: 'Boy connected to the Upside Down',
+            requirements: 'Young actor, age 12-15, vulnerable, haunted',
+            projectId: findProject('Episode 2 - Trick or Treat, Freak')?.id || projects[0]?.id,
+        },
+        {
+            name: 'Joyce Byers',
+            description: 'Will\'s determined mother',
+            requirements: 'Actress, age 35-45, protective, determined',
+            projectId: findProject('Episode 2 - Trick or Treat, Freak')?.id || projects[0]?.id,
+        },
+        
+        // Hamilton - New York Performance roles (2 roles)
+        {
+            name: 'Alexander Hamilton',
+            description: 'Founding father and protagonist',
+            requirements: 'Strong singer, age 25-35, high energy, rap skills',
+            projectId: findProject('New York Performance')?.id || projects[0]?.id,
+        },
+        {
+            name: 'Aaron Burr',
+            description: 'Hamilton\'s rival and narrator',
+            requirements: 'Strong singer, age 30-40, conflicted, baritone',
+            projectId: findProject('New York Performance')?.id || projects[0]?.id,
+        },
+        
+        // Hamilton - London Performance roles (2 roles)
+        {
+            name: 'Eliza Hamilton',
+            description: 'Hamilton\'s wife and emotional center',
+            requirements: 'Strong singer, age 25-35, emotional depth, soprano',
+            projectId: findProject('London Performance')?.id || projects[0]?.id,
+        },
+        {
+            name: 'George Washington',
+            description: 'Commander-in-chief and father figure',
+            requirements: 'Strong singer, age 40-50, commanding presence, bass',
+            projectId: findProject('London Performance')?.id || projects[0]?.id,
+        },
+    ];
+};
 
 // Function to seed the store with sample data
 export function seedSampleData(store: any) {
@@ -337,8 +342,7 @@ export function seedSampleData(store: any) {
     console.log(`Added ${addedProjects.length} projects`);
     
     // Add roles
-    const projectIds = addedProjects.map(p => p.id);
-    const roles = sampleRoles(projectIds);
+    const roles = sampleRoles(addedProjects);
     const addedRoles = roles.map(role => store.addRole(role));
     console.log(`Added ${addedRoles.length} roles`);
     

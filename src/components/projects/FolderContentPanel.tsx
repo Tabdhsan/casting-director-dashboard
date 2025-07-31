@@ -100,7 +100,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
     const itemIds = allItems.map(item => item.id);
 
     return (
-        <Card className="h-full">
+        <Card className="h-full hover:shadow-sm hover:scale-100">
                 <CardHeader className="pb-3">
                     <CardTitle className="text-base">
                         {currentFolder ? currentFolder.name : 'All Projects'}
@@ -136,10 +136,10 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                                     {/* Projects/Folders */}
                                     {currentProjects.length > 0 && (
                                         <div>
-                                            <h4 className="mb-3 text-sm font-medium text-muted-foreground">
+                                            <h4 className="mb-3 text-sm font-medium text-muted-foreground uppercase tracking-wide">
                                                 {currentProjects.some(p => p.type === 'folder') ? 'Folders & Projects' : 'Projects'}
                                             </h4>
-                                            <div className="grid gap-3 sm:grid-cols-2">
+                                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                                 {currentProjects.map((project) => (
                                                     <ProjectCard
                                                         key={project.id}
@@ -159,10 +159,10 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                                     {/* Roles */}
                                     {currentRoles.length > 0 && (
                                         <div>
-                                            <h4 className="mb-3 text-sm font-medium text-muted-foreground">
+                                            <h4 className="mb-3 text-sm font-medium text-muted-foreground uppercase tracking-wide">
                                                 Roles
                                             </h4>
-                                            <div className="grid gap-3 sm:grid-cols-2">
+                                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                                 {currentRoles.map((role) => (
                                                     <RoleCard
                                                         key={role.id}

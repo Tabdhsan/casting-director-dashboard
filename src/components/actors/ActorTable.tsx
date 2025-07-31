@@ -141,7 +141,7 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
     );
 
     return (
-        <div className="p-6">
+        <div>
             {filteredAndSortedActors.length === 0 ? (
                 <div className="flex h-64 items-center justify-center">
                     <div className="text-center">
