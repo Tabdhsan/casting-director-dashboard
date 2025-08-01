@@ -19,7 +19,7 @@ import { useProjects } from '@/hooks/useStore';
 interface ProjectCardProps {
     project: Project;
     roleCount: number;
-    onDoubleClick: () => void;
+    onClick: () => void;
     onRename?: (project: Project) => void;
     onDelete?: (project: Project) => void;
     isDragging?: boolean;
@@ -30,7 +30,7 @@ interface ProjectCardProps {
 export function ProjectCard({ 
     project, 
     roleCount, 
-    onDoubleClick, 
+    onClick, 
     onRename, 
     onDelete, 
     isDragging, 
@@ -82,7 +82,7 @@ export function ProjectCard({
                 'select-none h-full flex flex-col min-h-[240px]',
                 project.archived && 'opacity-75 grayscale-[0.3]'
             )}
-            onDoubleClick={onDoubleClick}
+            onClick={onClick}
         >
             <CardContent className="p-4 sm:p-5 flex-1 flex flex-col">
                 <div className="flex items-start justify-between flex-1">

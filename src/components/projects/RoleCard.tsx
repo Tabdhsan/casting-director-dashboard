@@ -20,7 +20,7 @@ import { useRoles } from '@/hooks/useStore';
 interface RoleCardProps {
     role: Role;
     assignmentCount: number;
-    onDoubleClick?: () => void;
+    onClick?: () => void;
     isDragging?: boolean;
     isOver?: boolean;
     enableDrag?: boolean;
@@ -29,7 +29,7 @@ interface RoleCardProps {
 export function RoleCard({ 
     role, 
     assignmentCount, 
-    onDoubleClick, 
+    onClick, 
     isDragging, 
     isOver,
     enableDrag = false 
@@ -75,9 +75,9 @@ export function RoleCard({
                 'select-none h-full flex flex-col min-h-[240px]',
                 role.archived && 'opacity-75 grayscale-[0.3]'
             )}
-            onDoubleClick={() => {
-                if (onDoubleClick) {
-                    onDoubleClick();
+            onClick={() => {
+                if (onClick) {
+                    onClick();
                 } else {
                     navigate(`/projects/${role.folderId}/roles/${role.id}`);
                 }

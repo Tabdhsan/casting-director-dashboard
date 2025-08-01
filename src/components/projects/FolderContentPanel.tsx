@@ -79,7 +79,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
         return projectRoles.length;
     };
 
-    const handleFolderDoubleClick = (project: any) => {
+    const handleFolderClick = (project: any) => {
         // Navigate into both folders and projects
         onFolderSelect(project.id);
     };
@@ -152,7 +152,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                                                         key={project.id}
                                                         project={project}
                                                         roleCount={getProjectRoleCount(project.id)}
-                                                        onDoubleClick={() => handleFolderDoubleClick(project)}
+                                                        onClick={() => handleFolderClick(project)}
                                                         onRename={handleRename}
                                                         onDelete={handleDelete}
                                                         isDragging={activeId === project.id}
@@ -194,7 +194,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                                                         key={project.id}
                                                         project={project}
                                                         roleCount={getProjectRoleCount(project.id)}
-                                                        onDoubleClick={() => handleFolderDoubleClick(project)}
+                                                        onClick={() => handleFolderClick(project)}
                                                         onRename={handleRename}
                                                         onDelete={handleDelete}
                                                         isDragging={activeId === project.id}
