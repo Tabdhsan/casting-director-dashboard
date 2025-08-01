@@ -21,6 +21,8 @@ export interface FoldersSlice {
     addFolder: (input: CreateFolderInput) => Folder;
     updateFolder: (id: string, updates: UpdateFolderInput) => void;
     deleteFolder: (id: string) => void;
+    archiveFolder: (id: string) => void;
+    unarchiveFolder: (id: string) => void;
     getFolderHierarchy: () => Folder[];
     getFolderBreadcrumb: (folderId: string) => Folder[];
     getDescendantFolderIds: (folderId: string) => string[];
@@ -30,6 +32,8 @@ export interface FoldersSlice {
     addProject: (input: CreateFolderInput) => Folder;
     updateProject: (id: string, updates: UpdateFolderInput) => void;
     deleteProject: (id: string) => void;
+    archiveProject: (id: string) => void;
+    unarchiveProject: (id: string) => void;
     getProjectHierarchy: () => Folder[];
     getProjectBreadcrumb: (projectId: string) => Folder[];
     getDescendantProjectIds: (projectId: string) => string[];
@@ -69,6 +73,34 @@ export const createFoldersSlice: StateCreator<
         }));
     },
 
+    archiveFolder: (id: string) => {
+        const { folders } = get();
+        const descendantIds = getDescendantProjectIds(id, folders);
+        const allFolderIds = [id, ...descendantIds];
+
+        set(state => ({
+            folders: state.folders.map(folder =>
+                allFolderIds.includes(folder.id)
+                    ? updateEntity(folder, { archived: true })
+                    : folder
+            )
+        }));
+    },
+
+    unarchiveFolder: (id: string) => {
+        const { folders } = get();
+        const descendantIds = getDescendantProjectIds(id, folders);
+        const allFolderIds = [id, ...descendantIds];
+
+        set(state => ({
+            folders: state.folders.map(folder =>
+                allFolderIds.includes(folder.id)
+                    ? updateEntity(folder, { archived: false })
+                    : folder
+            )
+        }));
+    },
+
     getFolderHierarchy: () => {
         const { folders } = get();
         return buildProjectHierarchy(folders);
@@ -99,6 +131,14 @@ export const createFoldersSlice: StateCreator<
 
     deleteProject: (id: string) => {
         return get().deleteFolder(id);
+    },
+
+    archiveProject: (id: string) => {
+        return get().archiveFolder(id);
+    },
+
+    unarchiveProject: (id: string) => {
+        return get().unarchiveFolder(id);
     },
 
     getProjectHierarchy: () => {

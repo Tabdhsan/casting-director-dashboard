@@ -27,6 +27,8 @@ export const useProjects = () => {
     const addProject = useAppStore(state => state.addProject);
     const updateProject = useAppStore(state => state.updateProject);
     const deleteProject = useAppStore(state => state.deleteProject);
+    const archiveProject = useAppStore(state => state.archiveProject);
+    const unarchiveProject = useAppStore(state => state.unarchiveProject);
     const getProjectHierarchy = useAppStore(state => state.getProjectHierarchy);
     const getProjectBreadcrumb = useAppStore(state => state.getProjectBreadcrumb);
 
@@ -35,6 +37,8 @@ export const useProjects = () => {
         addProject,
         updateProject,
         deleteProject,
+        archiveProject,
+        unarchiveProject,
         getProjectHierarchy,
         getProjectBreadcrumb,
     };

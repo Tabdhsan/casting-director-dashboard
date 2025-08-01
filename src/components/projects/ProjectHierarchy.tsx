@@ -62,6 +62,7 @@ export function ProjectHierarchy() {
                         variant="outline"
                         size="sm"
                         onClick={() => setShowAddFolderModal(true)}
+                        disabled={currentFolder?.archived}
                         className="flex-shrink-0"
                     >
                         <FolderPlus className="mr-2 h-4 w-4" />
@@ -70,7 +71,7 @@ export function ProjectHierarchy() {
                     <Button
                         size="sm"
                         onClick={() => setShowAddRoleModal(true)}
-                        disabled={!currentFolder}
+                        disabled={!currentFolder || currentFolder.archived}
                         className="flex-shrink-0"
                     >
                         <Plus className="mr-2 h-4 w-4" />

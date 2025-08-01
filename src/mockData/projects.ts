@@ -7,58 +7,69 @@ export const mockProjects: CreateFolderInput[] = [
     {
         name: 'Inception',
         description: 'Sci-fi thriller about dream infiltration',
+        archived: false,
     },
     
     // Stranger Things - TV series with seasons and episodes
     {
         name: 'Stranger Things',
         description: 'Netflix TV Series - Sci-fi Horror',
+        archived: false,
     },
     {
         name: 'Season 1',
         description: 'First season episodes',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
     {
         name: 'Episode 1 - The Vanishing of Will Byers',
         description: 'Season 1, Episode 1 - Will disappears into the Upside Down',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
     {
         name: 'Episode 2 - The Weirdo on Maple Street',
         description: 'Season 1, Episode 2 - Eleven appears and helps the kids',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
     {
         name: 'Season 2',
         description: 'Second season episodes',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
     {
         name: 'Episode 1 - MADMAX',
         description: 'Season 2, Episode 1 - Max arrives in Hawkins',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
     {
         name: 'Episode 2 - Trick or Treat, Freak',
         description: 'Season 2, Episode 2 - Halloween night chaos',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
     
     // Hamilton - Theater production with different performances
     {
         name: 'Hamilton',
         description: 'Broadway musical about Alexander Hamilton',
+        archived: true,
     },
     {
         name: 'New York Performance',
         description: 'Original Broadway production at Richard Rodgers Theatre',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
     {
         name: 'London Performance',
         description: 'West End production at Victoria Palace Theatre',
         parentId: '', // Will be set dynamically
+        archived: false,
     },
 ];
 

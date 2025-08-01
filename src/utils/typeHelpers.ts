@@ -49,10 +49,11 @@ export function createActor(input: Omit<Actor, 'id' | 'createdAt' | 'updatedAt'>
     };
 }
 
-export function createProject(input: Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>): Folder {
+export function createProject(input: Omit<Folder, 'id' | 'createdAt' | 'updatedAt' | 'archived'> & { archived?: boolean }): Folder {
     const now = new Date();
     return {
         ...input,
+        archived: input.archived ?? false,
         id: generateId(),
         createdAt: now,
         updatedAt: now,
@@ -60,7 +61,7 @@ export function createProject(input: Omit<Folder, 'id' | 'createdAt' | 'updatedA
 }
 
 // Create folder function (alias for createProject)
-export function createFolder(input: Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>): Folder {
+export function createFolder(input: Omit<Folder, 'id' | 'createdAt' | 'updatedAt' | 'archived'> & { archived?: boolean }): Folder {
     return createProject(input);
 }
 

@@ -86,6 +86,8 @@ export interface AppStore {
     addProject: (input: CreateFolderInput) => Folder;
     updateProject: (id: string, updates: UpdateFolderInput) => void;
     deleteProject: (id: string) => void;
+    archiveProject: (id: string) => void;
+    unarchiveProject: (id: string) => void;
     getProjectHierarchy: () => Project[];
     getProjectBreadcrumb: (projectId: string) => Project[];
     
@@ -218,6 +220,46 @@ export const useAppStore = create<AppStore>()(
                     roles: state.roles.filter(role => !allProjectIds.includes(role.folderId)),
                     assignments: state.assignments.filter(assignment => 
                         !roleIdsToDelete.includes(assignment.roleId)
+                    )
+                }));
+            },
+
+            archiveProject: (id: string) => {
+                const { projects, roles } = get();
+                const descendantIds = getDescendantProjectIds(id, projects);
+                const allProjectIds = [id, ...descendantIds];
+                const rolesToArchive = roles.filter(role => allProjectIds.includes(role.folderId));
+
+                set(state => ({
+                    projects: state.projects.map(project =>
+                        allProjectIds.includes(project.id)
+                            ? updateEntity(project, { archived: true })
+                            : project
+                    ),
+                    roles: state.roles.map(role =>
+                        rolesToArchive.some(r => r.id === role.id)
+                            ? updateEntity(role, { archived: true })
+                            : role
+                    )
+                }));
+            },
+
+            unarchiveProject: (id: string) => {
+                const { projects, roles } = get();
+                const descendantIds = getDescendantProjectIds(id, projects);
+                const allProjectIds = [id, ...descendantIds];
+                const rolesToUnarchive = roles.filter(role => allProjectIds.includes(role.folderId));
+
+                set(state => ({
+                    projects: state.projects.map(project =>
+                        allProjectIds.includes(project.id)
+                            ? updateEntity(project, { archived: false })
+                            : project
+                    ),
+                    roles: state.roles.map(role =>
+                        rolesToUnarchive.some(r => r.id === role.id)
+                            ? updateEntity(role, { archived: false })
+                            : role
                     )
                 }));
             },

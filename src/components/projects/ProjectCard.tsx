@@ -2,7 +2,7 @@
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Folder, FileText, MoreVertical, Edit, Trash2, GripVertical } from 'lucide-react';
+import { Folder, MoreVertical, Edit, Trash2, GripVertical, Archive, RotateCcw } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import type { Project } from '@/types';
+import { useProjects } from '@/hooks/useStore';
 
 interface ProjectCardProps {
     project: Project;
@@ -36,6 +37,16 @@ export function ProjectCard({
     isOver,
     enableDrag = false 
 }: ProjectCardProps) {
+    const { archiveProject, unarchiveProject } = useProjects();
+    
+    const handleToggleArchive = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (project.archived) {
+            unarchiveProject(project.id);
+        } else {
+            archiveProject(project.id);
+        }
+    };
     // All items are now folders, but we can differentiate by whether they have roles
     const hasRoles = roleCount > 0;
     const Icon = Folder;
@@ -68,7 +79,8 @@ export function ProjectCard({
                 'hover:border-primary/20 bg-background',
                 (isDragging || isSortableDragging) && 'opacity-50 scale-95',
                 isOver && 'ring-2 ring-primary ring-offset-2',
-                'select-none h-full flex flex-col min-h-[240px]'
+                'select-none h-full flex flex-col min-h-[240px]',
+                project.archived && 'opacity-75 grayscale-[0.3]'
             )}
             onDoubleClick={onDoubleClick}
         >
@@ -96,14 +108,19 @@ export function ProjectCard({
                             </div>
                         </div>
                         
-                        {/* Role Count Badge - Separate Row */}
-                        <div className="mt-2">
+                        {/* Role Count Badge and Archive Status - Separate Row */}
+                        <div className="mt-2 flex flex-wrap gap-2">
                             <Badge 
                                 variant={hasRoles ? "secondary" : "default"}
                                 className="text-xs"
                             >
                                 {hasRoles ? `${roleCount} role${roleCount !== 1 ? 's' : ''}` : 'Folder'}
                             </Badge>
+                            {project.archived && (
+                                <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-800">
+                                    Archived
+                                </Badge>
+                            )}
                         </div>
 
                         {/* Description */}
@@ -136,6 +153,14 @@ export function ProjectCard({
                             >
                                 <Edit className="mr-2 h-4 w-4" />
                                 Rename
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleToggleArchive}>
+                                {project.archived ? (
+                                    <RotateCcw className="mr-2 h-4 w-4" />
+                                ) : (
+                                    <Archive className="mr-2 h-4 w-4" />
+                                )}
+                                {project.archived ? 'Unarchive' : 'Archive'}
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                                 className="text-destructive"

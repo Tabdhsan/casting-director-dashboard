@@ -21,6 +21,7 @@ export interface Folder {
   name: string;
   description?: string;
   parentId?: string; // For nested folder structure
+  archived: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -81,7 +82,9 @@ export interface UIState {
 export type CreateActorInput = Omit<Actor, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateActorInput = Partial<Omit<Actor, 'id' | 'createdAt' | 'updatedAt'>>;
 
-export type CreateFolderInput = Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateFolderInput = Omit<Folder, 'id' | 'createdAt' | 'updatedAt' | 'archived'> & { 
+  archived?: boolean;
+};
 export type UpdateFolderInput = Partial<Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>>;
 
 // Compatibility aliases for gradual migration
