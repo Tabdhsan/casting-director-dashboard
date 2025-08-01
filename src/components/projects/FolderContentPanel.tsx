@@ -67,8 +67,8 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
     };
 
     // Get project role count (including nested projects)
-    const getProjectRoleCount = (projectId: string) => {
-        const projectRoles = getRolesByProject(projectId);
+    const getProjectRoleCount = (folderId: string) => {
+        const projectRoles = getRolesByProject(folderId);
         return projectRoles.length;
     };
 
@@ -137,7 +137,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                                     {currentProjects.length > 0 && (
                                         <div>
                                             <h4 className="mb-3 text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                                                {currentProjects.some(p => p.type === 'folder') ? 'Folders & Projects' : 'Projects'}
+                                                Projects
                                             </h4>
                                             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                                 {currentProjects.map((project) => (
@@ -168,9 +168,9 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                                                         key={role.id}
                                                         role={role}
                                                         assignmentCount={getRoleAssignmentCount(role.id)}
-                                                        onDoubleClick={() => {
-                                                            console.log('Navigate to role:', role.id);
-                                                        }}
+                                                        // onDoubleClick={() => {
+                                                        //     console.log('Navigate to role:', role.id);
+                                                        // }}
                                                         enableDrag={false}
                                                     />
                                                 ))}

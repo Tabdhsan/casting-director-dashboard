@@ -40,7 +40,7 @@ function DroppableGridArea({ children, isEmpty }: { children: React.ReactNode; i
 
 export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
     const { projects, updateProject } = useProjects();
-    const { getRolesByProject } = useRoles();
+    const { getRolesByProject, getRolesByFolder } = useRoles();
     const { assignments } = useAssignments();
     
     // Modal states
@@ -59,7 +59,7 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
             : p.parentId === currentFolderId
     );
     const currentRoles = currentFolderId 
-        ? getRolesByProject(currentFolderId)
+        ? getRolesByFolder(currentFolderId)
         : [];
 
     // Items filtered for current folder
@@ -74,8 +74,8 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
     };
 
     // Get project role count (including nested projects)
-    const getProjectRoleCount = (projectId: string) => {
-        const projectRoles = getRolesByProject(projectId);
+    const getProjectRoleCount = (folderId: string) => {
+        const projectRoles = getRolesByProject(folderId);
         return projectRoles.length;
     };
 
@@ -148,9 +148,9 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
             const breadcrumbId = String(over.id).replace('breadcrumb-', '');
             updateProject(draggedProject.id, { parentId: breadcrumbId });
         } else {
-            // Drop on another project/folder in the current view
+            // Drop on another folder in the current view
             const targetProject = currentProjects.find(p => p.id === over.id);
-            if (targetProject && targetProject.type === 'folder' && targetProject.id !== draggedProject.id) {
+            if (targetProject && targetProject.id !== draggedProject.id) {
                 // Move into the target folder
                 updateProject(draggedProject.id, { parentId: targetProject.id });
             }
@@ -201,10 +201,10 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
                                         key={role.id}
                                         role={role}
                                         assignmentCount={getRoleAssignmentCount(role.id)}
-                                        onDoubleClick={() => {
-                                            // Navigate to role detail page
-                                            console.log('Navigate to role:', role.id);
-                                        }}
+                                        // onDoubleClick={() => {
+                                        //     // Navigate to role detail page
+                                        //     console.log('Navigate to role:', role.id);
+                                        // }}
                                         enableDrag={false} // Roles don't need drag for now
                                     />
                                 ))}
@@ -219,15 +219,11 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
                 {draggedItem && (
                     <div className="rounded-lg border bg-background p-4 shadow-lg opacity-90">
                         <div className="flex items-center space-x-3">
-                            {draggedItem.type === 'folder' ? (
-                                <Folder className="h-8 w-8 text-blue-500" />
-                            ) : (
-                                <FileText className="h-8 w-8 text-green-500" />
-                            )}
+                            <Folder className="h-8 w-8 text-blue-500" />
                             <div>
                                 <p className="font-medium">{draggedItem.name}</p>
                                 <p className="text-sm text-muted-foreground">
-                                    {draggedItem.type === 'folder' ? 'Folder' : 'Project'}
+                                    Folder
                                 </p>
                             </div>
                         </div>

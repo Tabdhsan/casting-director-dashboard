@@ -2,19 +2,19 @@
 
 import type { CreateRoleInput } from '@/types';
 
-export const mockRoles = (projectIds: string[]): CreateRoleInput[] => [
+export const mockRoles = (folderIds: string[]): CreateRoleInput[] => [
     // Inception roles (2 roles)
     {
         name: 'Cobb',
         description: 'Extractor who steals secrets from dreams',
         requirements: 'Leading man, age 35-45, intense, conflicted',
-        projectId: projectIds.find(id => id.includes('Inception')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Inception')) || folderIds[0],
     },
     {
         name: 'Ariadne',
         description: 'Architect who designs dream worlds',
         requirements: 'Leading woman, age 25-35, intelligent, creative',
-        projectId: projectIds.find(id => id.includes('Inception')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Inception')) || folderIds[0],
     },
     
     // Stranger Things - Episode 1 roles (2 roles)
@@ -22,13 +22,13 @@ export const mockRoles = (projectIds: string[]): CreateRoleInput[] => [
         name: 'Eleven',
         description: 'Mysterious girl with psychokinetic powers',
         requirements: 'Young actress, age 12-15, intense, mysterious',
-        projectId: projectIds.find(id => id.includes('Episode 1 - The Vanishing')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 1 - The Vanishing')) || folderIds[0],
     },
     {
         name: 'Mike Wheeler',
         description: 'Leader of the friend group',
         requirements: 'Young actor, age 12-15, natural leader, protective',
-        projectId: projectIds.find(id => id.includes('Episode 1 - The Vanishing')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 1 - The Vanishing')) || folderIds[0],
     },
     
     // Stranger Things - Episode 2 roles (2 roles)
@@ -36,13 +36,13 @@ export const mockRoles = (projectIds: string[]): CreateRoleInput[] => [
         name: 'Dustin Henderson',
         description: 'Smart friend with scientific knowledge',
         requirements: 'Young actor, age 12-15, intelligent, quirky',
-        projectId: projectIds.find(id => id.includes('Episode 2 - The Weirdo')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 2 - The Weirdo')) || folderIds[0],
     },
     {
         name: 'Lucas Sinclair',
         description: 'Skeptical friend who questions Eleven',
         requirements: 'Young actor, age 12-15, cautious, protective',
-        projectId: projectIds.find(id => id.includes('Episode 2 - The Weirdo')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 2 - The Weirdo')) || folderIds[0],
     },
     
     // Stranger Things - Season 2 Episode 1 roles (2 roles)
@@ -50,13 +50,13 @@ export const mockRoles = (projectIds: string[]): CreateRoleInput[] => [
         name: 'Max Mayfield',
         description: 'New girl with skateboarding skills',
         requirements: 'Young actress, age 12-15, tomboy, confident',
-        projectId: projectIds.find(id => id.includes('Episode 1 - MADMAX')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 1 - MADMAX')) || folderIds[0],
     },
     {
         name: 'Billy Hargrove',
         description: 'Max\'s aggressive stepbrother',
         requirements: 'Young actor, age 16-18, intimidating, troubled',
-        projectId: projectIds.find(id => id.includes('Episode 1 - MADMAX')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 1 - MADMAX')) || folderIds[0],
     },
     
     // Stranger Things - Season 2 Episode 2 roles (2 roles)
@@ -64,57 +64,57 @@ export const mockRoles = (projectIds: string[]): CreateRoleInput[] => [
         name: 'Will Byers',
         description: 'Boy connected to the Upside Down',
         requirements: 'Young actor, age 12-15, vulnerable, haunted',
-        projectId: projectIds.find(id => id.includes('Episode 2 - Trick or Treat')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 2 - Trick or Treat')) || folderIds[0],
     },
     {
         name: 'Joyce Byers',
         description: 'Will\'s determined mother',
         requirements: 'Actress, age 35-45, protective, determined',
-        projectId: projectIds.find(id => id.includes('Episode 2 - Trick or Treat')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('Episode 2 - Trick or Treat')) || folderIds[0],
     },
     
-    // Hamilton - New York Performance roles (2 roles)
+    // Hamilton - Broadway roles (2 roles)
     {
         name: 'Alexander Hamilton',
         description: 'Founding father and protagonist',
         requirements: 'Strong singer, age 25-35, high energy, rap skills',
-        projectId: projectIds.find(id => id.includes('New York Performance')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('New York Performance')) || folderIds[0],
     },
     {
         name: 'Aaron Burr',
         description: 'Hamilton\'s rival and narrator',
         requirements: 'Strong singer, age 30-40, conflicted, baritone',
-        projectId: projectIds.find(id => id.includes('New York Performance')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('New York Performance')) || folderIds[0],
     },
     
-    // Hamilton - London Performance roles (2 roles)
+    // Hamilton - West End roles (2 roles)
     {
         name: 'Eliza Hamilton',
         description: 'Hamilton\'s wife and emotional center',
         requirements: 'Strong singer, age 25-35, emotional depth, soprano',
-        projectId: projectIds.find(id => id.includes('London Performance')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('London Performance')) || folderIds[0],
     },
     {
         name: 'George Washington',
         description: 'Commander-in-chief and father figure',
         requirements: 'Strong singer, age 40-50, commanding presence, bass',
-        projectId: projectIds.find(id => id.includes('London Performance')) || projectIds[0],
+        folderId: folderIds.find(id => id.includes('London Performance')) || folderIds[0],
     },
 ];
 
 // Function to populate the store with mock role data
-export const loadMockRoles = (addRole: (input: CreateRoleInput) => any, projectIds: string[]) => {
-    const roles = mockRoles(projectIds);
+export const loadMockRoles = (addRole: (input: CreateRoleInput) => any, folderIds: string[]) => {
+    const roles = mockRoles(folderIds);
     return roles.map(role => addRole(role));
 };
 
-// Helper function to find project by name pattern
-export const findProjectByName = (projects: any[], namePattern: string) => {
-    return projects.find(p => p.name.includes(namePattern));
+// Helper function to find folder by name pattern
+export const findProjectByName = (folders: any[], namePattern: string) => {
+    return folders.find(p => p.name.includes(namePattern));
 };
 
-// Enhanced function to load roles with better project matching
-export const loadMockRolesWithProjects = (addRole: (input: CreateRoleInput) => any, projects: any[]) => {
+// Compatibility export
+export const loadMockRolesWithProjects = (addRole: (input: CreateRoleInput) => any, folders: any[]) => {
     const addedRoles: any[] = [];
     
     // Define role assignments with better project matching
@@ -218,15 +218,15 @@ export const loadMockRolesWithProjects = (addRole: (input: CreateRoleInput) => a
         },
     ];
     
-    // Create roles with proper project assignment
+    // Create roles with proper folder assignment
     roleAssignments.forEach(roleData => {
-        const project = findProjectByName(projects, roleData.projectPattern);
-        if (project) {
+        const folder = findProjectByName(folders, roleData.projectPattern);
+        if (folder) {
             const roleInput: CreateRoleInput = {
                 name: roleData.name,
                 description: roleData.description,
                 requirements: roleData.requirements,
-                projectId: project.id,
+                folderId: folder.id,
             };
             const addedRole = addRole(roleInput);
             addedRoles.push(addedRole);

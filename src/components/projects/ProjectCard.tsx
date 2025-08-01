@@ -36,9 +36,10 @@ export function ProjectCard({
     isOver,
     enableDrag = false 
 }: ProjectCardProps) {
-    const isFolder = project.type === 'folder';
-    const Icon = isFolder ? Folder : FileText;
-    const iconColor = isFolder ? 'text-blue-500' : 'text-green-500';
+    // All items are now folders, but we can differentiate by whether they have roles
+    const hasRoles = roleCount > 0;
+    const Icon = Folder;
+    const iconColor = 'text-blue-500';
 
     const {
         attributes,
@@ -65,7 +66,7 @@ export function ProjectCard({
                 'group cursor-pointer transition-all duration-200 hover:shadow-md border',
                 'hover:border-primary/20 bg-background',
                 (isDragging || isSortableDragging) && 'opacity-50 scale-95',
-                isOver && isFolder && 'ring-2 ring-primary ring-offset-2',
+                isOver && 'ring-2 ring-primary ring-offset-2',
                 'select-none h-full flex flex-col min-h-[240px]'
             )}
             onDoubleClick={onDoubleClick}
@@ -94,13 +95,13 @@ export function ProjectCard({
                             </div>
                         </div>
                         
-                        {/* Type/Role Count Badge - Separate Row */}
+                        {/* Role Count Badge - Separate Row */}
                         <div className="mt-2">
                             <Badge 
-                                variant={isFolder ? "default" : "secondary"}
+                                variant={hasRoles ? "secondary" : "default"}
                                 className="text-xs"
                             >
-                                {isFolder ? 'Folder' : `${roleCount} role${roleCount !== 1 ? 's' : ''}`}
+                                {hasRoles ? `${roleCount} role${roleCount !== 1 ? 's' : ''}` : 'Folder'}
                             </Badge>
                         </div>
 

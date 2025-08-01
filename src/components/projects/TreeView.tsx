@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-import { Folder, FileText, GripVertical } from 'lucide-react';
+import { Folder, GripVertical } from 'lucide-react';
 import { ProjectTreeSidebar } from './ProjectTreeSidebar';
 import { FolderContentPanel } from './FolderContentPanel';
 import { useProjects } from '@/hooks/useStore';
@@ -63,7 +63,7 @@ export function TreeView({ currentFolderId, onFolderSelect }: TreeViewProps) {
             const targetProjectId = (over.id as string).replace('tree-drop-', '');
             const targetProject = projects.find(p => p.id === targetProjectId);
             
-            if (targetProject && targetProject.type === 'folder' && targetProject.id !== draggedProject.id) {
+            if (targetProject && targetProject.id !== draggedProject.id) {
                 updateProject(draggedProject.id, { parentId: targetProject.id });
             }
         } else if (over.id === 'content-empty-space') {
@@ -74,7 +74,7 @@ export function TreeView({ currentFolderId, onFolderSelect }: TreeViewProps) {
         } else {
             // Drop on content panel item
             const targetProject = projects.find(p => p.id === over.id);
-            if (targetProject && targetProject.type === 'folder' && targetProject.id !== draggedProject.id) {
+            if (targetProject && targetProject.id !== draggedProject.id) {
                 updateProject(draggedProject.id, { parentId: targetProject.id });
             }
         }
@@ -107,11 +107,7 @@ export function TreeView({ currentFolderId, onFolderSelect }: TreeViewProps) {
                 {draggedItem && (
                     <div className="flex items-center space-x-2 rounded-md bg-background border px-2 py-1.5 text-sm shadow-lg">
                         <GripVertical className="h-3 w-3 text-muted-foreground" />
-                        {draggedItem.type === 'folder' ? (
-                            <Folder className="h-4 w-4 text-blue-500" />
-                        ) : (
-                            <FileText className="h-4 w-4 text-green-500" />
-                        )}
+                        <Folder className="h-4 w-4 text-blue-500" />
                         <span>{draggedItem.name}</span>
                         <div className="ml-2 text-xs text-muted-foreground">
                             Drop on folder to move

@@ -39,7 +39,7 @@ function TreeProjectItem({
     const [isExpanded, setIsExpanded] = useState(true);
     const hasChildren = project.children && project.children.length > 0;
     const isSelected = selectedFolderId === project.id;
-    const isFolder = project.type === 'folder';
+    const isFolder = true;
     
     const Icon = isFolder ? Folder : FileText;
     const iconColor = isFolder ? 'text-blue-500' : 'text-green-500';

@@ -64,49 +64,41 @@ export const sampleProjects: CreateProjectInput[] = [
     // Inception - Single film (no substructure)
     {
         name: 'Inception',
-        type: 'project',
         description: 'Sci-fi thriller about dream infiltration',
     },
     
     // Stranger Things - TV series with seasons and episodes
     {
         name: 'Stranger Things',
-        type: 'folder',
         description: 'Netflix TV Series - Sci-fi Horror',
     },
     {
         name: 'Season 1',
-        type: 'folder',
         description: 'First season episodes',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 1 - The Vanishing of Will Byers',
-        type: 'project',
         description: 'Season 1, Episode 1 - Will disappears into the Upside Down',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 2 - The Weirdo on Maple Street',
-        type: 'project',
         description: 'Season 1, Episode 2 - Eleven appears and helps the kids',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Season 2',
-        type: 'folder',
         description: 'Second season episodes',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 1 - MADMAX',
-        type: 'project',
         description: 'Season 2, Episode 1 - Max arrives in Hawkins',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 2 - Trick or Treat, Freak',
-        type: 'project',
         description: 'Season 2, Episode 2 - Halloween night chaos',
         parentId: '', // Will be set dynamically
     },
@@ -114,18 +106,15 @@ export const sampleProjects: CreateProjectInput[] = [
     // Hamilton - Theater production with different performances
     {
         name: 'Hamilton',
-        type: 'folder',
         description: 'Broadway musical about Alexander Hamilton',
     },
     {
         name: 'New York Performance',
-        type: 'project',
         description: 'Original Broadway production at Richard Rodgers Theatre',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'London Performance',
-        type: 'project',
         description: 'West End production at Victoria Palace Theatre',
         parentId: '', // Will be set dynamically
     },
@@ -141,13 +130,13 @@ export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
             name: 'Cobb',
             description: 'Extractor who steals secrets from dreams',
             requirements: 'Leading man, age 35-45, intense, conflicted',
-            projectId: findProject('Inception')?.id || projects[0]?.id,
+            folderId: findProject('Inception')?.id || projects[0]?.id,
         },
         {
             name: 'Ariadne',
             description: 'Architect who designs dream worlds',
             requirements: 'Leading woman, age 25-35, intelligent, creative',
-            projectId: findProject('Inception')?.id || projects[0]?.id,
+            folderId: findProject('Inception')?.id || projects[0]?.id,
         },
         
         // Stranger Things - Episode 1 roles (2 roles)
@@ -155,13 +144,13 @@ export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
             name: 'Eleven',
             description: 'Mysterious girl with psychokinetic powers',
             requirements: 'Young actress, age 12-15, intense, mysterious',
-            projectId: findProject('Episode 1 - The Vanishing of Will Byers')?.id || projects[0]?.id,
+            folderId: findProject('Episode 1 - The Vanishing of Will Byers')?.id || projects[0]?.id,
         },
         {
             name: 'Mike Wheeler',
             description: 'Leader of the friend group',
             requirements: 'Young actor, age 12-15, natural leader, protective',
-            projectId: findProject('Episode 1 - The Vanishing of Will Byers')?.id || projects[0]?.id,
+            folderId: findProject('Episode 1 - The Vanishing of Will Byers')?.id || projects[0]?.id,
         },
         
         // Stranger Things - Episode 2 roles (2 roles)
@@ -169,13 +158,13 @@ export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
             name: 'Dustin Henderson',
             description: 'Smart friend with scientific knowledge',
             requirements: 'Young actor, age 12-15, intelligent, quirky',
-            projectId: findProject('Episode 2 - The Weirdo on Maple Street')?.id || projects[0]?.id,
+            folderId: findProject('Episode 2 - The Weirdo on Maple Street')?.id || projects[0]?.id,
         },
         {
             name: 'Lucas Sinclair',
             description: 'Skeptical friend who questions Eleven',
             requirements: 'Young actor, age 12-15, cautious, protective',
-            projectId: findProject('Episode 2 - The Weirdo on Maple Street')?.id || projects[0]?.id,
+            folderId: findProject('Episode 2 - The Weirdo on Maple Street')?.id || projects[0]?.id,
         },
         
         // Stranger Things - Season 2 Episode 1 roles (2 roles)
@@ -183,13 +172,13 @@ export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
             name: 'Max Mayfield',
             description: 'New girl with skateboarding skills',
             requirements: 'Young actress, age 12-15, tomboy, confident',
-            projectId: findProject('Episode 1 - MADMAX')?.id || projects[0]?.id,
+            folderId: findProject('Episode 1 - MADMAX')?.id || projects[0]?.id,
         },
         {
             name: 'Billy Hargrove',
             description: 'Max\'s aggressive stepbrother',
             requirements: 'Young actor, age 16-18, intimidating, troubled',
-            projectId: findProject('Episode 1 - MADMAX')?.id || projects[0]?.id,
+            folderId: findProject('Episode 1 - MADMAX')?.id || projects[0]?.id,
         },
         
         // Stranger Things - Season 2 Episode 2 roles (2 roles)
@@ -197,13 +186,13 @@ export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
             name: 'Will Byers',
             description: 'Boy connected to the Upside Down',
             requirements: 'Young actor, age 12-15, vulnerable, haunted',
-            projectId: findProject('Episode 2 - Trick or Treat, Freak')?.id || projects[0]?.id,
+            folderId: findProject('Episode 2 - Trick or Treat, Freak')?.id || projects[0]?.id,
         },
         {
             name: 'Joyce Byers',
             description: 'Will\'s determined mother',
             requirements: 'Actress, age 35-45, protective, determined',
-            projectId: findProject('Episode 2 - Trick or Treat, Freak')?.id || projects[0]?.id,
+            folderId: findProject('Episode 2 - Trick or Treat, Freak')?.id || projects[0]?.id,
         },
         
         // Hamilton - New York Performance roles (2 roles)
@@ -211,13 +200,13 @@ export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
             name: 'Alexander Hamilton',
             description: 'Founding father and protagonist',
             requirements: 'Strong singer, age 25-35, high energy, rap skills',
-            projectId: findProject('New York Performance')?.id || projects[0]?.id,
+            folderId: findProject('New York Performance')?.id || projects[0]?.id,
         },
         {
             name: 'Aaron Burr',
             description: 'Hamilton\'s rival and narrator',
             requirements: 'Strong singer, age 30-40, conflicted, baritone',
-            projectId: findProject('New York Performance')?.id || projects[0]?.id,
+            folderId: findProject('New York Performance')?.id || projects[0]?.id,
         },
         
         // Hamilton - London Performance roles (2 roles)
@@ -225,13 +214,13 @@ export const sampleRoles = (projects: any[]): CreateRoleInput[] => {
             name: 'Eliza Hamilton',
             description: 'Hamilton\'s wife and emotional center',
             requirements: 'Strong singer, age 25-35, emotional depth, soprano',
-            projectId: findProject('London Performance')?.id || projects[0]?.id,
+            folderId: findProject('London Performance')?.id || projects[0]?.id,
         },
         {
             name: 'George Washington',
             description: 'Commander-in-chief and father figure',
             requirements: 'Strong singer, age 40-50, commanding presence, bass',
-            projectId: findProject('London Performance')?.id || projects[0]?.id,
+            folderId: findProject('London Performance')?.id || projects[0]?.id,
         },
     ];
 };
@@ -343,6 +332,7 @@ export function seedSampleData(store: any) {
     
     // Add roles
     const roles = sampleRoles(addedProjects);
+    console.log('==============Roles:', roles);
     const addedRoles = roles.map(role => store.addRole(role));
     console.log(`Added ${addedRoles.length} roles`);
     
@@ -393,6 +383,7 @@ export function seedFullDemoData(store: any) {
     loadMockProjects((input: any) => {
         const project = store.addProject(input);
         addedProjects.push(project);
+        return project;
     });
     console.log(`Added ${addedProjects.length} projects`);
     

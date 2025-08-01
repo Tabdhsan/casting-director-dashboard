@@ -1,7 +1,7 @@
 // Main project hierarchy management component with dual-view interface
 
 import { useState } from 'react';
-import { LayoutGrid, TreePine, Plus, FolderPlus, List } from 'lucide-react';
+import { LayoutGrid, Plus, FolderPlus, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
 import { useProjects } from '@/hooks/useStore';
@@ -70,7 +70,7 @@ export function ProjectHierarchy() {
                     <Button
                         size="sm"
                         onClick={() => setShowAddRoleModal(true)}
-                        disabled={!currentFolder || currentFolder.type !== 'project'}
+                        disabled={!currentFolder}
                         className="flex-shrink-0"
                     >
                         <Plus className="mr-2 h-4 w-4" />
@@ -110,7 +110,7 @@ export function ProjectHierarchy() {
             <AddRoleModal
                 open={showAddRoleModal}
                 onClose={() => setShowAddRoleModal(false)}
-                projectId={currentFolder?.type === 'project' ? currentFolder.id : null}
+                folderId={currentFolder?.id || null}
             />
         </div>
     );

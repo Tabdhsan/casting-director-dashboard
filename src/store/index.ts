@@ -5,17 +5,18 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import type {
     Actor,
     Project,
+    Folder,
     Role,
     ActorAssignment,
     ActorFilters,
     UIState,
     DashboardMetrics,
     CreateActorInput,
-    CreateProjectInput,
+    CreateFolderInput,
     CreateRoleInput,
     CreateAssignmentInput,
     UpdateActorInput,
-    UpdateProjectInput,
+    UpdateFolderInput,
     UpdateRoleInput,
     UpdateAssignmentInput,
 } from '../types';
@@ -81,9 +82,9 @@ export interface AppStore {
     deleteActor: (id: string) => void;
     searchActors: (filters: ActorFilters) => Actor[];
     
-    // Project actions
-    addProject: (input: CreateProjectInput) => Project;
-    updateProject: (id: string, updates: UpdateProjectInput) => void;
+    // Project actions (folders)
+    addProject: (input: CreateFolderInput) => Folder;
+    updateProject: (id: string, updates: UpdateFolderInput) => void;
     deleteProject: (id: string) => void;
     getProjectHierarchy: () => Project[];
     getProjectBreadcrumb: (projectId: string) => Project[];
@@ -93,6 +94,7 @@ export interface AppStore {
     updateRole: (id: string, updates: UpdateRoleInput) => void;
     deleteRole: (id: string) => void;
     getRolesByProject: (projectId: string) => Role[];
+    getRolesByFolder: (folderId: string) => Role[];
     
     // Assignment actions
     assignActorToRole: (input: CreateAssignmentInput) => ActorAssignment;
@@ -181,15 +183,16 @@ export const useAppStore = create<AppStore>()(
             },
 
             // Project actions
-            addProject: (input: CreateProjectInput) => {
+            addProject: (input: CreateFolderInput) => {
                 const newProject = createProject(input);
                 set(state => ({
                     projects: [...state.projects, newProject]
                 }));
+
                 return newProject;
             },
 
-            updateProject: (id: string, updates: UpdateProjectInput) => {
+            updateProject: (id: string, updates: UpdateFolderInput) => {
                 set(state => ({
                     projects: state.projects.map(project =>
                         project.id === id ? updateEntity(project, updates) : project
@@ -201,12 +204,12 @@ export const useAppStore = create<AppStore>()(
                 const { projects, roles } = get();
                 const descendantIds = getDescendantProjectIds(id, projects);
                 const allProjectIds = [id, ...descendantIds];
-                const rolesToDelete = roles.filter(role => allProjectIds.includes(role.projectId));
+                const rolesToDelete = roles.filter(role => allProjectIds.includes(role.folderId));
                 const roleIdsToDelete = rolesToDelete.map(role => role.id);
 
                 set(state => ({
                     projects: state.projects.filter(project => !allProjectIds.includes(project.id)),
-                    roles: state.roles.filter(role => !allProjectIds.includes(role.projectId)),
+                    roles: state.roles.filter(role => !allProjectIds.includes(role.folderId)),
                     assignments: state.assignments.filter(assignment => 
                         !roleIdsToDelete.includes(assignment.roleId)
                     )
@@ -251,7 +254,12 @@ export const useAppStore = create<AppStore>()(
                 const { roles, projects } = get();
                 const descendantIds = getDescendantProjectIds(projectId, projects);
                 const allProjectIds = [projectId, ...descendantIds];
-                return roles.filter(role => allProjectIds.includes(role.projectId));
+                return roles.filter(role => allProjectIds.includes(role.folderId));
+            },
+
+            getRolesByFolder: (folderId: string) => {
+                const { roles } = get();
+                return roles.filter(role => role.folderId === folderId);
             },
 
             // Assignment actions

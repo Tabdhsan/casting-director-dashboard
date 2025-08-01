@@ -66,7 +66,7 @@ export function RoleCard({
                 if (onDoubleClick) {
                     onDoubleClick();
                 } else {
-                    navigate(`/projects/${role.projectId}/roles/${role.id}`);
+                    navigate(`/projects/${role.folderId}/roles/${role.id}`);
                 }
             }}
         >
@@ -146,7 +146,7 @@ export function RoleCard({
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => navigate(`/projects/${role.projectId}/roles/${role.id}`)}>
+                            <DropdownMenuItem onClick={() => navigate(`/projects/${role.folderId}/roles/${role.id}`)}>
                                 <UserPlus className="mr-2 h-4 w-4" />
                                 Assign Actors
                             </DropdownMenuItem>

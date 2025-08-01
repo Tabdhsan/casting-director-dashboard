@@ -16,12 +16,11 @@ export interface Actor {
   updatedAt: Date;
 }
 
-export interface Project {
+export interface Folder {
   id: string;
   name: string;
   description?: string;
   parentId?: string; // For nested folder structure
-  type: 'folder' | 'project';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,7 +30,7 @@ export interface Role {
   name: string;
   description?: string;
   requirements?: string;
-  projectId: string; // References Project.id
+  folderId: string; // References Folder.id
   customBuckets: StatusBucket[];
   createdAt: Date;
   updatedAt: Date;
@@ -81,8 +80,13 @@ export interface UIState {
 export type CreateActorInput = Omit<Actor, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateActorInput = Partial<Omit<Actor, 'id' | 'createdAt' | 'updatedAt'>>;
 
-export type CreateProjectInput = Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;
-export type UpdateProjectInput = Partial<Omit<Project, 'id' | 'createdAt' | 'updatedAt'>>;
+export type CreateFolderInput = Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>;
+export type UpdateFolderInput = Partial<Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>>;
+
+// Compatibility aliases for gradual migration
+export type Project = Folder;
+export type CreateProjectInput = CreateFolderInput;
+export type UpdateProjectInput = UpdateFolderInput;
 
 export type CreateRoleInput = Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'customBuckets'> & { customBuckets?: StatusBucket[] };
 export type UpdateRoleInput = Partial<Omit<Role, 'id' | 'createdAt' | 'updatedAt'>>;
@@ -93,7 +97,7 @@ export type UpdateAssignmentInput = Partial<Omit<ActorAssignment, 'id' | 'assign
 // Dashboard metrics types
 export interface DashboardMetrics {
   totalActors: number;
-  totalProjects: number;
+  totalFolders: number;
   totalRoles: number;
   openRoles: number;
   recentlyAddedActors: Actor[];

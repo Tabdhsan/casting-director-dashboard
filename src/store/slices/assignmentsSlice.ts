@@ -7,7 +7,7 @@ import type {
     UpdateAssignmentInput,
     Actor,
     Role,
-    Project
+    Folder
 } from '../../types';
 import { 
     createAssignment, 
@@ -20,7 +20,7 @@ export interface AssignmentsSlice {
     assignments: ActorAssignment[];
     actors: Actor[]; // Reference to actors
     roles: Role[]; // Reference to roles
-    projects: Project[]; // Reference to projects
+    folders: Folder[]; // Reference to folders (formerly projects)
     
     // Actions
     assignActorToRole: (input: CreateAssignmentInput) => ActorAssignment;
@@ -31,8 +31,11 @@ export interface AssignmentsSlice {
     getActorRoleHistory: (actorId: string) => Array<{
         assignment: ActorAssignment;
         role: Role;
-        project: Project;
+        folder: Folder;
     }>;
+    
+    // Compatibility getter
+    projects: Folder[];
 }
 
 export const createAssignmentsSlice: StateCreator<
@@ -44,7 +47,7 @@ export const createAssignmentsSlice: StateCreator<
     assignments: [],
     actors: [], // Will be injected by main store
     roles: [], // Will be injected by main store
-    projects: [], // Will be injected by main store
+    folders: [], // Will be injected by main store
 
     assignActorToRole: (input: CreateAssignmentInput) => {
         const newAssignment = createAssignment(input);
@@ -82,7 +85,12 @@ export const createAssignmentsSlice: StateCreator<
     },
 
     getActorRoleHistory: (actorId: string) => {
-        const { assignments, roles, projects } = get();
-        return getActorRoleHistory(actorId, assignments, roles, projects);
+        const { assignments, roles, folders } = get();
+        return getActorRoleHistory(actorId, assignments, roles, folders);
+    },
+
+    // Compatibility getter
+    get projects() {
+        return this.folders;
     },
 });

@@ -21,10 +21,10 @@ import type { CreateRoleInput } from '@/types';
 interface AddRoleModalProps {
     open: boolean;
     onClose: () => void;
-    projectId: string | null;
+    folderId: string | null;
 }
 
-export function AddRoleModal({ open, onClose, projectId }: AddRoleModalProps) {
+export function AddRoleModal({ open, onClose, folderId }: AddRoleModalProps) {
     const { addRole } = useRoles();
     const { projects } = useProjects();
     const toast = useToast();
@@ -34,13 +34,16 @@ export function AddRoleModal({ open, onClose, projectId }: AddRoleModalProps) {
     const [requirements, setRequirements] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Get project name for display
-    const project = projectId ? projects.find(p => p.id === projectId) : null;
+    // Use folderId 
+    const activeFolderId = folderId;
+
+    // Get folder name for display
+    const folder = activeFolderId ? projects.find(p => p.id === activeFolderId) : null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        if (!name.trim() || !projectId) return;
+        if (!name.trim() || !activeFolderId) return;
 
         setIsSubmitting(true);
 
@@ -49,7 +52,7 @@ export function AddRoleModal({ open, onClose, projectId }: AddRoleModalProps) {
                 name: name.trim(),
                 description: description.trim() || undefined,
                 requirements: requirements.trim() || undefined,
-                projectId,
+                folderId: activeFolderId,
             };
 
             addRole(roleData);
@@ -85,8 +88,8 @@ export function AddRoleModal({ open, onClose, projectId }: AddRoleModalProps) {
                             Create New Role
                         </DialogTitle>
                         <DialogDescription>
-                            {project 
-                                ? `Add a new role to "${project.name}".`
+                            {folder 
+                                ? `Add a new role to "${folder.name}".`
                                 : 'Create a new role for casting.'
                             }
                         </DialogDescription>
@@ -141,7 +144,7 @@ export function AddRoleModal({ open, onClose, projectId }: AddRoleModalProps) {
                         </Button>
                         <Button 
                             type="submit" 
-                            disabled={!name.trim() || !projectId || isSubmitting}
+                            disabled={!name.trim() || !activeFolderId || isSubmitting}
                         >
                             {isSubmitting ? 'Creating...' : 'Create Role'}
                         </Button>

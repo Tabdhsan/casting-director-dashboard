@@ -1,10 +1,10 @@
-// Projects slice for Zustand store
+// Folders slice for Zustand store (formerly projects)
 
 import type { StateCreator } from 'zustand';
 import type { 
-    Project, 
-    CreateProjectInput, 
-    UpdateProjectInput 
+    Folder, 
+    CreateFolderInput, 
+    UpdateFolderInput 
 } from '../../types';
 import { 
     createProject, 
@@ -14,64 +14,105 @@ import {
     getProjectBreadcrumb 
 } from '../../utils/typeHelpers';
 
-export interface ProjectsSlice {
-    projects: Project[];
+export interface FoldersSlice {
+    folders: Folder[];
     
     // Actions
-    addProject: (input: CreateProjectInput) => Project;
-    updateProject: (id: string, updates: UpdateProjectInput) => void;
+    addFolder: (input: CreateFolderInput) => Folder;
+    updateFolder: (id: string, updates: UpdateFolderInput) => void;
+    deleteFolder: (id: string) => void;
+    getFolderHierarchy: () => Folder[];
+    getFolderBreadcrumb: (folderId: string) => Folder[];
+    getDescendantFolderIds: (folderId: string) => string[];
+    
+    // Compatibility methods for gradual migration
+    projects: Folder[];
+    addProject: (input: CreateFolderInput) => Folder;
+    updateProject: (id: string, updates: UpdateFolderInput) => void;
     deleteProject: (id: string) => void;
-    getProjectHierarchy: () => Project[];
-    getProjectBreadcrumb: (projectId: string) => Project[];
+    getProjectHierarchy: () => Folder[];
+    getProjectBreadcrumb: (projectId: string) => Folder[];
     getDescendantProjectIds: (projectId: string) => string[];
 }
 
-export const createProjectsSlice: StateCreator<
-    ProjectsSlice,
+export const createFoldersSlice: StateCreator<
+    FoldersSlice,
     [],
     [],
-    ProjectsSlice
+    FoldersSlice
 > = (set, get) => ({
-    projects: [],
+    folders: [],
 
-    addProject: (input: CreateProjectInput) => {
-        const newProject = createProject(input);
+    addFolder: (input: CreateFolderInput) => {
+        const newFolder = createProject(input); // Keep using createProject helper for now
         set(state => ({
-            projects: [...state.projects, newProject]
+            folders: [...state.folders, newFolder]
         }));
-        return newProject;
+        return newFolder;
     },
 
-    updateProject: (id: string, updates: UpdateProjectInput) => {
+    updateFolder: (id: string, updates: UpdateFolderInput) => {
         set(state => ({
-            projects: state.projects.map(project =>
-                project.id === id ? updateEntity(project, updates) : project
+            folders: state.folders.map(folder =>
+                folder.id === id ? updateEntity(folder, updates) : folder
             )
         }));
     },
 
-    deleteProject: (id: string) => {
-        const { projects } = get();
-        const descendantIds = getDescendantProjectIds(id, projects);
-        const allProjectIds = [id, ...descendantIds];
+    deleteFolder: (id: string) => {
+        const { folders } = get();
+        const descendantIds = getDescendantProjectIds(id, folders);
+        const allFolderIds = [id, ...descendantIds];
 
         set(state => ({
-            projects: state.projects.filter(project => !allProjectIds.includes(project.id))
+            folders: state.folders.filter(folder => !allFolderIds.includes(folder.id))
         }));
     },
 
+    getFolderHierarchy: () => {
+        const { folders } = get();
+        return buildProjectHierarchy(folders);
+    },
+
+    getFolderBreadcrumb: (folderId: string) => {
+        const { folders } = get();
+        return getProjectBreadcrumb(folderId, folders);
+    },
+
+    getDescendantFolderIds: (folderId: string) => {
+        const { folders } = get();
+        return getDescendantProjectIds(folderId, folders);
+    },
+
+    // Compatibility getters and methods
+    get projects() {
+        return this.folders;
+    },
+
+    addProject: (input: CreateFolderInput) => {
+        return get().addFolder(input);
+    },
+
+    updateProject: (id: string, updates: UpdateFolderInput) => {
+        return get().updateFolder(id, updates);
+    },
+
+    deleteProject: (id: string) => {
+        return get().deleteFolder(id);
+    },
+
     getProjectHierarchy: () => {
-        const { projects } = get();
-        return buildProjectHierarchy(projects);
+        return get().getFolderHierarchy();
     },
 
     getProjectBreadcrumb: (projectId: string) => {
-        const { projects } = get();
-        return getProjectBreadcrumb(projectId, projects);
+        return get().getFolderBreadcrumb(projectId);
     },
 
     getDescendantProjectIds: (projectId: string) => {
-        const { projects } = get();
-        return getDescendantProjectIds(projectId, projects);
+        return get().getDescendantFolderIds(projectId);
     },
 });
+
+// Export compatibility alias
+export const createProjectsSlice = createFoldersSlice;

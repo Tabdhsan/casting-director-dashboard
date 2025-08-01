@@ -47,6 +47,7 @@ export const useRoles = () => {
     const updateRole = useAppStore(state => state.updateRole);
     const deleteRole = useAppStore(state => state.deleteRole);
     const getRolesByProject = useAppStore(state => state.getRolesByProject);
+    const getRolesByFolder = useAppStore(state => state.getRolesByFolder);
 
     return {
         roles,
@@ -54,6 +55,7 @@ export const useRoles = () => {
         updateRole,
         deleteRole,
         getRolesByProject,
+        getRolesByFolder,
     };
 };
 

@@ -30,7 +30,7 @@ export function RoleDetail() {
             const foundRole = roles.find(r => r.id === roleId);
             if (foundRole) {
                 setRole(foundRole);
-                const foundProject = projects.find(p => p.id === foundRole.projectId);
+                const foundProject = projects.find(p => p.id === foundRole.folderId);
                 setProject(foundProject || null);
             }
         }

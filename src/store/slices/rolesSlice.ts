@@ -3,7 +3,7 @@
 import type { StateCreator } from 'zustand';
 import type { 
     Role, 
-    Project,
+    Folder,
     CreateRoleInput, 
     UpdateRoleInput 
 } from '../../types';
@@ -15,13 +15,16 @@ import {
 
 export interface RolesSlice {
     roles: Role[];
-    projects: Project[]; // Reference to projects for hierarchy queries
+    folders: Folder[]; // Reference to folders for hierarchy queries
     
     // Actions
     addRole: (input: CreateRoleInput) => Role;
     updateRole: (id: string, updates: UpdateRoleInput) => void;
     deleteRole: (id: string) => void;
-    getRolesByProject: (projectId: string) => Role[];
+    getRolesByFolder: (folderId: string) => Role[]; // Direct folder only (no descendants)
+    
+    // Compatibility methods
+    getRolesByProject: (projectId: string) => Role[]; // Includes descendants
 }
 
 export const createRolesSlice: StateCreator<
@@ -31,7 +34,7 @@ export const createRolesSlice: StateCreator<
     RolesSlice
 > = (set, get) => ({
     roles: [],
-    projects: [], // This will be injected by the main store
+    folders: [], // This will be injected by the main store
 
     addRole: (input: CreateRoleInput) => {
         const newRole = createRole(input);
@@ -55,10 +58,16 @@ export const createRolesSlice: StateCreator<
         }));
     },
 
+    getRolesByFolder: (folderId: string) => {
+        const { roles } = get();
+        return roles.filter(role => role.folderId === folderId);
+    },
+
+    // Compatibility method - includes descendants like the original behavior
     getRolesByProject: (projectId: string) => {
-        const { roles, projects } = get();
-        const descendantIds = getDescendantProjectIds(projectId, projects);
-        const allProjectIds = [projectId, ...descendantIds];
-        return roles.filter(role => allProjectIds.includes(role.projectId));
+        const { roles, folders } = get();
+        const descendantIds = getDescendantProjectIds(projectId, folders);
+        const allFolderIds = [projectId, ...descendantIds];
+        return roles.filter(role => allFolderIds.includes(role.folderId));
     },
 });

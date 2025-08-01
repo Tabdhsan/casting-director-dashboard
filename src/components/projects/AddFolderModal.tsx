@@ -1,7 +1,7 @@
 // Modal for adding new folders/projects
 
 import { useState } from 'react';
-import { Folder, FileText } from 'lucide-react';
+import { Folder } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -14,10 +14,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Toggle } from '@/components/ui/toggle';
 import { useProjects } from '@/hooks/useStore';
 import { useToast } from '@/hooks/useToast';
-import type { CreateProjectInput } from '@/types';
+import type { CreateFolderInput } from '@/types';
 
 interface AddFolderModalProps {
     open: boolean;
@@ -31,7 +30,6 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
     
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [type, setType] = useState<'folder' | 'project'>('folder');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -42,22 +40,20 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
         setIsSubmitting(true);
 
         try {
-            const projectData: CreateProjectInput = {
+            const folderData: CreateFolderInput = {
                 name: name.trim(),
                 description: description.trim() || undefined,
-                type,
                 parentId: parentId || undefined,
             };
 
-            addProject(projectData);
+            addProject(folderData); // Still using addProject for compatibility
             toast.showProjectCreated();
             setName('');
             setDescription('');
-            setType('folder');
             onClose();
         } catch (error) {
-            console.error('Failed to create project:', error);
-            toast.showError('Failed to create project');
+            console.error('Failed to create folder:', error);
+            toast.showError('Failed to create folder');
         } finally {
             setIsSubmitting(false);
         }
@@ -67,7 +63,6 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
         if (!isSubmitting) {
             setName('');
             setDescription('');
-            setType('folder');
             onClose();
         }
     };
@@ -77,43 +72,13 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Create New {type === 'folder' ? 'Folder' : 'Project'}</DialogTitle>
+                        <DialogTitle>Create New Folder</DialogTitle>
                         <DialogDescription>
-                            {type === 'folder' 
-                                ? 'Create a new folder to organize your projects.'
-                                : 'Create a new project to manage roles and casting.'
-                            }
+                            Create a new folder to organize your projects and roles.
                         </DialogDescription>
                     </DialogHeader>
 
                     <div className="space-y-4 py-4">
-                        {/* Type Toggle */}
-                        <div className="space-y-2">
-                            <Label>Type</Label>
-                            <div className="flex items-center space-x-1 rounded-lg border p-1">
-                                <Toggle
-                                    pressed={type === 'folder'}
-                                    onPressedChange={(pressed) => setType(pressed ? 'folder' : 'project')}
-                                    aria-label="Folder"
-                                    size="sm"
-                                    className="flex-1"
-                                >
-                                    <Folder className="mr-2 h-4 w-4" />
-                                    Folder
-                                </Toggle>
-                                <Toggle
-                                    pressed={type === 'project'}
-                                    onPressedChange={(pressed) => setType(pressed ? 'project' : 'folder')}
-                                    aria-label="Project"
-                                    size="sm"
-                                    className="flex-1"
-                                >
-                                    <FileText className="mr-2 h-4 w-4" />
-                                    Project
-                                </Toggle>
-                            </div>
-                        </div>
-
                         {/* Name */}
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
@@ -121,7 +86,7 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
                                 id="name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder={`Enter ${type} name`}
+                                placeholder="Enter folder name"
                                 required
                             />
                         </div>
@@ -133,7 +98,7 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
                                 id="description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder={`Describe this ${type}`}
+                                placeholder="Describe this folder"
                                 rows={3}
                             />
                         </div>
@@ -149,7 +114,7 @@ export function AddFolderModal({ open, onClose, parentId }: AddFolderModalProps)
                             Cancel
                         </Button>
                         <Button type="submit" disabled={!name.trim() || isSubmitting}>
-                            {isSubmitting ? 'Creating...' : `Create ${type === 'folder' ? 'Folder' : 'Project'}`}
+                            {isSubmitting ? 'Creating...' : 'Create Folder'}
                         </Button>
                     </DialogFooter>
                 </form>

@@ -1,54 +1,46 @@
 // Mock project data for testing the project hierarchy
 
-import type { CreateProjectInput } from '@/types';
+import type { CreateFolderInput } from '@/types';
 
-export const mockProjects: CreateProjectInput[] = [
-    // Inception - Single film (no substructure)
+export const mockProjects: CreateFolderInput[] = [
+    // Inception - Single film (now just a folder that can contain roles)
     {
         name: 'Inception',
-        type: 'project',
         description: 'Sci-fi thriller about dream infiltration',
     },
     
     // Stranger Things - TV series with seasons and episodes
     {
         name: 'Stranger Things',
-        type: 'folder',
         description: 'Netflix TV Series - Sci-fi Horror',
     },
     {
         name: 'Season 1',
-        type: 'folder',
         description: 'First season episodes',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 1 - The Vanishing of Will Byers',
-        type: 'project',
         description: 'Season 1, Episode 1 - Will disappears into the Upside Down',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 2 - The Weirdo on Maple Street',
-        type: 'project',
         description: 'Season 1, Episode 2 - Eleven appears and helps the kids',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Season 2',
-        type: 'folder',
         description: 'Second season episodes',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 1 - MADMAX',
-        type: 'project',
         description: 'Season 2, Episode 1 - Max arrives in Hawkins',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'Episode 2 - Trick or Treat, Freak',
-        type: 'project',
         description: 'Season 2, Episode 2 - Halloween night chaos',
         parentId: '', // Will be set dynamically
     },
@@ -56,72 +48,61 @@ export const mockProjects: CreateProjectInput[] = [
     // Hamilton - Theater production with different performances
     {
         name: 'Hamilton',
-        type: 'folder',
         description: 'Broadway musical about Alexander Hamilton',
     },
     {
         name: 'New York Performance',
-        type: 'project',
         description: 'Original Broadway production at Richard Rodgers Theatre',
         parentId: '', // Will be set dynamically
     },
     {
         name: 'London Performance',
-        type: 'project',
         description: 'West End production at Victoria Palace Theatre',
         parentId: '', // Will be set dynamically
     },
 ];
 
 // Function to populate the store with mock project data
-export const loadMockProjects = (addProject: (input: CreateProjectInput) => any) => {
+export const loadMockProjects = (addProject: (input: CreateFolderInput) => any) => {
     const addedProjects: any[] = [];
     
     // Define the hierarchical structure more explicitly
     const projectHierarchy = [
-        // Inception - Single film (no substructure)
+        // Inception - Single film (now just a folder that can contain roles)
         {
             name: 'Inception',
-            type: 'project',
             description: 'Sci-fi thriller about dream infiltration',
         },
         
         // Stranger Things - TV series with seasons and episodes
         {
             name: 'Stranger Things',
-            type: 'folder',
             description: 'Netflix TV Series - Sci-fi Horror',
             children: [
                 {
                     name: 'Season 1',
-                    type: 'folder',
                     description: 'First season episodes',
                     children: [
                         {
                             name: 'Episode 1 - The Vanishing of Will Byers',
-                            type: 'project',
                             description: 'Season 1, Episode 1 - Will disappears into the Upside Down',
                         },
                         {
                             name: 'Episode 2 - The Weirdo on Maple Street',
-                            type: 'project',
                             description: 'Season 1, Episode 2 - Eleven appears and helps the kids',
                         },
                     ],
                 },
                 {
                     name: 'Season 2',
-                    type: 'folder',
                     description: 'Second season episodes',
                     children: [
                         {
                             name: 'Episode 1 - MADMAX',
-                            type: 'project',
                             description: 'Season 2, Episode 1 - Max arrives in Hawkins',
                         },
                         {
                             name: 'Episode 2 - Trick or Treat, Freak',
-                            type: 'project',
                             description: 'Season 2, Episode 2 - Halloween night chaos',
                         },
                     ],
@@ -132,17 +113,14 @@ export const loadMockProjects = (addProject: (input: CreateProjectInput) => any)
         // Hamilton - Theater production with different performances
         {
             name: 'Hamilton',
-            type: 'folder',
             description: 'Broadway musical about Alexander Hamilton',
             children: [
                 {
                     name: 'New York Performance',
-                    type: 'project',
                     description: 'Original Broadway production at Richard Rodgers Theatre',
                 },
                 {
                     name: 'London Performance',
-                    type: 'project',
                     description: 'West End production at Victoria Palace Theatre',
                 },
             ],
@@ -151,14 +129,21 @@ export const loadMockProjects = (addProject: (input: CreateProjectInput) => any)
     
     // Recursive function to add projects with proper hierarchy
     const addProjectWithChildren = (projectData: any, parentId?: string) => {
+        console.log('Adding project with children:', projectData);
         const { children, ...projectInput } = projectData;
         const projectWithParent = parentId ? { ...projectInput, parentId } : projectInput;
+        console.log('Project with parent:', projectWithParent);
         const addedProject = addProject(projectWithParent);
+        console.log('Project with parent 22222:', projectWithParent);
+
+        console.log('Added project:', addedProject);
         addedProjects.push(addedProject);
         
         // Add children recursively
         if (children) {
+            console.log('Adding children:', children);
             children.forEach((child: any) => {
+                console.log('Adding child:', child);
                 addProjectWithChildren(child, addedProject.id);
             });
         }

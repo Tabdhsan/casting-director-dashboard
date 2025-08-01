@@ -3,6 +3,7 @@
 import type {
     Actor,
     Project,
+    Folder,
     Role,
     ActorAssignment,
     ActorFilters,
@@ -48,7 +49,7 @@ export function createActor(input: Omit<Actor, 'id' | 'createdAt' | 'updatedAt'>
     };
 }
 
-export function createProject(input: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>): Project {
+export function createProject(input: Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>): Folder {
     const now = new Date();
     return {
         ...input,
@@ -56,6 +57,11 @@ export function createProject(input: Omit<Project, 'id' | 'createdAt' | 'updated
         createdAt: now,
         updatedAt: now,
     };
+}
+
+// Create folder function (alias for createProject)
+export function createFolder(input: Omit<Folder, 'id' | 'createdAt' | 'updatedAt'>): Folder {
+    return createProject(input);
 }
 
 export function createRole(input: Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'customBuckets'> & { customBuckets?: StatusBucket[] }): Role {
@@ -257,7 +263,7 @@ export function calculateDashboardMetrics(
 
     return {
         totalActors: actors.length,
-        totalProjects: projects.filter(p => p.type === 'project').length,
+        totalFolders: projects.length,
         totalRoles: roles.length,
         openRoles,
         recentlyAddedActors,
@@ -305,7 +311,7 @@ export function getActorRoleHistory(
     return actorAssignments
         .map(assignment => {
             const role = roleMap.get(assignment.roleId);
-            const project = role ? projectMap.get(role.projectId) : undefined;
+            const project = role ? projectMap.get(role.folderId) : undefined;
 
             if (role && project) {
                 return { assignment, role, project };
