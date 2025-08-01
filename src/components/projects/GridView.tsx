@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { DndContext, DragOverlay, useDroppable } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent, DragOverEvent } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
-import { Folder, FileText } from 'lucide-react';
-import { useProjects, useRoles, useAssignments } from '@/hooks/useStore';
+import { Folder } from 'lucide-react';
+import { useProjects, useRoles, useAssignments, useUI } from '@/hooks/useStore';
 import { RenameModal } from './RenameModal';
 import { DeleteConfirmModal } from './DeleteConfirmModal';
 import type { Project } from '@/types';
@@ -39,9 +39,10 @@ function DroppableGridArea({ children, isEmpty }: { children: React.ReactNode; i
 }
 
 export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
-    const { projects, updateProject } = useProjects();
-    const { getRolesByProject, getRolesByFolder } = useRoles();
+    const { projects, updateProject, getActiveSubFolders, getArchivedSubFolders } = useProjects();
+    const { getRolesByProject, getActiveRolesByFolder, getArchivedRolesByFolder } = useRoles();
     const { assignments } = useAssignments();
+    const { ui } = useUI();
     
     // Modal states
     const [renameProject, setRenameProject] = useState<Project | null>(null);
@@ -53,19 +54,21 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
     const [overId, setOverId] = useState<string | null>(null);
 
     // Get items to display in current folder
-    const currentProjects = projects.filter(p => 
-        currentFolderId === null 
-            ? (p.parentId === null || p.parentId === undefined)
-            : p.parentId === currentFolderId
-    );
-    const currentRoles = currentFolderId 
-        ? getRolesByFolder(currentFolderId)
+    const activeFolders = getActiveSubFolders(currentFolderId);
+    const archivedFolders = getArchivedSubFolders(currentFolderId);
+    const activeRoles = currentFolderId 
+        ? getActiveRolesByFolder(currentFolderId)
+        : [];
+    const archivedRoles = currentFolderId 
+        ? getArchivedRolesByFolder(currentFolderId)
         : [];
 
     // Items filtered for current folder
+    const allFolders = [...activeFolders, ...archivedFolders];
+    const allRoles = [...activeRoles, ...archivedRoles];
 
-    // Combine projects and roles for display
-    const allItems = [...currentProjects, ...currentRoles];
+    // Combine projects and roles for display (for drag and drop)
+    const allItems = [...allFolders, ...allRoles];
     const itemIds = allItems.map(item => item.id);
 
     // Get role assignment counts
@@ -106,7 +109,7 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
         setActiveId(active.id as string);
         
         // Find the dragged item (only projects can be dragged)
-        const project = currentProjects.find(p => p.id === active.id);
+        const project = allFolders.find(p => p.id === active.id);
         if (project) {
             setDraggedItem(project);
         }
@@ -128,7 +131,7 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
             return;
         }
 
-        const draggedProject = currentProjects.find(p => p.id === active.id);
+        const draggedProject = allFolders.find(p => p.id === active.id);
         if (!draggedProject) return;
 
         // Handle different drop targets
@@ -149,7 +152,7 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
             updateProject(draggedProject.id, { parentId: breadcrumbId });
         } else {
             // Drop on another folder in the current view
-            const targetProject = currentProjects.find(p => p.id === over.id);
+            const targetProject = allFolders.find(p => p.id === over.id);
             if (targetProject && targetProject.id !== draggedProject.id) {
                 // Move into the target folder
                 updateProject(draggedProject.id, { parentId: targetProject.id });
@@ -172,7 +175,10 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
                                 <Folder className="mx-auto h-12 w-12 text-muted-foreground" />
                                 <h3 className="mt-4 text-lg font-medium">No items yet</h3>
                                 <p className="mt-2 text-sm text-muted-foreground">
-                                    Create your first folder or role to get started.
+                                    {currentFolderId 
+                                        ? "This folder is empty. Create folders or roles to get started."
+                                        : "Create your first folder or role to get started."
+                                    }
                                 </p>
                             </div>
                         </div>
@@ -181,33 +187,93 @@ export function GridView({ currentFolderId, onFolderSelect }: GridViewProps) {
                     {/* Grid of items */}
                     {allItems.length > 0 && (
                         <SortableContext items={itemIds} strategy={rectSortingStrategy}>
-                            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 p-4">
-                                {currentProjects.map((project) => (
-                                    <ProjectCard
-                                        key={project.id}
-                                        project={project}
-                                        roleCount={getProjectRoleCount(project.id)}
-                                        onDoubleClick={() => handleFolderDoubleClick(project)}
-                                        onRename={handleRename}
-                                        onDelete={handleDelete}
-                                        isDragging={activeId === project.id}
-                                        isOver={overId === project.id}
-                                        enableDrag={true}
-                                    />
-                                ))}
-                                
-                                {currentRoles.map((role) => (
-                                    <RoleCard
-                                        key={role.id}
-                                        role={role}
-                                        assignmentCount={getRoleAssignmentCount(role.id)}
-                                        // onDoubleClick={() => {
-                                        //     // Navigate to role detail page
-                                        //     console.log('Navigate to role:', role.id);
-                                        // }}
-                                        enableDrag={false} // Roles don't need drag for now
-                                    />
-                                ))}
+                            <div className="p-4 space-y-8">
+                                {/* Active Folders Section */}
+                                {activeFolders.length > 0 && (
+                                    <div>
+                                        <h2 className="text-lg font-semibold mb-4">
+                                            Folders ({activeFolders.length})
+                                        </h2>
+                                        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                                            {activeFolders.map((project) => (
+                                                <ProjectCard
+                                                    key={project.id}
+                                                    project={project}
+                                                    roleCount={getProjectRoleCount(project.id)}
+                                                    onDoubleClick={() => handleFolderDoubleClick(project)}
+                                                    onRename={handleRename}
+                                                    onDelete={handleDelete}
+                                                    isDragging={activeId === project.id}
+                                                    isOver={overId === project.id}
+                                                    enableDrag={true}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Active Roles Section */}
+                                {activeRoles.length > 0 && (
+                                    <div>
+                                        <h2 className="text-lg font-semibold mb-4">
+                                            Roles ({activeRoles.length})
+                                        </h2>
+                                        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                                            {activeRoles.map((role) => (
+                                                <RoleCard
+                                                    key={role.id}
+                                                    role={role}
+                                                    assignmentCount={getRoleAssignmentCount(role.id)}
+                                                    enableDrag={false} // Roles don't need drag for now
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Archived Folders Section */}
+                                {ui.showArchived && archivedFolders.length > 0 && (
+                                    <div>
+                                        <h2 className="text-lg font-semibold mb-4 text-muted-foreground">
+                                            Archived Folders ({archivedFolders.length})
+                                        </h2>
+                                        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                                            {archivedFolders.map((project) => (
+                                                <ProjectCard
+                                                    key={project.id}
+                                                    project={project}
+                                                    roleCount={getProjectRoleCount(project.id)}
+                                                    onDoubleClick={() => handleFolderDoubleClick(project)}
+                                                    onRename={handleRename}
+                                                    onDelete={handleDelete}
+                                                    isDragging={activeId === project.id}
+                                                    isOver={overId === project.id}
+                                                    enableDrag={true}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+
+                                {/* Archived Roles Section */}
+                                {ui.showArchived && archivedRoles.length > 0 && (
+                                    <div>
+                                        <h2 className="text-lg font-semibold mb-4 text-muted-foreground">
+                                            Archived Roles ({archivedRoles.length})
+                                        </h2>
+                                        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                                            {archivedRoles.map((role) => (
+                                                <RoleCard
+                                                    key={role.id}
+                                                    role={role}
+                                                    assignmentCount={getRoleAssignmentCount(role.id)}
+                                                    enableDrag={false} // Roles don't need drag for now
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </SortableContext>
                     )}

@@ -31,6 +31,10 @@ export const useProjects = () => {
     const unarchiveProject = useAppStore(state => state.unarchiveProject);
     const getProjectHierarchy = useAppStore(state => state.getProjectHierarchy);
     const getProjectBreadcrumb = useAppStore(state => state.getProjectBreadcrumb);
+    const getActiveFolders = useAppStore(state => state.getActiveFolders);
+    const getArchivedFolders = useAppStore(state => state.getArchivedFolders);
+    const getActiveSubFolders = useAppStore(state => state.getActiveSubFolders);
+    const getArchivedSubFolders = useAppStore(state => state.getArchivedSubFolders);
 
     return {
         projects,
@@ -41,6 +45,10 @@ export const useProjects = () => {
         unarchiveProject,
         getProjectHierarchy,
         getProjectBreadcrumb,
+        getActiveFolders,
+        getArchivedFolders,
+        getActiveSubFolders,
+        getArchivedSubFolders,
     };
 };
 
@@ -96,26 +104,7 @@ export const useAssignments = () => {
     };
 };
 
-// Hook for UI state
-export const useUI = () => {
-    const ui = useAppStore(state => state.ui);
-    const toggleSidebar = useAppStore(state => state.toggleSidebar);
-    const setSidebarCollapsed = useAppStore(state => state.setSidebarCollapsed);
-    const setSidebarUserPreference = useAppStore(state => state.setSidebarUserPreference);
-    const setCurrentView = useAppStore(state => state.setCurrentView);
-    const setSelectedActors = useAppStore(state => state.setSelectedActors);
-    const setActiveFilters = useAppStore(state => state.setActiveFilters);
 
-    return {
-        ui,
-        toggleSidebar,
-        setSidebarCollapsed,
-        setSidebarUserPreference,
-        setCurrentView,
-        setSelectedActors,
-        setActiveFilters,
-    };
-};
 
 // Hook for dashboard and utilities
 export const useDashboard = () => {
@@ -129,6 +118,31 @@ export const useDashboard = () => {
         clearAllData,
         exportData,
         importData,
+    };
+};
+
+// Hook for UI operations
+export const useUI = () => {
+    const ui = useAppStore(state => state.ui);
+    const toggleSidebar = useAppStore(state => state.toggleSidebar);
+    const setSidebarCollapsed = useAppStore(state => state.setSidebarCollapsed);
+    const setSidebarUserPreference = useAppStore(state => state.setSidebarUserPreference);
+    const setCurrentView = useAppStore(state => state.setCurrentView);
+    const setSelectedActors = useAppStore(state => state.setSelectedActors);
+    const setActiveFilters = useAppStore(state => state.setActiveFilters);
+    const toggleShowArchived = useAppStore(state => state.toggleShowArchived);
+    const setShowArchived = useAppStore(state => state.setShowArchived);
+
+    return {
+        ui,
+        toggleSidebar,
+        setSidebarCollapsed,
+        setSidebarUserPreference,
+        setCurrentView,
+        setSelectedActors,
+        setActiveFilters,
+        toggleShowArchived,
+        setShowArchived,
     };
 };
 

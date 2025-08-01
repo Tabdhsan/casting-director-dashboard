@@ -10,6 +10,13 @@ export const mockProjects: CreateFolderInput[] = [
         archived: false,
     },
     
+    // Archived test folder
+    {
+        name: 'The Matrix',
+        description: 'Sci-fi action trilogy (completed production)',
+        archived: true,
+    },
+    
     // Stranger Things - TV series with seasons and episodes
     {
         name: 'Stranger Things',

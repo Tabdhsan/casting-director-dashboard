@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useDroppable, useDraggable } from '@dnd-kit/core';
-import { Folder, FileText, GripVertical } from 'lucide-react';
+import { Folder, FileText, GripVertical, ChevronDown, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useProjects } from '@/hooks/useStore';
@@ -111,7 +111,7 @@ function TreeProjectItem({
                             setIsExpanded(!isExpanded);
                         }}
                     >
-                        {isExpanded ? '▼' : '▶'}
+                        {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                     </button>
                 )}
                 {!hasChildren && <div className="w-4" />}

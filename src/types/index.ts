@@ -76,6 +76,7 @@ export interface UIState {
   currentView: 'grid' | 'table';
   selectedActors: string[];
   activeFilters: ActorFilters;
+  showArchived: boolean;
 }
 
 // Form types for creating/editing entities

@@ -15,6 +15,8 @@ export interface UISlice {
     clearSelectedActors: () => void;
     clearActiveFilters: () => void;
     setSidebarUserPreference: (collapsed: boolean) => void;
+    toggleShowArchived: () => void;
+    setShowArchived: (show: boolean) => void;
 }
 
 export const createUISlice: StateCreator<
@@ -29,6 +31,7 @@ export const createUISlice: StateCreator<
         currentView: 'grid',
         selectedActors: [],
         activeFilters: {},
+        showArchived: false, // Default to hiding archived content
     },
 
     toggleSidebar: () => {
@@ -101,6 +104,24 @@ export const createUISlice: StateCreator<
             ui: {
                 ...state.ui,
                 activeFilters: {}
+            }
+        }));
+    },
+
+    toggleShowArchived: () => {
+        set(state => ({
+            ui: {
+                ...state.ui,
+                showArchived: !state.ui.showArchived
+            }
+        }));
+    },
+
+    setShowArchived: (show: boolean) => {
+        set(state => ({
+            ui: {
+                ...state.ui,
+                showArchived: show
             }
         }));
     },

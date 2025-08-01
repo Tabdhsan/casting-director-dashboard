@@ -15,6 +15,7 @@ export const mockRoles = (folderIds: string[]): CreateRoleInput[] => [
         description: 'Architect who designs dream worlds',
         requirements: 'Leading woman, age 25-35, intelligent, creative',
         folderId: folderIds.find(id => id.includes('Inception')) || folderIds[0],
+        archived: true,
     },
     
     // Stranger Things - Episode 1 roles (2 roles)

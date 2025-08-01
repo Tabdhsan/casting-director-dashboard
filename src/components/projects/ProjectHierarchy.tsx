@@ -1,21 +1,22 @@
 // Main project hierarchy management component with dual-view interface
 
 import { useState } from 'react';
-import { LayoutGrid, Plus, FolderPlus, List } from 'lucide-react';
+import { LayoutGrid, Plus, FolderPlus, List, Archive } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
-import { useProjects } from '@/hooks/useStore';
+import { useProjects, useUI } from '@/hooks/useStore';
 import { ProjectBreadcrumb } from './ProjectBreadcrumb';
 import { TreeView } from './TreeView';
 import { GridView } from './GridView';
 import { AddFolderModal } from './AddFolderModal';
 import { AddRoleModal } from './AddRoleModal';
+import { Switch } from '@/components/ui/switch';
 
 type ViewMode = 'tree' | 'grid';
 
 export function ProjectHierarchy() {
     const { projects } = useProjects();
-    // const { ui } = useUI(); // For future use
+    const { ui, toggleShowArchived } = useUI();
     
     // Local state for view mode (could be moved to store later)
     const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -57,6 +58,7 @@ export function ProjectHierarchy() {
                 </div>
 
                 {/* Action Buttons */}
+                <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap items-center gap-2">
                     <Button
                         variant="outline"
@@ -77,6 +79,20 @@ export function ProjectHierarchy() {
                         <Plus className="mr-2 h-4 w-4" />
                         New Role
                     </Button>
+                </div>
+                <div className="flex flex-wrap items-center justify-start gap-2">
+                    {/* Archive Toggle */}
+                    <p className="text-sm text-muted-foreground">Show Archived</p>
+                    <Switch 
+                        checked={ui.showArchived}
+                        onCheckedChange={toggleShowArchived}
+                        aria-label="Show archived content"
+                        className="flex items-center gap-2 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-800"
+                    >
+                        <Archive className="h-4 w-4" />
+                        <span className="hidden sm:inline">Show Archived</span>
+                    </Switch>
+                </div>
                 </div>
             </div>
 

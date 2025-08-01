@@ -5,7 +5,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { Folder } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useProjects, useRoles, useAssignments } from '@/hooks/useStore';
+import { useProjects, useRoles, useAssignments, useUI } from '@/hooks/useStore';
 import { ProjectCard } from './ProjectCard';
 import { RoleCard } from './RoleCard';
 import { RenameModal } from './RenameModal';
@@ -40,9 +40,10 @@ function DroppableContentArea({ children, isEmpty }: { children: React.ReactNode
 }
 
 export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }: FolderContentPanelProps) {
-    const { projects } = useProjects();
-    const { getRolesByProject } = useRoles();
+    const { projects, getActiveSubFolders, getArchivedSubFolders } = useProjects();
+    const { getRolesByProject, getActiveRolesByFolder, getArchivedRolesByFolder } = useRoles();
     const { assignments } = useAssignments();
+    const { ui } = useUI();
 
     // Modal states
     const [renameProject, setRenameProject] = useState<Project | null>(null);
@@ -56,10 +57,16 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
         : null;
 
     // Get items to display in current folder
-    const currentProjects = projects.filter(p => p.parentId === currentFolderId);
-    const currentRoles = currentFolderId 
-        ? getRolesByProject(currentFolderId)
+    const activeFolders = getActiveSubFolders(currentFolderId);
+    const archivedFolders = getArchivedSubFolders(currentFolderId);
+    const activeRoles = currentFolderId 
+        ? getActiveRolesByFolder(currentFolderId)
         : [];
+    const archivedRoles = currentFolderId 
+        ? getArchivedRolesByFolder(currentFolderId)
+        : [];
+    const allFolders = [...activeFolders, ...archivedFolders];
+    const allRoles = [...activeRoles, ...archivedRoles];
 
     // Get role assignment counts
     const getRoleAssignmentCount = (roleId: string) => {
@@ -96,7 +103,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
 
 
     // Combine projects and roles for sortable context
-    const allItems = [...currentProjects, ...currentRoles];
+    const allItems = [...allFolders, ...allRoles];
     const itemIds = allItems.map(item => item.id);
 
     return (
@@ -114,7 +121,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                 <CardContent className="flex-1 overflow-auto">
                     <DroppableContentArea isEmpty={allItems.length === 0}>
                         {/* Empty state */}
-                        {currentProjects.length === 0 && currentRoles.length === 0 && (
+                        {allFolders.length === 0 && allRoles.length === 0 && (
                             <div className="flex h-64 items-center justify-center">
                                 <div className="text-center">
                                     <Folder className="mx-auto h-12 w-12 text-muted-foreground" />
@@ -130,17 +137,17 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                         )}
 
                         {/* Content grid */}
-                        {(currentProjects.length > 0 || currentRoles.length > 0) && (
+                        {(allFolders.length > 0 || allRoles.length > 0) && (
                             <SortableContext items={itemIds} strategy={rectSortingStrategy}>
                                 <div className="space-y-6">
-                                    {/* Projects/Folders */}
-                                    {currentProjects.length > 0 && (
+                                    {/* Active Folders */}
+                                    {activeFolders.length > 0 && (
                                         <div>
                                             <h4 className="mb-3 text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                                                Projects
+                                                Folders ({activeFolders.length})
                                             </h4>
                                             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                                                {currentProjects.map((project) => (
+                                                {activeFolders.map((project) => (
                                                     <ProjectCard
                                                         key={project.id}
                                                         project={project}
@@ -156,21 +163,60 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
                                         </div>
                                     )}
 
-                                    {/* Roles */}
-                                    {currentRoles.length > 0 && (
+                                    {/* Active Roles */}
+                                    {activeRoles.length > 0 && (
                                         <div>
                                             <h4 className="mb-3 text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                                                Roles
+                                                Roles ({activeRoles.length})
                                             </h4>
                                             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                                                {currentRoles.map((role) => (
+                                                {activeRoles.map((role) => (
                                                     <RoleCard
                                                         key={role.id}
                                                         role={role}
                                                         assignmentCount={getRoleAssignmentCount(role.id)}
-                                                        // onDoubleClick={() => {
-                                                        //     console.log('Navigate to role:', role.id);
-                                                        // }}
+                                                        enableDrag={false}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Archived Folders */}
+                                    {ui.showArchived && archivedFolders.length > 0 && (
+                                        <div>
+                                            <h4 className="mb-3 text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                                                Archived Folders ({archivedFolders.length})
+                                            </h4>
+                                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                                {archivedFolders.map((project) => (
+                                                    <ProjectCard
+                                                        key={project.id}
+                                                        project={project}
+                                                        roleCount={getProjectRoleCount(project.id)}
+                                                        onDoubleClick={() => handleFolderDoubleClick(project)}
+                                                        onRename={handleRename}
+                                                        onDelete={handleDelete}
+                                                        isDragging={activeId === project.id}
+                                                        enableDrag={true}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Archived Roles */}
+                                    {ui.showArchived && archivedRoles.length > 0 && (
+                                        <div>
+                                            <h4 className="mb-3 text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                                                Archived Roles ({archivedRoles.length})
+                                            </h4>
+                                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                                {archivedRoles.map((role) => (
+                                                    <RoleCard
+                                                        key={role.id}
+                                                        role={role}
+                                                        assignmentCount={getRoleAssignmentCount(role.id)}
                                                         enableDrag={false}
                                                     />
                                                 ))}

@@ -90,6 +90,10 @@ export interface AppStore {
     unarchiveProject: (id: string) => void;
     getProjectHierarchy: () => Project[];
     getProjectBreadcrumb: (projectId: string) => Project[];
+    getActiveFolders: () => Project[];
+    getArchivedFolders: () => Project[];
+    getActiveSubFolders: (parentId: string | null) => Project[];
+    getArchivedSubFolders: (parentId: string | null) => Project[];
     
     // Role actions
     addRole: (input: CreateRoleInput) => Role;
@@ -123,6 +127,8 @@ export interface AppStore {
     setCurrentView: (view: 'grid' | 'table') => void;
     setSelectedActors: (actorIds: string[]) => void;
     setActiveFilters: (filters: ActorFilters) => void;
+    toggleShowArchived: () => void;
+    setShowArchived: (show: boolean) => void;
     
     // Utility actions
     getDashboardMetrics: () => DashboardMetrics;
@@ -155,6 +161,7 @@ export const useAppStore = create<AppStore>()(
                 currentView: 'grid',
                 selectedActors: [],
                 activeFilters: {},
+                showArchived: false,
             },
 
             // Actor actions
@@ -272,6 +279,38 @@ export const useAppStore = create<AppStore>()(
             getProjectBreadcrumb: (projectId: string) => {
                 const { projects } = get();
                 return getProjectBreadcrumb(projectId, projects);
+            },
+
+            getActiveFolders: () => {
+                const { projects } = get();
+                return projects.filter(project => !project.archived);
+            },
+
+            getArchivedFolders: () => {
+                const { projects } = get();
+                return projects.filter(project => project.archived);
+            },
+
+            getActiveSubFolders: (parentId: string | null) => {
+                const { projects } = get();
+                return projects.filter(project => 
+                    !project.archived && (
+                        parentId === null 
+                            ? (project.parentId === null || project.parentId === undefined)
+                            : project.parentId === parentId
+                    )
+                );
+            },
+
+            getArchivedSubFolders: (parentId: string | null) => {
+                const { projects } = get();
+                return projects.filter(project => 
+                    project.archived && (
+                        parentId === null 
+                            ? (project.parentId === null || project.parentId === undefined)
+                            : project.parentId === parentId
+                    )
+                );
             },
 
             // Role actions
@@ -444,6 +483,24 @@ export const useAppStore = create<AppStore>()(
                 }));
             },
 
+            toggleShowArchived: () => {
+                set(state => ({
+                    ui: {
+                        ...state.ui,
+                        showArchived: !state.ui.showArchived
+                    }
+                }));
+            },
+
+            setShowArchived: (show: boolean) => {
+                set(state => ({
+                    ui: {
+                        ...state.ui,
+                        showArchived: show
+                    }
+                }));
+            },
+
             // Utility actions
             getDashboardMetrics: () => {
                 const { actors, projects, roles, assignments } = get();
@@ -474,6 +531,7 @@ export const useAppStore = create<AppStore>()(
                         currentView: 'grid',
                         selectedActors: [],
                         activeFilters: {},
+                        showArchived: false,
                     }
                 });
             },
