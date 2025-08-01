@@ -35,7 +35,7 @@ export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
         .join('')
         .toUpperCase();
 
-    const roleHistory = getActorRoleHistory(actor.id);
+    const roleHistory = getActorRoleHistory(actor.id).sort((a, b) => b.assignment.assignedAt.getTime() - a.assignment.assignedAt.getTime());
 
     const handleEdit = () => {
         onEdit?.(actor);

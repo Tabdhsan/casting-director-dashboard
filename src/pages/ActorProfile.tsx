@@ -64,7 +64,7 @@ export function ActorProfile() {
             assignedAt: new Date(item.assignment.assignedAt),
             updatedAt: new Date(item.assignment.updatedAt),
         }
-    }));
+    })).sort((a, b) => b.assignment.assignedAt.getTime() - a.assignment.assignedAt.getTime());
 
     return (
         <div className="space-y-6">

@@ -321,7 +321,7 @@ export function getActorRoleHistory(
             return null;
         })
         .filter((item): item is NonNullable<typeof item> => item !== null)
-        .sort((a, b) => b.assignment.assignedAt.getTime() - a.assignment.assignedAt.getTime());
+        //.sort((a, b) => b.assignment.assignedAt.getTime() - a.assignment.assignedAt.getTime()); //breaks the UI
 }
 
 // Validate folder depth
