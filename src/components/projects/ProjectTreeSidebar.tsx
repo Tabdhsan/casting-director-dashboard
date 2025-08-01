@@ -180,7 +180,7 @@ export function ProjectTreeSidebar({ selectedFolderId, onFolderSelect, activeId 
 
 
     return (
-        <Card className="h-full hover:shadow-sm hover:scale-100">
+        <Card className="h-full hover:shadow-sm">
             <CardHeader className="pb-3">
                 <CardTitle className="text-base">Project Structure</CardTitle>
             </CardHeader>

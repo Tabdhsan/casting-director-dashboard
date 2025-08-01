@@ -100,7 +100,7 @@ export function FolderContentPanel({ currentFolderId, onFolderSelect, activeId }
     const itemIds = allItems.map(item => item.id);
 
     return (
-        <Card className="h-full hover:shadow-sm hover:scale-100">
+        <Card className="h-full hover:shadow-sm">
                 <CardHeader className="pb-3">
                     <CardTitle className="text-base">
                         {currentFolder ? currentFolder.name : 'All Projects'}

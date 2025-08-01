@@ -55,6 +55,7 @@ export function RoleCard({
         <Card
             ref={setNodeRef}
             style={style}
+            hover={true}
             className={cn(
                 'group cursor-pointer transition-all duration-200 hover:shadow-md border',
                 'hover:border-primary/20 bg-background',

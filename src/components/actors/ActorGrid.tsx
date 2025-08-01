@@ -40,6 +40,7 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
     return (
         <Card 
             className="group cursor-pointer transition-all hover:shadow-md"
+            hover={true}
             onClick={() => navigate(`/actors/${actor.id}`)}
         >
             <CardContent className="p-4">
