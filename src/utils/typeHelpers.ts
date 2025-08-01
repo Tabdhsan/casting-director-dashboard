@@ -64,7 +64,7 @@ export function createFolder(input: Omit<Folder, 'id' | 'createdAt' | 'updatedAt
     return createProject(input);
 }
 
-export function createRole(input: Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'customBuckets'> & { customBuckets?: StatusBucket[] }): Role {
+export function createRole(input: Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'customBuckets' | 'archived'> & { customBuckets?: StatusBucket[]; archived?: boolean }): Role {
     const now = new Date();
     return {
         ...input,
@@ -73,6 +73,7 @@ export function createRole(input: Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 
             ...bucket,
             id: generateId(),
         })),
+        archived: input.archived ?? false,
         createdAt: now,
         updatedAt: now,
     };

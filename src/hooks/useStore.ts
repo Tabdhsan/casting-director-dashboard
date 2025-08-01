@@ -46,16 +46,28 @@ export const useRoles = () => {
     const addRole = useAppStore(state => state.addRole);
     const updateRole = useAppStore(state => state.updateRole);
     const deleteRole = useAppStore(state => state.deleteRole);
+    const archiveRole = useAppStore(state => state.archiveRole);
+    const unarchiveRole = useAppStore(state => state.unarchiveRole);
     const getRolesByProject = useAppStore(state => state.getRolesByProject);
     const getRolesByFolder = useAppStore(state => state.getRolesByFolder);
+    const getActiveRoles = useAppStore(state => state.getActiveRoles);
+    const getArchivedRoles = useAppStore(state => state.getArchivedRoles);
+    const getActiveRolesByFolder = useAppStore(state => state.getActiveRolesByFolder);
+    const getArchivedRolesByFolder = useAppStore(state => state.getArchivedRolesByFolder);
 
     return {
         roles,
         addRole,
         updateRole,
         deleteRole,
+        archiveRole,
+        unarchiveRole,
         getRolesByProject,
         getRolesByFolder,
+        getActiveRoles,
+        getArchivedRoles,
+        getActiveRolesByFolder,
+        getArchivedRolesByFolder,
     };
 };
 

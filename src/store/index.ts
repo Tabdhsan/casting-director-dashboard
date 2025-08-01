@@ -93,8 +93,14 @@ export interface AppStore {
     addRole: (input: CreateRoleInput) => Role;
     updateRole: (id: string, updates: UpdateRoleInput) => void;
     deleteRole: (id: string) => void;
+    archiveRole: (id: string) => void;
+    unarchiveRole: (id: string) => void;
     getRolesByProject: (projectId: string) => Role[];
     getRolesByFolder: (folderId: string) => Role[];
+    getActiveRoles: () => Role[];
+    getArchivedRoles: () => Role[];
+    getActiveRolesByFolder: (folderId: string) => Role[];
+    getArchivedRolesByFolder: (folderId: string) => Role[];
     
     // Assignment actions
     assignActorToRole: (input: CreateAssignmentInput) => ActorAssignment;
@@ -250,6 +256,22 @@ export const useAppStore = create<AppStore>()(
                 }));
             },
 
+            archiveRole: (id: string) => {
+                set(state => ({
+                    roles: state.roles.map(role =>
+                        role.id === id ? { ...role, archived: true, updatedAt: new Date() } : role
+                    )
+                }));
+            },
+
+            unarchiveRole: (id: string) => {
+                set(state => ({
+                    roles: state.roles.map(role =>
+                        role.id === id ? { ...role, archived: false, updatedAt: new Date() } : role
+                    )
+                }));
+            },
+
             getRolesByProject: (projectId: string) => {
                 const { roles, projects } = get();
                 const descendantIds = getDescendantProjectIds(projectId, projects);
@@ -260,6 +282,26 @@ export const useAppStore = create<AppStore>()(
             getRolesByFolder: (folderId: string) => {
                 const { roles } = get();
                 return roles.filter(role => role.folderId === folderId);
+            },
+
+            getActiveRoles: () => {
+                const { roles } = get();
+                return roles.filter(role => !role.archived);
+            },
+
+            getArchivedRoles: () => {
+                const { roles } = get();
+                return roles.filter(role => role.archived);
+            },
+
+            getActiveRolesByFolder: (folderId: string) => {
+                const { roles } = get();
+                return roles.filter(role => role.folderId === folderId && !role.archived);
+            },
+
+            getArchivedRolesByFolder: (folderId: string) => {
+                const { roles } = get();
+                return roles.filter(role => role.folderId === folderId && role.archived);
             },
 
             // Assignment actions

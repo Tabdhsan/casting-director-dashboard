@@ -21,6 +21,8 @@ export interface RolesSlice {
     addRole: (input: CreateRoleInput) => Role;
     updateRole: (id: string, updates: UpdateRoleInput) => void;
     deleteRole: (id: string) => void;
+    archiveRole: (id: string) => void;
+    unarchiveRole: (id: string) => void;
     getRolesByFolder: (folderId: string) => Role[]; // Direct folder only (no descendants)
     
     // Compatibility methods
@@ -55,6 +57,22 @@ export const createRolesSlice: StateCreator<
     deleteRole: (id: string) => {
         set(state => ({
             roles: state.roles.filter(role => role.id !== id)
+        }));
+    },
+
+    archiveRole: (id: string) => {
+        set(state => ({
+            roles: state.roles.map(role =>
+                role.id === id ? { ...role, archived: true, updatedAt: new Date() } : role
+            )
+        }));
+    },
+
+    unarchiveRole: (id: string) => {
+        set(state => ({
+            roles: state.roles.map(role =>
+                role.id === id ? { ...role, archived: false, updatedAt: new Date() } : role
+            )
         }));
     },
 

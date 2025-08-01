@@ -27,9 +27,10 @@ interface ActorCardProps {
     actor: Actor;
     assignment: ActorAssignment;
     onRemove: (assignmentId: string) => void;
+    disabled?: boolean;
 }
 
-function ActorCard({ actor, assignment, onRemove }: ActorCardProps) {
+function ActorCard({ actor, assignment, onRemove, disabled = false }: ActorCardProps) {
     const {
         attributes,
         listeners,
@@ -43,6 +44,7 @@ function ActorCard({ actor, assignment, onRemove }: ActorCardProps) {
             assignment,
             actor,
         },
+        disabled,
     });
 
     const style = transform ? {
@@ -74,22 +76,24 @@ function ActorCard({ actor, assignment, onRemove }: ActorCardProps) {
                         </p>
                     </div>
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                            <MoreVertical className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                            onClick={() => onRemove(assignment.id)}
-                            className="text-destructive"
-                        >
-                            <X className="h-4 w-4 mr-2" />
-                            Remove from Role
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                {!disabled && (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                                <MoreVertical className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                                onClick={() => onRemove(assignment.id)}
+                                className="text-destructive"
+                            >
+                                <X className="h-4 w-4 mr-2" />
+                                Remove from Role
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                )}
             </div>
             {assignment.notes && (
                 <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
@@ -104,15 +108,17 @@ interface BucketProps {
     bucket: StatusBucket;
     actors: { actor: Actor; assignment: ActorAssignment }[];
     onRemoveActor: (assignmentId: string) => void;
+    disabled?: boolean;
 }
 
-function Bucket({ bucket, actors, onRemoveActor }: BucketProps) {
+function Bucket({ bucket, actors, onRemoveActor, disabled = false }: BucketProps) {
     const { isOver, setNodeRef } = useDroppable({
         id: bucket.id,
         data: {
             type: 'bucket',
             bucket,
         },
+        disabled,
     });
 
     return (
@@ -146,6 +152,7 @@ function Bucket({ bucket, actors, onRemoveActor }: BucketProps) {
                                 actor={actor}
                                 assignment={assignment}
                                 onRemove={onRemoveActor}
+                                disabled={disabled}
                             />
                         ))}
                     </SortableContext>
@@ -166,6 +173,8 @@ export function StatusBuckets({ role }: StatusBucketsProps) {
     const toast = useToast();
     
     const [draggedItem, setDraggedItem] = useState<{ actor: Actor; assignment: ActorAssignment } | null>(null);
+    
+    const isArchived = role.archived;
 
     // Get assignments for this role
     const roleAssignments = assignments.filter(a => a.roleId === role.id);
@@ -229,6 +238,31 @@ export function StatusBuckets({ role }: StatusBucketsProps) {
 
     // Sort buckets by order
     const sortedBuckets = [...role.customBuckets].sort((a, b) => a.order - b.order);
+
+    if (isArchived) {
+        // Show read-only view for archived roles
+        return (
+            <div className="space-y-4">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                    <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+                        Archived
+                    </Badge>
+                    <span className="text-sm">Role is archived - editing disabled</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 opacity-75">
+                    {sortedBuckets.map((bucket) => (
+                        <Bucket
+                            key={bucket.id}
+                            bucket={bucket}
+                            actors={bucketGroups[bucket.id] || []}
+                            onRemoveActor={() => {}} // Disabled for archived roles
+                            disabled={true}
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings, Plus } from 'lucide-react';
+import { ArrowLeft, Settings, Plus, Archive, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 import { useRoles, useProjects, useActors, useAssignments } from '@/hooks/useStore';
 import { StatusBuckets } from '@/components/roles/StatusBuckets';
@@ -15,7 +16,7 @@ import type { Role, Project } from '@/types';
 export function RoleDetail() {
     const { roleId } = useParams<{ roleId: string }>();
     const navigate = useNavigate();
-    const { roles } = useRoles();
+    const { roles, archiveRole, unarchiveRole } = useRoles();
     const { projects } = useProjects();
     const { actors } = useActors();
     const { getAssignmentsByRole } = useAssignments();
@@ -58,6 +59,14 @@ export function RoleDetail() {
     const assignedActorIds = assignments.map(a => a.actorId);
     const availableActors = actors.filter(actor => !assignedActorIds.includes(actor.id));
 
+    const handleToggleArchive = () => {
+        if (role.archived) {
+            unarchiveRole(role.id);
+        } else {
+            archiveRole(role.id);
+        }
+    };
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -72,7 +81,14 @@ export function RoleDetail() {
                         Back
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold">{role.name}</h1>
+                        <div className="flex items-center gap-3">
+                            <h1 className="text-2xl font-bold">{role.name}</h1>
+                            {role.archived && (
+                                <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+                                    Archived
+                                </Badge>
+                            )}
+                        </div>
                         <p className="text-muted-foreground">
                             {project.name} • {assignments.length} actors assigned
                         </p>
@@ -82,14 +98,28 @@ export function RoleDetail() {
                     <Button
                         variant="outline"
                         size="sm"
+                        onClick={handleToggleArchive}
+                        className={role.archived ? "border-green-300 text-green-700 hover:bg-green-50" : "border-orange-300 text-orange-700 hover:bg-orange-50"}
+                    >
+                        {role.archived ? (
+                            <RotateCcw className="h-4 w-4 mr-2" />
+                        ) : (
+                            <Archive className="h-4 w-4 mr-2" />
+                        )}
+                        {role.archived ? 'Unarchive' : 'Archive'}
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
                         onClick={() => setShowBucketSettings(true)}
+                        disabled={role.archived}
                     >
                         <Settings className="h-4 w-4 mr-2" />
                         Bucket Settings
                     </Button>
                     <Button
                         onClick={() => setShowAssignModal(true)}
-                        disabled={availableActors.length === 0}
+                        disabled={availableActors.length === 0 || role.archived}
                     >
                         <Plus className="h-4 w-4 mr-2" />
                         Assign Actor

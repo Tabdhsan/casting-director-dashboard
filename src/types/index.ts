@@ -32,6 +32,7 @@ export interface Role {
   requirements?: string;
   folderId: string; // References Folder.id
   customBuckets: StatusBucket[];
+  archived: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -88,7 +89,10 @@ export type Project = Folder;
 export type CreateProjectInput = CreateFolderInput;
 export type UpdateProjectInput = UpdateFolderInput;
 
-export type CreateRoleInput = Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'customBuckets'> & { customBuckets?: StatusBucket[] };
+export type CreateRoleInput = Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'customBuckets' | 'archived'> & { 
+  customBuckets?: StatusBucket[];
+  archived?: boolean;
+};
 export type UpdateRoleInput = Partial<Omit<Role, 'id' | 'createdAt' | 'updatedAt'>>;
 
 export type CreateAssignmentInput = Omit<ActorAssignment, 'id' | 'assignedAt' | 'updatedAt'>;

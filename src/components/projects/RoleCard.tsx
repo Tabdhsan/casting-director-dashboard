@@ -3,7 +3,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useNavigate } from 'react-router-dom';
-import { Users, MoreVertical, Edit, Trash2, UserPlus, GripVertical } from 'lucide-react';
+import { Users, MoreVertical, Edit, Trash2, UserPlus, GripVertical, Archive, RotateCcw } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import type { Role } from '@/types';
+import { useRoles } from '@/hooks/useStore';
 
 interface RoleCardProps {
     role: Role;
@@ -28,12 +29,22 @@ interface RoleCardProps {
 export function RoleCard({ 
     role, 
     assignmentCount, 
-    onDoubleClick,
+    onDoubleClick, 
     isDragging, 
     isOver,
     enableDrag = false 
 }: RoleCardProps) {
     const navigate = useNavigate();
+    const { archiveRole, unarchiveRole } = useRoles();
+    
+    const handleToggleArchive = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (role.archived) {
+            unarchiveRole(role.id);
+        } else {
+            archiveRole(role.id);
+        }
+    };
     const {
         attributes,
         listeners,
@@ -61,7 +72,8 @@ export function RoleCard({
                 'hover:border-primary/20 bg-background',
                 (isDragging || isSortableDragging) && 'opacity-50 scale-95',
                 isOver && 'ring-2 ring-primary ring-offset-2',
-                'select-none h-full flex flex-col min-h-[240px]'
+                'select-none h-full flex flex-col min-h-[240px]',
+                role.archived && 'opacity-75 grayscale-[0.3]'
             )}
             onDoubleClick={() => {
                 if (onDoubleClick) {
@@ -95,8 +107,8 @@ export function RoleCard({
                             </div>
                         </div>
                         
-                        {/* Assignment Badge - Separate Row */}
-                        <div className="mt-2">
+                        {/* Assignment Badge and Archive Status - Separate Row */}
+                        <div className="mt-2 flex flex-wrap gap-2">
                             <Badge variant="secondary" className="text-xs">
                                 <span className="hidden sm:inline">
                                     {assignmentCount} actor{assignmentCount !== 1 ? 's' : ''} assigned
@@ -105,6 +117,11 @@ export function RoleCard({
                                     {assignmentCount} assigned
                                 </span>
                             </Badge>
+                            {role.archived && (
+                                <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-800">
+                                    Archived
+                                </Badge>
+                            )}
                         </div>
 
                         {/* Description */}
@@ -154,6 +171,14 @@ export function RoleCard({
                             <DropdownMenuItem>
                                 <Edit className="mr-2 h-4 w-4" />
                                 Edit Role
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleToggleArchive}>
+                                {role.archived ? (
+                                    <RotateCcw className="mr-2 h-4 w-4" />
+                                ) : (
+                                    <Archive className="mr-2 h-4 w-4" />
+                                )}
+                                {role.archived ? 'Unarchive' : 'Archive'}
                             </DropdownMenuItem>
                             <DropdownMenuItem className="text-destructive">
                                 <Trash2 className="mr-2 h-4 w-4" />
