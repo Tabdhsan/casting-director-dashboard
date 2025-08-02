@@ -119,9 +119,19 @@ export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
                                 </div>
                                 
                                 {actor.representation && (
-                                    <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Representation:</span>
-                                        <span className="font-medium">{actor.representation}</span>
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between">
+                                            <span className="text-muted-foreground">Agency:</span>
+                                            <span className="font-medium">{actor.representation.agency}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-muted-foreground">Agent:</span>
+                                            <span className="font-medium">{actor.representation.agent}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-muted-foreground">Phone:</span>
+                                            <span className="font-medium">{actor.representation.phone}</span>
+                                        </div>
                                     </div>
                                 )}
                             </div>

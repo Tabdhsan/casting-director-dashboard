@@ -516,7 +516,11 @@ export const useAppStore = create<AppStore>()(
                     ethnicAppearances: extractUniqueEthnicAppearances(actors),
                     heights: extractUniqueValues(actors, 'height'),
                     unionStatuses: extractUniqueValues(actors, 'unionStatus'),
-                    representations: extractUniqueValues(actors, 'representation').filter((rep): rep is string => Boolean(rep)),
+                    representations: actors
+                        .map(actor => actor.representation?.agency)
+                        .filter((agency): agency is string => Boolean(agency))
+                        .filter((agency, index, arr) => arr.indexOf(agency) === index)
+                        .sort(),
                     tags: extractUniqueTags(actors),
                 };
             },

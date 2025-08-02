@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/form';
 import { useActors } from '@/hooks/useStore';
 import { useToast } from '@/hooks/useToast';
-import { GENDER_OPTIONS, ETHNIC_APPEARANCE_OPTIONS, REPRESENTATION_OPTIONS, COMMON_TAGS } from '@/types/constants';
+import { GENDER_OPTIONS, ETHNIC_APPEARANCE_OPTIONS, COMMON_TAGS } from '@/types/constants';
 import type { CreateActorInput } from '@/types';
 
 // Form validation schema
@@ -47,7 +47,11 @@ const addActorSchema = z.object({
     ethnicAppearance: z.array(z.string()).min(1, 'At least one ethnic appearance must be selected'),
     height: z.string().min(1, 'Height is required'),
     unionStatus: z.string().min(1, 'Union Status is required'),
-    representation: z.string().optional(),
+    representation: z.object({
+        agency: z.string().min(1, 'Agency is required'),
+        agent: z.string().min(1, 'Agent name is required'),
+        phone: z.string().min(1, 'Phone number is required')
+    }).optional(),
     tags: z.array(z.string()).default([]),
     notes: z.string().default(''),
     headshotUrl: z.string().url('Must be a valid URL').optional().or(z.literal('')),
@@ -76,7 +80,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
             ethnicAppearance: [],
             height: '',
             unionStatus: '',
-            representation: '',
+            representation: undefined,
             tags: [],
             notes: '',
             headshotUrl: '',
@@ -141,7 +145,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                         <div className="space-y-4">
                             <h3 className="text-lg font-medium">Basic Information</h3>
                             
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <FormField
                                     control={form.control as any}
                                     name="name"
@@ -149,7 +153,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                         <FormItem>
                                             <FormLabel>Full Name</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Enter actor's full name" {...field} />
+                                                <Input placeholder="" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -166,7 +170,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                                 <FormControl>
                                                     <Input 
                                                         type="number" 
-                                                        placeholder="18" 
+                                                        placeholder="" 
                                                         {...field}
                                                         onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                                                     />
@@ -184,7 +188,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                                 <FormControl>
                                                     <Input 
                                                         type="number" 
-                                                        placeholder="65" 
+                                                        placeholder="" 
                                                         {...field}
                                                         onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                                                     />
@@ -193,11 +197,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                             </FormItem>
                                         )}
                                     />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <FormField
+                                    <FormField
                                     control={form.control as any}
                                     name="gender"
                                     render={({ field }) => (
@@ -221,7 +221,23 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                         </FormItem>
                                     )}
                                 />
+                                <FormField
+                                    control={form.control as any}
+                                    name="height"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Height</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="5'8&quot;" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                </div>
+                            </div>
 
+                            <div className="grid grid-cols-1 gap-4">
                                 <FormField
                                     control={form.control as any}
                                     name="ethnicAppearance"
@@ -239,7 +255,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                                                 if (checked) {
                                                                     field.onChange([...currentValue, option]);
                                                                 } else {
-                                                                    field.onChange(currentValue.filter((v) => v !== option));
+                                                                    field.onChange(currentValue.filter((v: string) => v !== option));
                                                                 }
                                                             }}
                                                         />
@@ -259,22 +275,7 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
-                                <FormField
-                                    control={form.control as any}
-                                    name="height"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Height</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="5'8&quot;" {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Enter height in feet and inches (e.g., 5'8")
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                
 
                                 <FormField
                                     control={form.control as any}
@@ -300,31 +301,52 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                     )}
                                 />
 
-                                <FormField
-                                    control={form.control as any}
-                                    name="representation"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Representation</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                {/* Representation Section */}
+                                <div className="space-y-4">
+                                    <h4 className="text-md font-medium">Representation (Optional)</h4>
+                                    
+                                    <FormField
+                                        control={form.control as any}
+                                        name="representation.agency"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Agency</FormLabel>
                                                 <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select representation (optional)" />
-                                                    </SelectTrigger>
+                                                    <Input placeholder="Enter agency" {...field} />
                                                 </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="">No Representation</SelectItem>
-                                                    {REPRESENTATION_OPTIONS.map((rep) => (
-                                                        <SelectItem key={rep} value={rep}>
-                                                            {rep}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control as any}
+                                        name="representation.agent"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Agent Name</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Agent's full name" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control as any}
+                                        name="representation.phone"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Agent Phone</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="(555) 123-4567" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
                             </div>
                         </div>
 

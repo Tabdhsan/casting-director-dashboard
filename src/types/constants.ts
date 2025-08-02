@@ -77,25 +77,6 @@ export const ETHNIC_APPEARANCE_OPTIONS = [
 'Other',
 ] as const;
 
-// Representation agency options
-export const REPRESENTATION_OPTIONS = [
-  'CAA (Creative Artists Agency)',
-  'WME (William Morris Endeavor)',
-  'UTA (United Talent Agency)',
-  'ICM Partners',
-  'Gersh Agency',
-  'APA (Agency for the Performing Arts)',
-  'Paradigm Talent Agency',
-  'Clear Talent Group',
-  'Innovative Artists',
-  'Buchwald Talent Group',
-  'Don Buchwald & Associates',
-  'Abrams Artists Agency',
-  'Harden-Curtis Associates',
-  'Stewart Talent',
-  'Other',
-] as const;
-
 // Height ranges for filtering
 export const HEIGHT_RANGES = [
   'Under 5\'0"',
@@ -224,7 +205,6 @@ export const SORT_OPTIONS = {
 export type BucketColor = typeof BUCKET_COLORS[number];
 export type GenderOption = typeof GENDER_OPTIONS[number];
 export type EthnicAppearanceOption = typeof ETHNIC_APPEARANCE_OPTIONS[number];
-export type RepresentationOption = typeof REPRESENTATION_OPTIONS[number];
 export type HeightRange = typeof HEIGHT_RANGES[number];
 export type CommonTag = typeof COMMON_TAGS[number];
 export type ViewMode = typeof VIEW_MODES[keyof typeof VIEW_MODES];

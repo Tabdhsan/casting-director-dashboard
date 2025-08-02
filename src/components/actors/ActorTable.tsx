@@ -223,9 +223,10 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
                                         </TableCell>
                                         <TableCell>
                                             {actor.representation && (
-                                                <span className="text-sm">
-                                                    {actor.representation}
-                                                </span>
+                                                <div className="text-sm">
+                                                    <div className="font-medium">{actor.representation.agency}</div>
+                                                    <div className="text-xs text-muted-foreground">{actor.representation.agent}</div>
+                                                </div>
                                             )}
                                         </TableCell>
                                         <TableCell>

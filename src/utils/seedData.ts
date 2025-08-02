@@ -15,7 +15,11 @@ export const sampleActors: CreateActorInput[] = [
         ethnicAppearance: ['Caucasian'],
         height: '5\'6"',
         unionStatus: 'SAG-AFTRA',
-        representation: 'CAA (Creative Artists Agency)',
+        representation: {
+            agency: 'CAA (Creative Artists Agency)',
+            agent: 'Emma Wilson',
+            phone: '(555) 111-2222'
+        },
         tags: ['Leading Woman', 'Drama', 'Comedy'],
         notes: 'Versatile actress with strong stage background',
     },
@@ -46,7 +50,11 @@ export const sampleActors: CreateActorInput[] = [
         ethnicAppearance: ['Hispanic'],
         height: '6\'1"',
         unionStatus: 'SAG-AFTRA',
-        representation: 'ICM Partners',
+        representation: {
+            agency: 'ICM Partners',
+            agent: 'Rachel Green',
+            phone: '(555) 333-4444'
+        },
         tags: ['Character Actor', 'Villain', 'Drama'],
         notes: 'Commanding presence, great for authority figures',
     },

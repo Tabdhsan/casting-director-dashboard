@@ -191,7 +191,7 @@ export function AssignActorModal({ open, onClose, role, availableActors }: Assig
                                             </p>
                                             {actor.representation && (
                                                 <p className="text-xs text-muted-foreground">
-                                                    Represented by {actor.representation}
+                                                    Represented by {actor.representation.agent} ({actor.representation.agency})
                                                 </p>
                                             )}
                                             {actor.tags.length > 0 && (

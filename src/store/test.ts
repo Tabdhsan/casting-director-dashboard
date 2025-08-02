@@ -18,7 +18,11 @@ export function testStore() {
         ethnicAppearance: ['European'],
         height: '6\'0"',
         unionStatus: 'SAG-AFTRA',
-        representation: 'CAA (Creative Artists Agency)',
+        representation: {
+            agency: 'CAA (Creative Artists Agency)',
+            agent: 'Test Agent',
+            phone: '(555) 999-8888'
+        },
         tags: ['Leading Man', 'Drama'],
         notes: 'Great stage presence',
     };

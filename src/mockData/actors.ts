@@ -10,7 +10,11 @@ export const mockActors: CreateActorInput[] = [
         ethnicAppearance: ["Caucasian"],
         height: "5'6\"",
         unionStatus: "SAG-AFTRA",
-        representation: "Clear Talent Group",
+        representation: {
+            agency: "Clear Talent Group",
+            agent: "Sarah Mitchell",
+            phone: "(555) 123-4567"
+        },
         tags: ["Drama", "Comedy", "Theater"],
         notes: "Experienced stage actor with strong dramatic range. Available for lead roles.",
         headshotUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
@@ -22,7 +26,11 @@ export const mockActors: CreateActorInput[] = [
         ethnicAppearance: ["African American"],
         height: "6'1\"",
         unionStatus: "AEA",
-        representation: "CAA (Creative Artists Agency)",
+        representation: {
+            agency: "CAA (Creative Artists Agency)",
+            agent: "Michael Rodriguez",
+            phone: "(555) 234-5678"
+        },
         tags: ["Action", "Drama", "Martial Arts"],
         notes: "Former stunt performer turned actor. Excellent physical presence.",
         headshotUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
@@ -45,7 +53,11 @@ export const mockActors: CreateActorInput[] = [
         ethnicAppearance: ["Asian"],
         height: "5'9\"",
         unionStatus: "SAG-AFTRA",
-        representation: "WME (William Morris Endeavor)",
+        representation: {
+            agency: "WME (William Morris Endeavor)",
+            agent: "Jennifer Kim",
+            phone: "(555) 345-6789"
+        },
         tags: ["Drama", "Character Actor", "Voice Over"],
         notes: "Veteran character actor with extensive TV and film credits.",
         headshotUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
@@ -57,7 +69,11 @@ export const mockActors: CreateActorInput[] = [
         ethnicAppearance: ["Hispanic", "Mediterranean"],
         height: "5'7\"",
         unionStatus: "SAG-AFTRA",
-        representation: "UTA (United Talent Agency)",
+        representation: {
+            agency: "UTA (United Talent Agency)",
+            agent: "David Chang",
+            phone: "(555) 456-7890"
+        },
         tags: ["Drama", "Independent Film", "Method Acting"],
         notes: "Award-winning indie film actress. Specializes in complex dramatic roles.",
         headshotUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
@@ -91,7 +107,11 @@ export const mockActors: CreateActorInput[] = [
         ethnicAppearance: ["Caucasian"],
         height: "6'0\"",
         unionStatus: "SAG-AFTRA",
-        representation: "ICM Partners",
+        representation: {
+            agency: "ICM Partners",
+            agent: "Lisa Thompson",
+            phone: "(555) 567-8901"
+        },
         tags: ["Drama", "Authority Figures", "Corporate"],
         notes: "Experienced in playing executives, lawyers, and authority figures.",
         headshotUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face",
@@ -114,7 +134,11 @@ export const mockActors: CreateActorInput[] = [
         ethnicAppearance: ["Hispanic"],
         height: "5'10\"",
         unionStatus: "SAG-AFTRA",
-        representation: "Gersh Agency",
+        representation: {
+            agency: "Gersh Agency",
+            agent: "Robert Martinez",
+            phone: "(555) 678-9012"
+        },
         tags: ["Action", "Thriller", "Bilingual"],
         notes: "Action specialist with military background. Fluent in Spanish.",
         headshotUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face",
@@ -126,7 +150,11 @@ export const mockActors: CreateActorInput[] = [
         ethnicAppearance: ["Asian"],
         height: "5'3\"",
         unionStatus: "AEA",
-        representation: "APA (Agency for the Performing Arts)",
+        representation: {
+            agency: "APA (Agency for the Performing Arts)",
+            agent: "Amanda Foster",
+            phone: "(555) 789-0123"
+        },
         tags: ["Drama", "Independent Film", "Writer"],
         notes: "Actor-writer with several produced screenplays. Strong dramatic presence.",
         headshotUrl: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face",

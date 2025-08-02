@@ -11,7 +11,11 @@ export interface Actor {
   ethnicAppearance: string[];
   height: string;
   unionStatus: string;
-  representation?: string;
+  representation?: {
+    agency: string;
+    agent: string;
+    phone: string;
+  };
   tags: string[];
   notes: string;
   headshotUrl?: string;

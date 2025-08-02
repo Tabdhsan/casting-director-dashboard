@@ -111,16 +111,18 @@ export function ActorProfile() {
                                     {actor.unionStatus}
                                 </p>
                                 {actor.representation && (
-                                    <p className="text-muted-foreground mb-4 text-sm">
-                                        Represented by {actor.representation}
-                                    </p>
+                                    <div className="text-muted-foreground mb-4 text-sm space-y-1">
+                                        <p>Represented by {actor.representation.agent}</p>
+                                        <p>{actor.representation.agency}</p>
+                                        <p>{actor.representation.phone}</p>
+                                    </div>
                                 )}
                                 {!actor.representation && (
                                     <div className="mb-4"></div>
                                 )}
                                 
                                 {/* Quick Stats */}
-                                <div className="grid grid-cols-2 gap-4 w-full text-sm">
+                                {/* <div className="grid grid-cols-2 gap-4 w-full text-sm">
                                     <div className="text-center">
                                         <p className="font-medium">{roleHistory.length}</p>
                                         <p className="text-muted-foreground">Total Roles</p>
@@ -141,7 +143,7 @@ export function ActorProfile() {
                                         </p>
                                         <p className="text-muted-foreground">Days Active</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </CardContent>
                     </Card>

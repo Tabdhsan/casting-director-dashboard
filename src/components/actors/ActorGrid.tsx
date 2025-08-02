@@ -69,7 +69,7 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
                             </Badge>
                             {actor.representation && (
                                 <Badge variant="secondary" className="text-xs">
-                                    {actor.representation}
+                                    {actor.representation.agency}
                                 </Badge>
                             )}
                         </div>

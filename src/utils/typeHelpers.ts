@@ -160,7 +160,7 @@ export function filterActors(actors: Actor[], filters: ActorFilters): Actor[] {
 
         // Representation filter
         if (filters.representation && filters.representation.length > 0) {
-            if (!actor.representation || !filters.representation.includes(actor.representation)) {
+            if (!actor.representation || !filters.representation.includes(actor.representation.agency)) {
                 return false;
             }
         }
