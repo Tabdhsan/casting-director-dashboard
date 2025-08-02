@@ -378,6 +378,12 @@ export function formatEthnicAppearance(ethnicAppearance: string[]): string {
     return `${ethnicAppearance.slice(0, -1).join(', ')} & ${ethnicAppearance[ethnicAppearance.length - 1]}`;
 }
 
+export function formatEthnicAppearanceNewLine(ethnicAppearance: string[]): string {
+    if (ethnicAppearance.length === 0) return '';
+
+    return `${ethnicAppearance.map(appearance => `<p>${appearance}</p>`).join('\n')}`;
+}
+
 // Extract unique ethnic appearances from actors
 export function extractUniqueEthnicAppearances(actors: Actor[]): string[] {
     const allAppearances = actors.flatMap(actor => actor.ethnicAppearance);

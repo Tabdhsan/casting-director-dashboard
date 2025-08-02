@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useActors, useAssignments } from '@/hooks/useStore';
-import { formatAgeRange, formatEthnicAppearance } from '@/utils/typeHelpers';
+import { formatAgeRange, formatEthnicAppearanceNewLine } from '@/utils/typeHelpers';
 import { EditActorModal } from '@/components/actors/EditActorModal';
 import type { Actor } from '@/types';
 
@@ -122,46 +122,31 @@ export function ActorProfile() {
                                 {/* Quick Stats */}
                                 <div className="grid grid-cols-2 gap-4 w-full text-sm">
                                     <div className="text-center">
-                                        <p className="font-medium">{formatAgeRange(actor.ageRange)}</p>
-                                        <p className="text-muted-foreground">Age Range</p>
+                                        <p className="font-medium">{roleHistory.length}</p>
+                                        <p className="text-muted-foreground">Total Roles</p>
                                     </div>
                                     <div className="text-center">
-                                        <p className="font-medium">{actor.height}</p>
-                                        <p className="text-muted-foreground">Height</p>
+                                        <p className="font-medium">{actor.tags.length}</p>
+                                        <p className="text-muted-foreground">Skills</p>
                                     </div>
                                     <div className="text-center">
-                                        <p className="font-medium">{actor.gender}</p>
-                                        <p className="text-muted-foreground">Gender</p>
+                                        <p className="font-medium">
+                                            {new Set(roleHistory.map(h => h.project.id)).size}
+                                        </p>
+                                        <p className="text-muted-foreground">Projects</p>
                                     </div>
                                     <div className="text-center">
-                                        <p className="font-medium">{formatEthnicAppearance(actor.ethnicAppearance)}</p>
-                                        <p className="text-muted-foreground">Ethnic Appearance</p>
+                                        <p className="font-medium">
+                                            {Math.floor((Date.now() - actor.createdAt.getTime()) / (1000 * 60 * 60 * 24))}
+                                        </p>
+                                        <p className="text-muted-foreground">Days Active</p>
                                     </div>
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
 
-                    {/* Tags */}
-                    {actor.tags.length > 0 && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center text-base">
-                                    <Tag className="h-4 w-4 mr-2" />
-                                    Skills & Tags
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex flex-wrap gap-2">
-                                    {actor.tags.map((tag) => (
-                                        <Badge key={tag} variant="secondary">
-                                            {tag}
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    )}
+
 
                     {/* Files */}
                     <Card>
@@ -210,6 +195,36 @@ export function ActorProfile() {
                         </TabsList>
 
                         <TabsContent value="overview" className="space-y-6">
+                            {/* Actor Info */}
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Actor Information</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="flex justify-between w-2/3">
+                                            <span className="text-muted-foreground">Age Range:</span>
+                                            <span className="font-medium">{formatAgeRange(actor.ageRange)}</span>
+                                        </div>
+                                        
+                                        <div className="flex justify-between w-2/3">
+                                            <span className="text-muted-foreground">Gender:</span>
+                                            <span className="font-medium">{actor.gender}</span>
+                                        </div>
+                                        
+                                        <div className="flex justify-between w-2/3">
+                                            <span className="text-muted-foreground">Height:</span>
+                                            <span className="font-medium">{actor.height}</span>
+                                        </div>
+                                        
+                                        <div className="flex justify-between w-2/3">
+                                            <span className="text-muted-foreground">Ethnic Appearance:</span>
+                                            <span className="font-medium text-right" dangerouslySetInnerHTML={{ __html: formatEthnicAppearanceNewLine(actor.ethnicAppearance) }} />
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
                             {/* Notes */}
                             {actor.notes && (
                                 <Card>
@@ -260,36 +275,26 @@ export function ActorProfile() {
                                 </Card>
                             )}
 
-                            {/* Profile Stats */}
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Profile Statistics</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        <div className="text-center">
-                                            <p className="text-2xl font-bold">{roleHistory.length}</p>
-                                            <p className="text-sm text-muted-foreground">Total Roles</p>
+                            {/* Skills & Tags */}
+                            {actor.tags.length > 0 && (
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="flex items-center">
+                                            <Tag className="h-4 w-4 mr-2" />
+                                            Skills & Tags
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="flex flex-wrap gap-2">
+                                            {actor.tags.map((tag) => (
+                                                <Badge key={tag} variant="secondary">
+                                                    {tag}
+                                                </Badge>
+                                            ))}
                                         </div>
-                                        <div className="text-center">
-                                            <p className="text-2xl font-bold">{actor.tags.length}</p>
-                                            <p className="text-sm text-muted-foreground">Skills</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <p className="text-2xl font-bold">
-                                                {new Set(roleHistory.map(h => h.project.id)).size}
-                                            </p>
-                                            <p className="text-sm text-muted-foreground">Projects</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <p className="text-2xl font-bold">
-                                                {Math.floor((Date.now() - actor.createdAt.getTime()) / (1000 * 60 * 60 * 24))}
-                                            </p>
-                                            <p className="text-sm text-muted-foreground">Days in System</p>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                    </CardContent>
+                                </Card>
+                            )}
                         </TabsContent>
 
                         <TabsContent value="history" className="space-y-6">

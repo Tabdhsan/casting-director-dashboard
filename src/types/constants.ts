@@ -44,19 +44,37 @@ export const GENDER_OPTIONS = [
 ] as const;
 
 // Ethnic Appearance options
+// export const ETHNIC_APPEARANCE_OPTIONS = [
+//   'European',
+//   'Black/African American',
+//   'East Asian',
+//   'South Asian',
+//   'Southeast Asian',
+//   'Hispanic/Latino',
+//   'Middle Eastern',
+//   'Native American',
+//   'Pacific Islander',
+//   'Mediterranean',
+//   'Mixed Race',
+//   'Other',
+// ] as const;
+
 export const ETHNIC_APPEARANCE_OPTIONS = [
-  'European',
-  'Black/African American',
-  'East Asian',
-  'South Asian',
-  'Southeast Asian',
-  'Hispanic/Latino',
-  'Middle Eastern',
-  'Native American',
-  'Pacific Islander',
-  'Mediterranean',
-  'Mixed Race',
-  'Other',
+'African',
+'African American',
+'American Indian',
+'Asian',
+'Caucasian',
+'East Indian',
+'Eastern European',
+'Filipino',
+'Hispanic',
+'Mediterranean',
+'Middle Eastern',
+'Mixed',
+'Pacific Islander',
+'West Indies/Carribean',
+'Other',
 ] as const;
 
 // Representation agency options
