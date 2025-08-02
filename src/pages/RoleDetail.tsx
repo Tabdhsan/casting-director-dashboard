@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings, Plus, Archive, RotateCcw, Upload } from 'lucide-react';
+import { ArrowLeft, Settings, Plus, Archive, RotateCcw, Upload, Download } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import { useRoles, useProjects, useActors, useAssignments } from '@/hooks/useSto
 import { useToast } from '@/hooks/useToast';
 import { StatusBuckets } from '@/components/roles/StatusBuckets';
 import { AssignActorModal } from '@/components/roles/AssignActorModal';
+import { ExportDataModal } from '@/components/roles/ExportDataModal';
 import { BucketSettingsModal } from '@/components/roles/BucketSettingsModal';
 import type { Role, Project } from '@/types';
 
@@ -28,6 +29,7 @@ export function RoleDetail() {
     const [project, setProject] = useState<Project | null>(null);
     const [showAssignModal, setShowAssignModal] = useState(false);
     const [showBucketSettings, setShowBucketSettings] = useState(false);
+    const [showExportModal, setShowExportModal] = useState(false);
 
     useEffect(() => {
         if (roleId) {
@@ -380,10 +382,19 @@ export function RoleDetail() {
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={triggerFileInput}
+                        onClick={() => setShowExportModal(true)}
                         disabled={role.archived}
                     >
                         <Upload className="h-4 w-4 mr-2" />
+                        Export Data
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={triggerFileInput}
+                        disabled={role.archived}
+                    >
+                        <Download className="h-4 w-4 mr-2" />
                         Import Data
                     </Button>
                     <Button
@@ -464,6 +475,12 @@ export function RoleDetail() {
             <BucketSettingsModal
                 open={showBucketSettings}
                 onClose={() => setShowBucketSettings(false)}
+                role={role}
+            />
+
+            <ExportDataModal
+                open={showExportModal}
+                onClose={() => setShowExportModal(false)}
                 role={role}
             />
         </div>
