@@ -105,7 +105,7 @@ export function filterActors(actors: Actor[], filters: ActorFilters): Actor[] {
         // Search filter
         if (filters.search) {
             const searchTerm = filters.search.toLowerCase();
-            const searchableText = `${actor.name} ${actor.notes} ${actor.tags.join(' ')} ${actor.representation}`.toLowerCase();
+            const searchableText = `${actor.name} ${actor.notes} ${actor.tags.join(' ')} ${actor.unionStatus}`.toLowerCase();
             if (!searchableText.includes(searchTerm)) {
                 return false;
             }
@@ -118,12 +118,12 @@ export function filterActors(actors: Actor[], filters: ActorFilters): Actor[] {
             }
         }
 
-        // Age range filter
+        // Age range filter - check if actor's age range overlaps with filter range
         if (filters.ageRange) {
-            if (filters.ageRange.min !== undefined && actor.age < filters.ageRange.min) {
+            if (filters.ageRange.min !== undefined && actor.ageRange.max < filters.ageRange.min) {
                 return false;
             }
-            if (filters.ageRange.max !== undefined && actor.age > filters.ageRange.max) {
+            if (filters.ageRange.max !== undefined && actor.ageRange.min > filters.ageRange.max) {
                 return false;
             }
         }
@@ -135,11 +135,12 @@ export function filterActors(actors: Actor[], filters: ActorFilters): Actor[] {
             }
         }
 
-        // Race filter
-        if (filters.race && filters.race.length > 0) {
-            if (!filters.race.includes(actor.race)) {
-                return false;
-            }
+        // Ethnic Appearance filter
+        if (filters.ethnicAppearance && filters.ethnicAppearance.length > 0) {
+            const hasMatchingAppearance = filters.ethnicAppearance.some(appearance => 
+                actor.ethnicAppearance.includes(appearance)
+            );
+            if (!hasMatchingAppearance) return false;
         }
 
         // Tags filter
@@ -150,9 +151,9 @@ export function filterActors(actors: Actor[], filters: ActorFilters): Actor[] {
             }
         }
 
-        // Representation filter
-        if (filters.representation && filters.representation.length > 0) {
-            if (!filters.representation.includes(actor.representation)) {
+            // Union Status filter
+    if (filters.unionStatus && filters.unionStatus.length > 0) {
+        if (!filters.unionStatus.includes(actor.unionStatus)) {
                 return false;
             }
         }
@@ -171,9 +172,9 @@ export function sortActors(actors: Actor[], sortBy: string): Actor[] {
         case 'name-desc':
             return sorted.sort((a, b) => b.name.localeCompare(a.name));
         case 'age-asc':
-            return sorted.sort((a, b) => a.age - b.age);
+            return sorted.sort((a, b) => a.ageRange.min - b.ageRange.min);
         case 'age-desc':
-            return sorted.sort((a, b) => b.age - a.age);
+            return sorted.sort((a, b) => b.ageRange.min - a.ageRange.min);
         case 'created-asc':
             return sorted.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
         case 'created-desc':
@@ -352,4 +353,26 @@ export function extractUniqueValues<T, K extends keyof T>(items: T[], key: K): T
 export function extractUniqueTags(actors: Actor[]): string[] {
     const allTags = actors.flatMap(actor => actor.tags);
     return Array.from(new Set(allTags)).sort();
+}
+
+// Format age range for display
+export function formatAgeRange(ageRange: { min: number; max: number }): string {
+    if (ageRange.min === ageRange.max) {
+        return `${ageRange.min}`;
+    }
+    return `${ageRange.min}-${ageRange.max}`;
+}
+
+// Format ethnic appearance array for display
+export function formatEthnicAppearance(ethnicAppearance: string[]): string {
+    if (ethnicAppearance.length === 0) return '';
+    if (ethnicAppearance.length === 1) return ethnicAppearance[0];
+    if (ethnicAppearance.length === 2) return ethnicAppearance.join(' & ');
+    return `${ethnicAppearance.slice(0, -1).join(', ')} & ${ethnicAppearance[ethnicAppearance.length - 1]}`;
+}
+
+// Extract unique ethnic appearances from actors
+export function extractUniqueEthnicAppearances(actors: Actor[]): string[] {
+    const allAppearances = actors.flatMap(actor => actor.ethnicAppearance);
+    return Array.from(new Set(allAppearances)).sort();
 }

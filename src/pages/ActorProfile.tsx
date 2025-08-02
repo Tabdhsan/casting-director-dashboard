@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useActors, useAssignments } from '@/hooks/useStore';
+import { formatAgeRange, formatEthnicAppearance } from '@/utils/typeHelpers';
 import { EditActorModal } from '@/components/actors/EditActorModal';
 import type { Actor } from '@/types';
 
@@ -82,7 +83,7 @@ export function ActorProfile() {
                     <div>
                         <h1 className="text-2xl font-bold">{actor.name}</h1>
                         <p className="text-muted-foreground">
-                            {actor.age} years old • {actor.gender} • {actor.height}
+                            {formatAgeRange(actor.ageRange)} years old • {actor.gender} • {actor.height}
                         </p>
                     </div>
                 </div>
@@ -107,14 +108,14 @@ export function ActorProfile() {
                                 </Avatar>
                                 <h2 className="text-xl font-semibold">{actor.name}</h2>
                                 <p className="text-muted-foreground mb-4">
-                                    {actor.representation}
+                                                                                    {actor.unionStatus}
                                 </p>
                                 
                                 {/* Quick Stats */}
                                 <div className="grid grid-cols-2 gap-4 w-full text-sm">
                                     <div className="text-center">
-                                        <p className="font-medium">{actor.age}</p>
-                                        <p className="text-muted-foreground">Age</p>
+                                        <p className="font-medium">{formatAgeRange(actor.ageRange)}</p>
+                                        <p className="text-muted-foreground">Age Range</p>
                                     </div>
                                     <div className="text-center">
                                         <p className="font-medium">{actor.height}</p>
@@ -125,8 +126,8 @@ export function ActorProfile() {
                                         <p className="text-muted-foreground">Gender</p>
                                     </div>
                                     <div className="text-center">
-                                        <p className="font-medium">{actor.race}</p>
-                                        <p className="text-muted-foreground">Race</p>
+                                        <p className="font-medium">{formatEthnicAppearance(actor.ethnicAppearance)}</p>
+                                        <p className="text-muted-foreground">Ethnic Appearance</p>
                                     </div>
                                 </div>
                             </div>

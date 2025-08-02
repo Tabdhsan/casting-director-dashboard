@@ -12,7 +12,8 @@ import {
     updateEntity, 
     filterActors, 
     extractUniqueTags, 
-    extractUniqueValues 
+    extractUniqueValues,
+    extractUniqueEthnicAppearances,
 } from '../../utils/typeHelpers';
 
 export interface ActorsSlice {
@@ -25,9 +26,9 @@ export interface ActorsSlice {
     searchActors: (filters: ActorFilters) => Actor[];
     getFilterOptions: () => {
         genders: string[];
-        races: string[];
+        ethnicAppearances: string[];
         heights: string[];
-        representations: string[];
+        unionStatuses: string[];
         tags: string[];
     };
 }
@@ -71,9 +72,9 @@ export const createActorsSlice: StateCreator<
         const { actors } = get();
         return {
             genders: extractUniqueValues(actors, 'gender'),
-            races: extractUniqueValues(actors, 'race'),
+            ethnicAppearances: extractUniqueEthnicAppearances(actors),
             heights: extractUniqueValues(actors, 'height'),
-            representations: extractUniqueValues(actors, 'representation'),
+            unionStatuses: extractUniqueValues(actors, 'unionStatus'),
             tags: extractUniqueTags(actors),
         };
     },

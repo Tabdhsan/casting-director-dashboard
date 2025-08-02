@@ -94,8 +94,8 @@ export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
                             
                             <div className="space-y-3">
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Age:</span>
-                                    <span className="font-medium">{actor.age}</span>
+                                                                            <span className="text-muted-foreground">Age Range:</span>
+                                        <span className="font-medium">{actor.ageRange.min}-{actor.ageRange.max}</span>
                                 </div>
                                 
                                 <div className="flex justify-between">
@@ -104,8 +104,8 @@ export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
                                 </div>
                                 
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Race:</span>
-                                    <span className="font-medium">{actor.race}</span>
+                                                                            <span className="text-muted-foreground">Ethnic Appearance:</span>
+                                        <span className="font-medium">{actor.ethnicAppearance.join(', ')}</span>
                                 </div>
                                 
                                 <div className="flex justify-between">
@@ -114,8 +114,8 @@ export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
                                 </div>
                                 
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Representation:</span>
-                                    <Badge variant="outline">{actor.representation}</Badge>
+                                    <span className="text-muted-foreground">Union Status:</span>
+                                    <Badge variant="outline">{actor.unionStatus}</Badge>
                                 </div>
                             </div>
                         </div>

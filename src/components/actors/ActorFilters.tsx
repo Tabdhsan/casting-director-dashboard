@@ -25,9 +25,9 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
     const [expandedSections, setExpandedSections] = useState({
         gender: true,
         age: true,
-        race: true,
+        ethnicAppearance: true,
         height: false,
-        representation: false,
+        unionStatus: false,
         tags: false,
     });
 
@@ -61,7 +61,7 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
 
     // Handle multi-select filter changes
     const handleMultiSelectChange = (
-        field: 'gender' | 'race' | 'height' | 'representation' | 'tags',
+        field: 'gender' | 'ethnicAppearance' | 'height' | 'unionStatus' | 'tags',
         value: string,
         checked: boolean
     ) => {
@@ -123,7 +123,7 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
                                 checked={isChecked}
                                 onCheckedChange={(checked) => 
                                     handleMultiSelectChange(
-                                        field as 'gender' | 'race' | 'height' | 'representation' | 'tags',
+                                        field as 'gender' | 'ethnicAppearance' | 'height' | 'unionStatus' | 'tags',
                                         option,
                                         checked as boolean
                                     )
@@ -205,14 +205,14 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
                     </Collapsible>
                 </div>
 
-                {/* Race Filter */}
-                <div>
-                    <FilterSection
-                        title="Race"
-                        field="race"
-                        options={filterOptions.races}
-                    />
-                </div>
+                                                {/* Ethnic Appearance Filter */}
+                                <div>
+                                    <FilterSection
+                                        title="Ethnic Appearance"
+                                        field="ethnicAppearance"
+                                        options={filterOptions.ethnicAppearances}
+                                    />
+                                </div>
 
                 {/* Height Filter */}
                 <div>
@@ -223,12 +223,12 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
                     />
                 </div>
 
-                {/* Representation Filter */}
+                {/* Union Status Filter */}
                 <div>
                     <FilterSection
-                        title="Representation"
-                        field="representation"
-                        options={filterOptions.representations}
+                        title="Union Status"
+                        field="unionStatus"
+                        options={filterOptions.unionStatuses}
                     />
                 </div>
 

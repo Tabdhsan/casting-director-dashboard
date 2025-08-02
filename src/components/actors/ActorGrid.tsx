@@ -39,13 +39,13 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
 
     return (
         <Card 
-            className="group cursor-pointer transition-all hover:shadow-md"
+            className="group cursor-pointer transition-all hover:shadow-md py-2"
             hover={true}
             onClick={() => navigate(`/actors/${actor.id}`)}
         >
-            <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                    <div className="flex-1">
+            <CardContent className="p-4 h-full">
+                <div className="flex items-start justify-between h-full w-full">
+                    <div className="flex flex-col h-full">
                         {/* Avatar and Basic Info */}
                         <div className="flex items-center space-x-3">
                             <Avatar className="h-12 w-12">
@@ -57,18 +57,18 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
                             <div className="flex-1 min-w-0">
                                 <h3 className="font-medium truncate">{actor.name}</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    {actor.age} • {actor.gender} • {actor.height}
+                                    {actor.ageRange.min}-{actor.ageRange.max} • {actor.gender} • {actor.height}
                                 </p>
                             </div>
                         </div>
 
-                        {/* Race and Representation */}
+                                                        {/* Ethnic Appearance and Union Status */}
                         <div className="mt-3 flex flex-wrap gap-1">
-                            <Badge variant="secondary" className="text-xs">
-                                {actor.race}
-                            </Badge>
+                            {/* <Badge variant="secondary" className="text-xs">
+                                {actor.ethnicAppearance.join(', ')}
+                            </Badge> */}
                             <Badge variant="outline" className="text-xs">
-                                {actor.representation}
+                                {actor.unionStatus}
                             </Badge>
                         </div>
 
@@ -87,6 +87,7 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
                                 )}
                             </div>
                         )}
+                        <div className="flex flex-grow "></div>
 
                         {/* Notes Preview */}
                         {actor.notes && (
@@ -143,7 +144,7 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
                 </div>
 
                 {/* Footer with metadata */}
-                <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+                {/* <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
                     <span>
                         Added {new Date(actor.createdAt).toLocaleDateString()}
                     </span>
@@ -151,7 +152,7 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
                         <User className="mr-1 h-3 w-3" />
                         Actor
                     </span>
-                </div>
+                </div> */}
             </CardContent>
         </Card>
     );
@@ -170,15 +171,18 @@ export function ActorGrid({ actors, filters, onEdit, onDelete }: ActorGridProps)
             return false;
         }
 
-        // Race filter
-        if (filters.race && filters.race.length > 0 && !filters.race.includes(actor.race)) {
-            return false;
+        // Ethnic Appearance filter
+        if (filters.ethnicAppearance && filters.ethnicAppearance.length > 0) {
+            const hasMatchingAppearance = filters.ethnicAppearance.some(appearance => 
+                actor.ethnicAppearance.includes(appearance)
+            );
+            if (!hasMatchingAppearance) return false;
         }
 
-        // Age range filter
+        // Age range filter - check if actor's age range overlaps with filter range
         if (filters.ageRange) {
-            if (filters.ageRange.min && actor.age < filters.ageRange.min) return false;
-            if (filters.ageRange.max && actor.age > filters.ageRange.max) return false;
+            if (filters.ageRange.min && actor.ageRange.max < filters.ageRange.min) return false;
+            if (filters.ageRange.max && actor.ageRange.min > filters.ageRange.max) return false;
         }
 
         // Tags filter

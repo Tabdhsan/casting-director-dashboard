@@ -13,11 +13,11 @@ export function testStore() {
     // Test adding an actor
     const actorInput: CreateActorInput = {
         name: 'John Doe',
-        age: 30,
+        ageRange: { min: 27, max: 35 },
         gender: 'Male',
-        race: 'Caucasian',
+        ethnicAppearance: ['European'],
         height: '6\'0"',
-        representation: 'CAA',
+        unionStatus: 'CAA',
         tags: ['Leading Man', 'Drama'],
         notes: 'Great stage presence',
     };

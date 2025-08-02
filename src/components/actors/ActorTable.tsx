@@ -30,7 +30,7 @@ interface ActorTableProps {
     onDelete?: (actor: Actor) => void;
 }
 
-type SortField = 'name' | 'age' | 'gender' | 'race' | 'height' | 'createdAt';
+type SortField = 'name' | 'ageRange' | 'gender' | 'height' | 'createdAt';
 type SortDirection = 'asc' | 'desc';
 
 export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProps) {
@@ -52,16 +52,19 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
                 return false;
             }
 
-            // Race filter
-            if (filters.race && filters.race.length > 0 && !filters.race.includes(actor.race)) {
-                return false;
-            }
+            // Ethnic Appearance filter
+            // if (filters.ethnicAppearance && filters.ethnicAppearance.length > 0) {
+            //     const hasMatchingAppearance = filters.ethnicAppearance.some(appearance => 
+            //         actor.ethnicAppearance.includes(appearance)
+            //     );
+            //     if (!hasMatchingAppearance) return false;
+            // }
 
-            // Age range filter
-            if (filters.ageRange) {
-                if (filters.ageRange.min && actor.age < filters.ageRange.min) return false;
-                if (filters.ageRange.max && actor.age > filters.ageRange.max) return false;
-            }
+                    // Age range filter - check if actor's age range overlaps with filter range
+        if (filters.ageRange) {
+            if (filters.ageRange.min && actor.ageRange.max < filters.ageRange.min) return false;
+            if (filters.ageRange.max && actor.ageRange.min > filters.ageRange.max) return false;
+        }
 
             // Tags filter
             if (filters.tags && filters.tags.length > 0) {
@@ -82,6 +85,18 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
                 aValue = new Date(aValue).getTime();
                 bValue = new Date(bValue).getTime();
             }
+
+            // Handle age range fields - sort by minimum age
+            if (sortField === 'ageRange') {
+                aValue = a.ageRange.min;
+                bValue = b.ageRange.min;
+            }
+
+            // // Handle ethnic appearance fields - sort by first appearance
+            // if (sortField === 'ethnicAppearance') {
+            //     aValue = a.ethnicAppearance[0] || '';
+            //     bValue = b.ethnicAppearance[0] || '';
+            // }
 
             // Handle string fields
             if (typeof aValue === 'string') {
@@ -163,11 +178,11 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
                             <TableRow>
                                 <TableHead className="w-12"></TableHead>
                                 <SortableHeader field="name">Name</SortableHeader>
-                                <SortableHeader field="age">Age</SortableHeader>
+                                <SortableHeader field="ageRange">Age Range</SortableHeader>
                                 <SortableHeader field="gender">Gender</SortableHeader>
-                                <SortableHeader field="race">Race</SortableHeader>
+                                {/* <SortableHeader field="ethnicAppearance">Ethnic Appearance</SortableHeader> */}
                                 <SortableHeader field="height">Height</SortableHeader>
-                                <TableHead>Representation</TableHead>
+                                <TableHead>Union Status</TableHead>
                                 <TableHead>Tags</TableHead>
                                 <SortableHeader field="createdAt">Added</SortableHeader>
                                 <TableHead className="w-12"></TableHead>
@@ -196,13 +211,13 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
                                             </Avatar>
                                         </TableCell>
                                         <TableCell className="font-medium">{actor.name}</TableCell>
-                                        <TableCell>{actor.age}</TableCell>
+                                        <TableCell>{actor.ageRange.min}-{actor.ageRange.max}</TableCell>
                                         <TableCell>{actor.gender}</TableCell>
-                                        <TableCell>{actor.race}</TableCell>
+                                        {/* <TableCell>{actor.ethnicAppearance.join(', ')}</TableCell> */}
                                         <TableCell>{actor.height}</TableCell>
                                         <TableCell>
                                             <Badge variant="outline" className="text-xs">
-                                                {actor.representation}
+                                                {actor.unionStatus}
                                             </Badge>
                                         </TableCell>
                                         <TableCell>

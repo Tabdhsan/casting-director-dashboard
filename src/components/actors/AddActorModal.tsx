@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -29,17 +30,23 @@ import {
 } from '@/components/ui/form';
 import { useActors } from '@/hooks/useStore';
 import { useToast } from '@/hooks/useToast';
-import { GENDER_OPTIONS, RACE_OPTIONS, COMMON_TAGS } from '@/types/constants';
+import { GENDER_OPTIONS, ETHNIC_APPEARANCE_OPTIONS, COMMON_TAGS } from '@/types/constants';
 import type { CreateActorInput } from '@/types';
 
 // Form validation schema
 const addActorSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name must be less than 100 characters'),
-    age: z.number().min(1, 'Age must be at least 1').max(120, 'Age must be less than 120'),
+    ageRange: z.object({
+        min: z.number().min(1, 'Minimum age must be at least 1').max(120, 'Minimum age must be less than 120'),
+        max: z.number().min(1, 'Maximum age must be at least 1').max(120, 'Maximum age must be less than 120')
+    }).refine(data => data.min <= data.max, {
+        message: "Minimum age must be less than or equal to maximum age",
+        path: ["min"]
+    }),
     gender: z.string().min(1, 'Gender is required'),
-    race: z.string().min(1, 'Race is required'),
+    ethnicAppearance: z.array(z.string()).min(1, 'At least one ethnic appearance must be selected'),
     height: z.string().min(1, 'Height is required'),
-    representation: z.string().min(1, 'Representation is required'),
+    unionStatus: z.string().min(1, 'Union Status is required'),
     tags: z.array(z.string()).default([]),
     notes: z.string().default(''),
     headshotUrl: z.string().url('Must be a valid URL').optional().or(z.literal('')),
@@ -63,11 +70,11 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
         resolver: zodResolver(addActorSchema) as any,
         defaultValues: {
             name: '',
-            age: 25,
+            ageRange: { min: 18, max: 65 },
             gender: '',
-            race: '',
+            ethnicAppearance: [],
             height: '',
-            representation: '',
+            unionStatus: '',
             tags: [],
             notes: '',
             headshotUrl: '',
@@ -147,24 +154,44 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
                                     )}
                                 />
 
-                                <FormField
-                                    control={form.control as any}
-                                    name="age"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Age</FormLabel>
-                                            <FormControl>
-                                                <Input 
-                                                    type="number" 
-                                                    placeholder="25" 
-                                                    {...field}
-                                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <FormField
+                                        control={form.control as any}
+                                        name="ageRange.min"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Min Age</FormLabel>
+                                                <FormControl>
+                                                    <Input 
+                                                        type="number" 
+                                                        placeholder="18" 
+                                                        {...field}
+                                                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control as any}
+                                        name="ageRange.max"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Max Age</FormLabel>
+                                                <FormControl>
+                                                    <Input 
+                                                        type="number" 
+                                                        placeholder="65" 
+                                                        {...field}
+                                                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
@@ -195,24 +222,34 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
 
                                 <FormField
                                     control={form.control as any}
-                                    name="race"
+                                    name="ethnicAppearance"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Race/Ethnicity</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select race/ethnicity" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {RACE_OPTIONS.map((race) => (
-                                                        <SelectItem key={race} value={race}>
-                                                            {race}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                            <FormLabel>Ethnic Appearance</FormLabel>
+                                            <div className="grid grid-cols-2 gap-3 mt-2">
+                                                {ETHNIC_APPEARANCE_OPTIONS.map((option) => (
+                                                    <div key={option} className="flex items-center space-x-2">
+                                                        <Checkbox
+                                                            id={`ethnic-${option}`}
+                                                            checked={field.value?.includes(option) || false}
+                                                            onCheckedChange={(checked) => {
+                                                                const currentValue = field.value || [];
+                                                                if (checked) {
+                                                                    field.onChange([...currentValue, option]);
+                                                                } else {
+                                                                    field.onChange(currentValue.filter((v) => v !== option));
+                                                                }
+                                                            }}
+                                                        />
+                                                        <Label 
+                                                            htmlFor={`ethnic-${option}`}
+                                                            className="text-sm font-normal cursor-pointer"
+                                                        >
+                                                            {option}
+                                                        </Label>
+                                                    </div>
+                                                ))}
+                                            </div>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -239,14 +276,14 @@ export function AddActorModal({ open, onClose }: AddActorModalProps) {
 
                                 <FormField
                                     control={form.control as any}
-                                    name="representation"
+                                    name="unionStatus"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Representation</FormLabel>
+                                            <FormLabel>Union Status</FormLabel>
                                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                 <FormControl>
                                                     <SelectTrigger>
-                                                        <SelectValue placeholder="Select representation" />
+                                                        <SelectValue placeholder="Select union status" />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>

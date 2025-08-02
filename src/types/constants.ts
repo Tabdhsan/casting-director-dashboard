@@ -43,15 +43,18 @@ export const GENDER_OPTIONS = [
   'Other',
 ] as const;
 
-// Race/Ethnicity options
-export const RACE_OPTIONS = [
-  'Asian',
+// Ethnic Appearance options
+export const ETHNIC_APPEARANCE_OPTIONS = [
+  'European',
   'Black/African American',
-  'Caucasian',
+  'East Asian',
+  'South Asian',
+  'Southeast Asian',
   'Hispanic/Latino',
   'Middle Eastern',
   'Native American',
   'Pacific Islander',
+  'Mediterranean',
   'Mixed Race',
   'Other',
 ] as const;
@@ -183,7 +186,7 @@ export const SORT_OPTIONS = {
 // Type exports for constants
 export type BucketColor = typeof BUCKET_COLORS[number];
 export type GenderOption = typeof GENDER_OPTIONS[number];
-export type RaceOption = typeof RACE_OPTIONS[number];
+export type EthnicAppearanceOption = typeof ETHNIC_APPEARANCE_OPTIONS[number];
 export type HeightRange = typeof HEIGHT_RANGES[number];
 export type CommonTag = typeof COMMON_TAGS[number];
 export type ViewMode = typeof VIEW_MODES[keyof typeof VIEW_MODES];

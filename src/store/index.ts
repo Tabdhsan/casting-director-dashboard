@@ -35,6 +35,7 @@ import {
     getActorRoleHistory,
     extractUniqueTags,
     extractUniqueValues,
+    extractUniqueEthnicAppearances,
 } from '../utils/typeHelpers';
 import { STORAGE_KEYS } from '../types/constants';
 import { StorageManager } from '../utils/storage';
@@ -134,9 +135,9 @@ export interface AppStore {
     getDashboardMetrics: () => DashboardMetrics;
     getFilterOptions: () => {
         genders: string[];
-        races: string[];
+        ethnicAppearances: string[];
         heights: string[];
-        representations: string[];
+        unionStatuses: string[];
         tags: string[];
     };
     
@@ -511,9 +512,9 @@ export const useAppStore = create<AppStore>()(
                 const { actors } = get();
                 return {
                     genders: extractUniqueValues(actors, 'gender'),
-                    races: extractUniqueValues(actors, 'race'),
+                    ethnicAppearances: extractUniqueEthnicAppearances(actors),
                     heights: extractUniqueValues(actors, 'height'),
-                    representations: extractUniqueValues(actors, 'representation'),
+                    unionStatuses: extractUniqueValues(actors, 'unionStatus'),
                     tags: extractUniqueTags(actors),
                 };
             },

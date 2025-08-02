@@ -187,7 +187,7 @@ export function AssignActorModal({ open, onClose, role, availableActors }: Assig
                                         <div className="flex-1">
                                             <p className="font-medium">{actor.name}</p>
                                             <p className="text-sm text-muted-foreground">
-                                                {actor.age} • {actor.gender} • {actor.height}
+                                                {actor.ageRange.min}-{actor.ageRange.max} • {actor.gender} • {actor.height}
                                             </p>
                                             {actor.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-1 mt-1">

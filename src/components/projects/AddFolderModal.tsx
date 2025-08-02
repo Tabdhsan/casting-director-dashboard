@@ -1,7 +1,6 @@
 // Modal for adding new folders/projects
 
 import { useState } from 'react';
-import { Folder } from 'lucide-react';
 import {
     Dialog,
     DialogContent,

@@ -3,11 +3,14 @@
 export interface Actor {
   id: string;
   name: string;
-  age: number;
+  ageRange: {
+    min: number;
+    max: number;
+  };
   gender: string;
-  race: string;
+  ethnicAppearance: string[];
   height: string;
-  representation: string;
+  unionStatus: string;
   tags: string[];
   notes: string;
   headshotUrl?: string;
@@ -64,9 +67,9 @@ export interface ActorFilters {
     max?: number;
   };
   height?: string[];
-  race?: string[];
+  ethnicAppearance?: string[];
   tags?: string[];
-  representation?: string[];
+  unionStatus?: string[];
 }
 
 // UI state types
