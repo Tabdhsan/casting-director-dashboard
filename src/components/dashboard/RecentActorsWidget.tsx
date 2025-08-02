@@ -56,6 +56,7 @@ export function RecentActorsWidget({ actors }: RecentActorsWidgetProps) {
                                     </p>
                                     <p className="text-xs text-muted-foreground">
                                         {actor.ageRange.min}-{actor.ageRange.max} • {actor.gender} • {actor.unionStatus}
+                                        {actor.representation && ` • ${actor.representation}`}
                                     </p>
                                 </div>
                                 <div className="text-xs text-muted-foreground">

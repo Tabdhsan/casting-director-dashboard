@@ -64,12 +64,14 @@ function ActorCard({ actor, onEdit, onDelete }: ActorCardProps) {
 
                                                         {/* Ethnic Appearance and Union Status */}
                         <div className="mt-3 flex flex-wrap gap-1">
-                            {/* <Badge variant="secondary" className="text-xs">
-                                {actor.ethnicAppearance.join(', ')}
-                            </Badge> */}
                             <Badge variant="outline" className="text-xs">
                                 {actor.unionStatus}
                             </Badge>
+                            {actor.representation && (
+                                <Badge variant="secondary" className="text-xs">
+                                    {actor.representation}
+                                </Badge>
+                            )}
                         </div>
 
                         {/* Tags */}

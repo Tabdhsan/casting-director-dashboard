@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/form';
 import { useActors } from '@/hooks/useStore';
 import { useToast } from '@/hooks/useToast';
-import { GENDER_OPTIONS, ETHNIC_APPEARANCE_OPTIONS, COMMON_TAGS } from '@/types/constants';
+import { GENDER_OPTIONS, ETHNIC_APPEARANCE_OPTIONS, REPRESENTATION_OPTIONS, COMMON_TAGS } from '@/types/constants';
 import type { Actor, UpdateActorInput } from '@/types';
 
 // Form validation schema
@@ -47,6 +47,7 @@ const editActorSchema = z.object({
     ethnicAppearance: z.array(z.string()).min(1, 'At least one ethnic appearance must be selected'),
     height: z.string().min(1, 'Height is required'),
     unionStatus: z.string().min(1, 'Union Status is required'),
+    representation: z.string().optional(),
     tags: z.array(z.string()).default([]),
     notes: z.string().default(''),
     headshotUrl: z.string().url('Must be a valid URL').optional().or(z.literal('')),
@@ -77,6 +78,7 @@ export function EditActorModal({ actor, open, onClose }: EditActorModalProps) {
             ethnicAppearance: actor?.ethnicAppearance || [],
             height: actor?.height || '',
             unionStatus: actor?.unionStatus || '',
+            representation: actor?.representation || '',
             tags: actor?.tags || [],
             notes: actor?.notes || '',
             headshotUrl: actor?.headshotUrl || '',
@@ -94,6 +96,7 @@ export function EditActorModal({ actor, open, onClose }: EditActorModalProps) {
                 ethnicAppearance: actor.ethnicAppearance,
                 height: actor.height,
                 unionStatus: actor.unionStatus,
+                representation: actor.representation,
                 tags: actor.tags,
                 notes: actor.notes,
                 headshotUrl: actor.headshotUrl || '',
@@ -314,6 +317,32 @@ export function EditActorModal({ actor, open, onClose }: EditActorModalProps) {
                                                     <SelectItem value="AEA">AEA</SelectItem>
                                                     <SelectItem value="Non-Union">Non-Union</SelectItem>
                                                     <SelectItem value="Other">Other</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control as any}
+                                    name="representation"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Representation</FormLabel>
+                                            <Select onValueChange={field.onChange} value={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select representation (optional)" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="">No Representation</SelectItem>
+                                                    {REPRESENTATION_OPTIONS.map((rep) => (
+                                                        <SelectItem key={rep} value={rep}>
+                                                            {rep}
+                                                        </SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />

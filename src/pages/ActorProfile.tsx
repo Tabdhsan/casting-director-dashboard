@@ -107,9 +107,17 @@ export function ActorProfile() {
                                     </AvatarFallback>
                                 </Avatar>
                                 <h2 className="text-xl font-semibold">{actor.name}</h2>
-                                <p className="text-muted-foreground mb-4">
-                                                                                    {actor.unionStatus}
+                                <p className="text-muted-foreground mb-2">
+                                    {actor.unionStatus}
                                 </p>
+                                {actor.representation && (
+                                    <p className="text-muted-foreground mb-4 text-sm">
+                                        Represented by {actor.representation}
+                                    </p>
+                                )}
+                                {!actor.representation && (
+                                    <div className="mb-4"></div>
+                                )}
                                 
                                 {/* Quick Stats */}
                                 <div className="grid grid-cols-2 gap-4 w-full text-sm">

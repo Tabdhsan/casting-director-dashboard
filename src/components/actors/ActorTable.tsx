@@ -53,12 +53,12 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
             }
 
             // Ethnic Appearance filter
-            // if (filters.ethnicAppearance && filters.ethnicAppearance.length > 0) {
-            //     const hasMatchingAppearance = filters.ethnicAppearance.some(appearance => 
-            //         actor.ethnicAppearance.includes(appearance)
-            //     );
-            //     if (!hasMatchingAppearance) return false;
-            // }
+            if (filters.ethnicAppearance && filters.ethnicAppearance.length > 0) {
+                const hasMatchingAppearance = filters.ethnicAppearance.some(appearance => 
+                    actor.ethnicAppearance.includes(appearance)
+                );
+                if (!hasMatchingAppearance) return false;
+            }
 
                     // Age range filter - check if actor's age range overlaps with filter range
         if (filters.ageRange) {
@@ -183,6 +183,7 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
                                 {/* <SortableHeader field="ethnicAppearance">Ethnic Appearance</SortableHeader> */}
                                 <SortableHeader field="height">Height</SortableHeader>
                                 <TableHead>Union Status</TableHead>
+                                <TableHead>Representation</TableHead>
                                 <TableHead>Tags</TableHead>
                                 <SortableHeader field="createdAt">Added</SortableHeader>
                                 <TableHead className="w-12"></TableHead>
@@ -219,6 +220,13 @@ export function ActorTable({ actors, filters, onEdit, onDelete }: ActorTableProp
                                             <Badge variant="outline" className="text-xs">
                                                 {actor.unionStatus}
                                             </Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            {actor.representation && (
+                                                <span className="text-sm">
+                                                    {actor.representation}
+                                                </span>
+                                            )}
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex flex-wrap gap-1">

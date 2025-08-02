@@ -28,6 +28,7 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
         ethnicAppearance: true,
         height: false,
         unionStatus: false,
+        representation: false,
         tags: false,
     });
 
@@ -61,7 +62,7 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
 
     // Handle multi-select filter changes
     const handleMultiSelectChange = (
-        field: 'gender' | 'ethnicAppearance' | 'height' | 'unionStatus' | 'tags',
+        field: 'gender' | 'ethnicAppearance' | 'height' | 'unionStatus' | 'representation' | 'tags',
         value: string,
         checked: boolean
     ) => {
@@ -229,6 +230,15 @@ export function ActorFilters({ filters, onFiltersChange, onClose }: ActorFilters
                         title="Union Status"
                         field="unionStatus"
                         options={filterOptions.unionStatuses}
+                    />
+                </div>
+
+                {/* Representation Filter */}
+                <div>
+                    <FilterSection
+                        title="Representation"
+                        field="representation"
+                        options={filterOptions.representations}
                     />
                 </div>
 

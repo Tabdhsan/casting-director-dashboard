@@ -17,7 +17,8 @@ export function testStore() {
         gender: 'Male',
         ethnicAppearance: ['European'],
         height: '6\'0"',
-        unionStatus: 'CAA',
+        unionStatus: 'SAG-AFTRA',
+        representation: 'CAA (Creative Artists Agency)',
         tags: ['Leading Man', 'Drama'],
         notes: 'Great stage presence',
     };

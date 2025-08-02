@@ -117,6 +117,13 @@ export function ActorModal({ actor, open, onClose, onEdit }: ActorModalProps) {
                                     <span className="text-muted-foreground">Union Status:</span>
                                     <Badge variant="outline">{actor.unionStatus}</Badge>
                                 </div>
+                                
+                                {actor.representation && (
+                                    <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Representation:</span>
+                                        <span className="font-medium">{actor.representation}</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

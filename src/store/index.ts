@@ -138,6 +138,7 @@ export interface AppStore {
         ethnicAppearances: string[];
         heights: string[];
         unionStatuses: string[];
+        representations: string[];
         tags: string[];
     };
     
@@ -515,6 +516,7 @@ export const useAppStore = create<AppStore>()(
                     ethnicAppearances: extractUniqueEthnicAppearances(actors),
                     heights: extractUniqueValues(actors, 'height'),
                     unionStatuses: extractUniqueValues(actors, 'unionStatus'),
+                    representations: extractUniqueValues(actors, 'representation').filter((rep): rep is string => Boolean(rep)),
                     tags: extractUniqueTags(actors),
                 };
             },

@@ -11,6 +11,7 @@ export interface Actor {
   ethnicAppearance: string[];
   height: string;
   unionStatus: string;
+  representation?: string;
   tags: string[];
   notes: string;
   headshotUrl?: string;
@@ -70,6 +71,7 @@ export interface ActorFilters {
   ethnicAppearance?: string[];
   tags?: string[];
   unionStatus?: string[];
+  representation?: string[];
 }
 
 // UI state types
